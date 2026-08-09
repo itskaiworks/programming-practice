@@ -1,0 +1,220 @@
+import java.util.Scanner;
+
+public class LabExamSecondYearNaDisJuskoPo {
+	
+	static Scanner sc = new Scanner (System.in);
+	static int capacity = 5, size = 0, element, index, outer, inner, choice, temp, lowest,
+			   max, min, mid, key, search, delete;
+	static int origArray[], newArray[];
+	static boolean swapped, found;
+
+	public static void main(String[] args) {
+		
+		origArray = new int[capacity];
+		
+		while (true) {
+			print("\n====DYNAMIC ARRAY PROGRAM====");
+			print("\n1. Add Element"
+				+ "\n2. Delete Element"
+				+ "\n3. View Element"
+				+ "\n4. Sort Element"
+				+ "\n5. Search Element"
+				+ "\n6. Exit Program");
+			print("\n\nEnter Choice: ");
+			choice = sc.nextInt();
+			
+			switch (choice) {
+			case 1:
+				addElement();
+				break;
+			case 2:
+				deleteElement();
+				break;
+			case 3:
+				viewElement();
+				break;
+			case 4:
+				sortElement();
+				break;
+			case 5:
+				searchElement();
+				break;
+			case 6:
+				print("Program Terminated.");
+				System.exit(0);
+				break;
+			}
+		}
+	} 
+	public static void addElement () {
+		
+		println("\nEnter element: ");
+		for (outer = 0; outer < 5; outer++) {
+			print("[" + (outer + 1) + "]: ");
+			element = sc.nextInt();
+			
+			if (size == capacity) {
+				capacity = capacity * 2;
+				
+				newArray = new int[capacity];
+				
+				for (inner = 0; inner < size; inner++) {
+					newArray[inner] = origArray[inner];
+				}
+				origArray = newArray;
+			}
+			origArray[size] = element;
+			size++;
+		}
+		
+		println("");
+	}
+	public static void deleteElement () {
+		print("Enter an element to delete: ");
+		delete = sc.nextInt();
+		
+		if (delete >= size || delete < 0) {
+			print("No element at this index");
+		} else {
+			for (index = delete; index < size -1; index++) {
+				origArray[index] = origArray[index + 1];
+			}
+			size--;
+			print("Element successfully deleted.");
+		}
+	}
+	public static void viewElement () {
+		print("Element entered: ");
+		for (index = 0; index < size; index++) {
+			print("[" + origArray[index] + "]");
+		}
+		
+		println("");
+	}
+	public static void sortElement () {
+		println("--> CHOOSE SORTING ALGORITHM <--");
+		print("\n1. Bubble Sort"
+			+ "\n2. Selection Sort"
+			+ "\n3. Insertion Sort");
+		print("\nEnter sorting algorithm choice: ");
+		choice = sc.nextInt();
+		
+		switch (choice) {
+		case 1:
+			for (outer = 0; outer < size - 1; outer++) {
+				swapped = false;
+				for (inner = 0; inner < size - outer - 1; inner++) {
+					if (origArray[inner] > origArray[inner + 1]) {
+						temp = origArray[inner + 1];
+						origArray[inner + 1]  = origArray[inner];
+						origArray[inner] = temp;
+						swapped = true;
+					}
+				}
+				if (!swapped) break;
+			}
+			
+			 printSort();
+			 println("");
+			break;
+		case 2:
+			for (outer = 0; outer < size; outer++) {
+				lowest = outer;
+				for (inner = outer + 1; inner < size; inner++) {
+					if (origArray[inner] < origArray[lowest]) {
+						lowest = inner;
+					}
+				}
+				temp = origArray[lowest];
+				origArray[lowest] = origArray[outer];
+				origArray[outer] = temp;
+			}
+			
+			printSort();
+			println("");
+			break;
+		case 3:
+			for (outer = 0; outer < size; outer++) {
+				key = origArray[outer];
+				inner = outer - 1;
+				
+				while (inner >= 0 && origArray[inner] > key) {
+					origArray[inner + 1] = origArray[inner];
+					inner--;
+				}
+				origArray[inner + 1] = key;
+			}
+			
+			printSort();
+			println("");
+			break;
+		}
+	}
+	public static void searchElement () {
+		println("--> CHOOSE SEARCHING ALGORITHM <--");
+		print("\n1. Binary Search"
+			+ "\n2. Liner Search");
+		print("\nEnter searching algorithm choice: ");
+		choice = sc.nextInt();
+		
+		switch (choice) {
+		case 1:
+			print("Enter element to search: ");
+			search = sc.nextInt();
+			
+			min = 0;
+			max = size - 1;
+			
+			found = false;
+			
+			while (min <= max) {
+				mid = (min + max) / 2;
+				if (origArray[mid] == search) {
+					found = true;
+					break;
+				} else if (origArray[mid] < search) {
+					min = mid + 1;
+				} else {
+					max = mid - 1;
+				}
+			}
+			
+			if (found == true) {
+				print("Element found in the system.");
+			} else {
+				print("Element not found in the system.");
+			}
+			break;
+		case 2:
+			print("Enter element to search: ");
+			search = sc.nextInt();
+			
+			for (index = 0; index < size; index++) {
+				if (origArray[index] == search) {
+					found = true;
+					break;
+				}
+			}
+			
+			if (found == true) {
+				print("Element found in the system.");
+			} else {
+				print("Element not found in the system.");
+			}
+			break;
+		}
+	}
+	public static void printSort () {
+		print("Sorted element: ");
+		for (int num : origArray) {
+			print("[" + num + "]");
+		}
+	}
+	public static void print (String word) {
+		System.out.print(word);
+	}
+	public static void println (String word) {
+		System.out.println(word);
+	}
+
+}
