@@ -1,0 +1,31 @@
+import java.util.Scanner;
+
+public class EvenNumbers {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner (System.in);
+		
+		int num [] = new int [5];
+		int sum = 0, even = 0;
+		
+		System.out.println("Enter 5 Numebers: ");
+		for (int count = 0; count < num.length; count++ ) {
+			num[count] = sc.nextInt();
+		}
+		
+		System.out.print("Even Array Numbers: ");
+		for (int count = 0; count < num.length; count++ ) {
+			
+			if (num[count] % 2 == 0) {
+				System.out.print(num[count] + " ");
+				sum += num[count];
+			}
+		}
+		
+		System.out.println(" ");
+		
+		System.out.print("Sum Of All Even Numbers: " + sum);
+	}
+
+}
