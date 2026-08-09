@@ -1,0 +1,74 @@
+
+public class DynamicArray {
+	//encapsulated class fields
+	private int [] array;
+	private int size;
+	private int capacity;
+	
+	//parameter constructor
+	public DynamicArray(int capacity) { //New fixed size array
+		this.array = new int [capacity];
+		this.size = 0;
+		this.capacity = capacity;
+	}
+	
+	//getter methods
+	public int getSize() {
+		return this.size;
+	}
+	
+	public int getCapacity() {
+		return this.capacity;
+	}
+	
+	//class methods
+	public int getElement(int index) {
+		return this.array[index];
+	}
+	
+	public void addElement(int element) {
+		if(this.size == this.capacity) {
+			increaseCapacity();
+		}
+		this.array[this.size] = element; //add new element
+		this.size++; //update the size (pointing to the next available slot)
+	}
+	
+	public void increaseCapacity() {
+		
+		int tempArray [] = new int[capacity * 2];
+		
+		for (int index = 0; index < this.capacity; index++) {
+			tempArray[index] = this.array[index];
+		}
+		this.array = tempArray;
+		this.capacity *= 2;
+	}
+	
+	public void removeElement(int delIndex) {
+		if(delIndex >= size || delIndex < 0) {
+			System.out.print("No element at this index.");
+		} else {
+			for(int index = delIndex; index < size - 1; index++) {
+				this.array[index] = this.array[index + 1];
+			}
+			this.array[this.size - 1] = 0;
+			this.size--;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
