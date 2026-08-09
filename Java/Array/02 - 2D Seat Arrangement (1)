@@ -1,0 +1,66 @@
+package seatArrangement;
+import java.util.Scanner;
+public class seatingArrangement {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner (System.in);
+		
+		String choice;
+		
+		String seat [][] = {
+				{"X", "X", "O", "X"},
+				{"X", "X", "X", "X"},
+				{"X", "O", "X", "X"},
+				{"X", "X", "X", "X"}
+		};
+		
+		do {
+			System.out.println("Seating Arrangment");
+			for (int row = 0; row < seat.length; row++) {
+				for (int col = 0; col < seat[row].length; col++) {
+					System.out.print(seat[row][col] + " ");
+				}
+				System.out.println();
+			}
+			
+			System.out.println();
+			
+			boolean seatFound = false;
+			
+			System.out.print("Enter row (0-3): ");
+			int rowInput = sc.nextInt();
+			System.out.print("Enter column (0-3): ");
+			int colInput = sc.nextInt();
+			
+			sc.nextLine();
+			
+			for (int row = rowInput; row < seat.length; row++) {
+				for (int col = colInput; col < seat[row].length; col++) {
+					if (seat[row][col] == "O") {
+						System.out.println("Seat successfully reserved at row " + row + ", column " + col + "!");
+						seatFound = true;
+						seat[row][col] = "X";
+						break;
+					} 
+					
+					if (seatFound) {
+						break;
+					}
+				}
+				
+				if (!seatFound) {
+					System.out.println("Sorry, no seat available right now");
+					break;
+				}	
+			}
+			
+			System.out.println();
+			
+			System.out.print("Do you want to choose another seat? (yes/no): ");
+			choice = sc.nextLine();
+			
+			System.out.println();
+			
+		} while (choice.equalsIgnoreCase("yes"));
+	}
+
+}
