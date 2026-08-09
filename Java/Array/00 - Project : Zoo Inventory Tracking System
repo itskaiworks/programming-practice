@@ -1,0 +1,244 @@
+import java.util.Scanner; //We imported Scanner class to allow user input
+
+public class ZooInventoryTrackingSystem {
+	static Scanner scanner = new Scanner(System.in); //For user input
+	
+	static int animalCount = 0; //For count of animals registered
+	static int maxCapacity = 50; //Maximum amount of animals the zoo can handle
+	static String[] animalName = new String[maxCapacity]; //For storing animal names
+	static String[] species = new String[maxCapacity]; //For storing animal species
+	static int[] animalAge = new int[maxCapacity]; //For storing animal ages
+	static int[] enclosure = new int[maxCapacity]; //For storing enclosure numbers of animals
+	
+	static boolean repeatProgram = true; //Declared as true to repeat or loop the system
+	
+	public static void main(String[] args) {
+		
+		println("\nWelcome! Please choose an action from the menu below."); //Display welcome message
+		
+		while(repeatProgram) { //Continues the system while the repeatProgram is true
+			
+			//Displays the main menu
+			println("\n= = = Zoo Inventory Tracking System = = =");
+			println("\n [1] Add a New Animal");
+			println(" [2] View All Animals");
+			println(" [3] Search for an Animal by Name");
+			println(" [4] Count By Species");
+			println(" [5] View Enclosures");
+			println(" [6] Exit the Program");
+			print("\nPlease select the operation you want to perform (1-6): ");
+			int choice = scanner.nextInt(); //Stores user's choice
+			
+			//We used switch statement to perform the actions in the menu
+			switch(choice) {
+				case 1:
+					addAnimals(); //We called the addAnimals Method to execute the code inside
+					break;
+				case 2:
+					viewAnimals(); //We called the viewAnimals Method to execute the code inside
+					break;
+				case 3:
+					searchAnimals(); //We called the searchAnimals Method to execute the code inside
+					break;
+				case 4:
+					countSpecies(); //We called the countSpecies Method to execute the code inside
+					break;
+				case 5:
+					viewEnclosures(); //We called the viewEnclosures Method to execute the code inside
+					break;
+				case 6:
+					exitProgram(); //We called the exitProgram Method to execute the code inside
+					break;
+				default:
+					//If user input is invalid, remind them to enter a number between 1 and 6
+					println("\nInvalid Input. Please enter a number between 1 and 6\n");
+					programDivider(); //Added method to ensure the cleanliness of the program, dividing it in every run
+					break; //We used break; to exit in switch statement
+			}
+		}
+	}
+	
+	public static void addAnimals() {
+		if(animalCount >= maxCapacity) { //Checks if the zoo has reached its maximum capacity
+			println("\nWe apologize, the Zoo cannot accept any more entries, as it has reached its maximum capacity.");
+			programDivider();
+			return; //We used return; to exit the method and skip the remaining code
+		}
+		
+		//If there is still space, we proceed to add a new animal
+		print("\nEnter the Animal Name: ");
+		animalName[animalCount] = scanner.next(); //Stores the animal's name
+		
+		print("\nEnter an Animal Species: ");
+		species[animalCount] = scanner.next(); //Stores the animal's species
+		
+		//Loop to validate positive age input
+		do {
+			print("\nEnter the Animal Age: ");
+			animalAge[animalCount] = scanner.nextInt();
+			
+			if (animalAge[animalCount] < 0) { //Checks if the user entered a negative number
+	            System.out.println("\nPlease enter a positive number.");
+	        }
+		}while(animalAge[animalCount] < 0); //If user keeps entering a negative number, loop will not stop
+		
+		//Loop to validate valid enclosure numbers (0 to 4 only)
+		do {
+			print("\nEnter the Animal Enclosure (0-4): ");
+			enclosure[animalCount] = scanner.nextInt();
+				
+			if(enclosure[animalCount] > 4 || enclosure[animalCount] < 0) { //Ensures valid input
+				println("\nInvalid Input. Please enter a number between 0 and 4.\n");
+			}
+		}while(enclosure[animalCount] > 4 || enclosure[animalCount] < 0); //Loop continues if input is invalid
+		
+		animalCount++; //After successfully adding, we increment the count of animals
+		
+		println("\nAnimal record added successfully.\n");
+		
+		programDivider(); //Added method to ensure the cleanliness of the program, dividing it in every run
+	}
+	
+	public static void viewAnimals() {
+		if(animalCount == 0) { //Check first if there are no animals currently listed in the inventory
+			println("\nNo animal records have been added to the system yet.\n");
+			programDivider();
+			return;
+		}
+		
+		//For loop to display all animal records one by one
+		for(int index = 0; index < animalCount; index++) {
+			println("\nAnimal " + (index + 1) //Displays animal number starting from 1
+					            + "\nAnimal Name: " + animalName[index] //Displays animal name
+					            + "\nSpecies: " + species[index] //Displays species name
+					            + "\nAge: " + animalAge[index] //Displays age of the animal
+					            + "\nEnclosure Number: " + enclosure[index]); //Displays enclosure number
+		}
+		println(""); //Prints blank line for formatting
+		
+		programDivider(); //Added method to ensure the cleanliness of the program, dividing it in every run
+	}
+	
+	public static void searchAnimals() {
+		if(animalCount == 0) { //Check first if there are no animals currently listed in the inventory
+			println("\nNo animal records have been added to the system yet.\n");
+			programDivider();
+			return; //We used return; to exit the method and to not execute the code below
+		}
+		
+		//Ask user to input the animal name to search
+		print("\nPlease enter the name of the Animal Name to find: ");
+		String searchAnimalName = scanner.next(); //Stores user input for search
+		boolean found = false; //Initially assume animal is not found
+		
+		//Loop through all registered animals to find a match
+		for(int index = 0; index < animalCount; index++) {
+			if(searchAnimalName.equalsIgnoreCase(animalName[index])) { //Case-insensitive comparison
+				println("Animal Name: " + animalName[index] //Displays animal details if found
+						+ "\nSpecies: " + species[index]
+						+ "\nAge: " + animalAge[index]
+						+ "\nEnclosure Number: " + enclosure[index] + "\n");
+				found = true; //Sets found to true if animal exists
+			}
+		}
+		println(""); //Formatting
+		
+		//Final result message
+		if(found) { //If found, inform the user
+			println("Animal is found in the Zoo Inventory Tracking System.\n");
+		}else { //Otherwise, show not found message
+			println("Animal is not found in the Zoo Inventory Tracking System.\n");
+		}
+		
+		programDivider(); //Added method to ensure the cleanliness of the program, dividing it in every run
+	}
+	
+	public static void countSpecies() {
+		if(animalCount == 0) { //Check first if there are no animals currently listed in the inventory
+			println("\nNo animal records have been added to the system yet.\n");
+			programDivider();
+			return; //Exit method if no animals exist
+		}
+		
+		boolean speciesAlreadyPrinted; //Flag to check if species was already displayed
+		println("\nSpecies: ");
+		
+		//Outer loop to traverse all animals
+		for (int outerIndex = 0; outerIndex < animalCount; outerIndex++) {
+		    speciesAlreadyPrinted = false;
+		    
+		    //Inner loop checks if the species was already printed earlier
+		    for (int checkIndex = 0; checkIndex < outerIndex; checkIndex++) {
+		        if (species[checkIndex].equalsIgnoreCase(species[outerIndex])) {
+		            speciesAlreadyPrinted = true; //If already printed, skip it
+		            break;
+		        }
+		    }
+		    
+		    if (speciesAlreadyPrinted == true) { //If species already printed, skip the counting
+		        continue;
+		    }
+		    
+		    int speciesCount = 0; //Initialize counter for current species
+		    
+		    //Another loop to count how many times the species appears
+		    for (int innerIndex = 0; innerIndex < animalCount; innerIndex++) {
+		        if (species[innerIndex].equalsIgnoreCase(species[outerIndex])) {
+		            speciesCount++;
+		        }
+		    }
+		    
+		    //Print species name and its count
+		    print(species[outerIndex]);
+		    if (speciesCount > 0 && speciesCount < 50) {
+		        println(" --> " + speciesCount);
+		    }
+		}
+		
+		programDivider(); //Added method to ensure the cleanliness of the program, dividing it in every run
+	}
+	
+	public static void viewEnclosures() {
+		if(animalCount == 0) { //Check first if there are no animals currently listed in the inventory
+			println("\nNo animal records have been added to the system yet.\n");
+			programDivider();
+			return; //Exit method if no animals exist
+		}
+		
+		//Outer loop to display each enclosure from 0 to 4
+		for(int enclosureNumber = 0; enclosureNumber <= 4; enclosureNumber++ ) {
+			println("Enclosure Number " + enclosureNumber + "\n"); //Displays enclosure number
+			
+			//Inner loop checks each animal's enclosure number
+			for(int index = 0; index < animalCount; index++ ) {
+				if(enclosureNumber == enclosure[index]) { //If animal's enclosure matches the current enclosure number
+					println("Animal Name: " + animalName[index] //Displays the animal details
+							+ "\nSpecies: " + species[index]
+							+ "\nAge: " + animalAge[index] + "\n");
+				}
+			}
+		}
+		
+		programDivider(); //Added method to ensure the cleanliness of the program, dividing it in every run
+	}
+	
+	public static void exitProgram() {
+		println("\nThank you for using the Zoo Inventory Tracking System"); //Displays goodbye message
+		println("The program will now exit."); //Displays exit message
+		repeatProgram = false; //Set repeatProgram to false to stop the main loop and exit the system
+	}
+	
+	public static void programDivider() { //This will ensure the cleanliness of the program, dividing it in every run
+		println(" ");
+		println("===========================================================");
+		println(" ");
+	}
+	
+	public static void println(String word) { //Method to print with newline
+		System.out.println(word);
+	}
+	
+	public static void print(String word) { //Method to print without newline
+		System.out.print(word);
+	}
+}
