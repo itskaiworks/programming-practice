@@ -1,0 +1,167 @@
+public class CourseList {
+  private OverallNode head; //Points to the first node
+  private OverallNode tail; //Points to the last node
+  // Adds a new course to the course list
+  public void addCourse(Course course) {
+      OverallNode newNode = new OverallNode();
+      newNode.setCourse(course); // Assigns the course to the new node
+      if (head == null) { //If the list is empty
+          head = tail  = newNode;
+      } else { //If list is not empty
+          tail.setNext(newNode); //Link the current tail to the new node
+          newNode.setPrev(tail); //Link the new node back to the old tail
+          tail = newNode; //Update tail to the new node
+      }
+  }
+  //Displays all courses in the list
+  public void viewAllCourses() {
+      print("\n=======================================");
+      print("\n            COURSE LIST                ");
+      print("\n=======================================");
+      OverallNode current = head; //Start from the head
+      while (current != null) { //Traverse the list
+          print("\n---------------------------------------");
+          print(current.getCourse().getCourseDetails()); //Print each course’s details
+          current = current.getNext(); //Move to the next node
+      }
+  }
+  //Updates course details based on user’s choice
+  public int updateCourse(String courseCode, int choiceUpdate, String newInfo, int newValue,
+                          String newCourseCode, String newCourseDescription, int newUnits, int newSlotAvailable) {
+      if (isEmpty()) return -1;//Return -1 if the list is empty
+      OverallNode current = head;
+      while (current != null) {
+          if (isSameString(current.getCourse().getCourseCode(), courseCode)) {//Checks if the input user's courseCode is equals to courseCode of the node
+              switch (choiceUpdate) {
+                  case 1: current.getCourse().setCourseCode(newInfo); break; //Update course code
+                  case 2: current.getCourse().setCourseTitle(newInfo); break; //Update title
+                  case 3: current.getCourse().setUnits(newValue); break; //Update units
+                  case 4: current.getCourse().setSlots(newValue); break; //Update slots
+                  case 5: //Update all fields
+                      current.getCourse().setCourseCode(newCourseCode);
+                      current.getCourse().setCourseTitle(newCourseDescription);
+                      current.getCourse().setUnits(newUnits);
+                      current.getCourse().setSlots(newSlotAvailable);
+                      break;
+                  default: return 0;//Invalid choice
+              }
+              //Display confirmation
+              print("\n Updating course details...");
+              print("\n---------------------------------------");
+              print("\n         Course Code Found:            ");
+              print("\n---------------------------------------");
+              print(current.getCourse().getCourseDetails());
+              print("\n\n [✓] Course details updated successfully.\n");
+              return 1; //Success
+          }
+          current = current.getNext(); // Move to next node
+      }
+      return 2; //Course is not found
+  }
+  //Deletes a course by its code
+  public void deleteCourse(String courseCode) {
+      viewAllCourses(); //Display all courses before deletion
+      OverallNode current = head; //Start at the head
+      while (current != null) { //Traverse list
+          if (isSameString(current.getCourse().getCourseCode(), courseCode)) {
+              if (current == head && current == tail) { //If Only one node
+                  head = null;
+                  tail = null;
+              } else if (current == head) { //Deleting first node
+                  head = head.getNext();
+                  if (head != null) head.setPrev(null);
+              } else if (current == tail) { // Deleting last node
+                  tail = tail.getPrev();
+                  if (tail != null) tail.setNext(null);
+              } else { //Deleting middle node
+                  current.getPrev().setNext(current.getNext());
+                  current.getNext().setPrev(current.getPrev());
+              }
+              //Successful message
+              print("\n\n Deleting course with code " + current.getCourse().getCourseCode() + "...");
+              print("\n [✓] Course code " + current.getCourse().getCourseCode() + " deleted successfully.\n");
+              return;
+          }
+          current = current.getNext(); //Move to next node
+      }
+      print("\n\n [!] Course code " + courseCode + " not found.\n"); //Not found message
+  }
+  //Searches a course by its code and displays details if found
+  public int searchCourseByCode(String courseCode) {
+      if (isEmpty()) return -1; //Empty list check
+      OverallNode current = head;
+      while (current != null) {
+          if (isSameString(current.getCourse().getCourseCode(), courseCode)) { //Match found
+              print("\n Searching course " + current.getCourse().getCourseCode() + "...");
+              print("\n---------------------------------------");
+              print("\n         Course Code Found:            ");
+              print("\n---------------------------------------");
+              print(current.getCourse().getCourseDetails());//Display course details
+              return 1; // Found
+          }
+          current = current.getNext();
+      }
+      return 0; //Not found
+  }
+  //Finds and returns the Course object by code (used for enrollment)
+  public Course findCourseByCode(String courseCode) {
+      OverallNode current = head;
+      while (current != null) {
+          Course course = current.getCourse();
+          if (course != null && isSameString(course.getCourseCode(), courseCode)) {
+              return course; //Return found course
+          }
+          current = current.getNext();
+      }
+      return null; //Not found
+  }
+  //Counts and displays total number of courses
+  public void totalCourses() {
+      if (isEmpty()) { //If list is empty
+          print("\n [!] No courses available to count.\n");
+          return;
+      }
+      OverallNode current = head;
+      int courseCount = 0;
+      while (current != null) { //Count each node
+          courseCount++;
+          current = current.getNext();
+      }
+      print("\n\n Total Courses Offered   : " + courseCount + "\n"); //Display total count
+  }
+  //Alternative for equalsIgnoreCase
+  public boolean isSameString(String checkString1, String checkString2) {
+      int index = 0;
+      while (true) {
+          try {
+              char firstChar = checkString1.charAt(index); //Get character from first string
+              char secondChar = checkString2.charAt(index); //Get character from second string
+              //Convert lowercase to uppercase using ASCII logic for example 'a' is 97 - 32 = 65 'A'
+              if (firstChar >= 'a' && firstChar <= 'z') firstChar = (char)(firstChar - 32);
+              if (secondChar >= 'a' && secondChar <= 'z') secondChar = (char)(secondChar - 32);
+              if (firstChar != secondChar) return false; //Characters differ
+              index++; //Move to next character
+          } catch (StringIndexOutOfBoundsException e) {
+              //Handle end-of-string comparison
+              try {
+                  checkString1.charAt(index); //If string1 still has characters
+                  return false;
+              } catch (StringIndexOutOfBoundsException ex1) {
+                  try {
+                      checkString2.charAt(index); //If string2 still has characters
+                      return false;
+                  } catch (StringIndexOutOfBoundsException ex2) {
+                      return true; //Both ended simultaneously if strings are equal
+                  }
+              }
+          }
+      }
+  }
+  //Checks if the course list is empty
+  public boolean isEmpty() {
+      return head == null; //Returns true if no courses are stored
+  }
+  public void print(String word) {
+      System.out.print(word); //Shorthand for sysout
+  }
+}
