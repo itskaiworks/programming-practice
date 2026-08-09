@@ -1,0 +1,240 @@
+package shoppingApplication;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+
+public class ShoppingApplication {
+	
+	static String productOption;
+	static int priceLaptop = 0, priceSmartphone = 0, priceTablet = 0, priceMouse = 0, priceEarphones = 0, pricePowerBank = 0, totalPrice = 0,
+			   acMouseQuantity, acEarphoneQuantity, acBankQuantity;
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Shopping Application");
+		JPanel panel = new JPanel();
+		JLabel shopName = new JLabel("DEVICE CENTER");
+		JLabel product = new JLabel("PRODUCT");
+		JRadioButton laptop = new JRadioButton("Laptop");
+		JRadioButton smartphone = new JRadioButton("Smartphone");
+		JRadioButton tablet = new JRadioButton("Tablet");
+		JLabel price = new JLabel("PRICE");
+		JLabel laptopPrice = new JLabel("35,000");
+		JLabel smartphonePrice = new JLabel("20,000");
+		JLabel tabletPrice = new JLabel("15,000");
+		JLabel accessories = new JLabel("ACCESSORIES");
+		JCheckBox mouse = new JCheckBox("Wireless Mouse");
+		JCheckBox earphones = new JCheckBox("Earphones");
+		JCheckBox powerBank = new JCheckBox("Power Bank");
+		JLabel mousePrice = new JLabel("1,500");
+		JLabel earphonePrice = new JLabel("2,000");
+		JLabel powerBankPrice = new JLabel("2,500");
+		JButton showOrderBtn = new JButton("SHOW ORDER");
+		JLabel lblReceipt = new JLabel("RECEIPT");
+		
+		// FRAME SETTINGS
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 660, 447);
+		frame.setLocationRelativeTo(null); //This will allow the frame always shown on the center
+		frame.setVisible(true); //This will allow the frame to be visible
+
+		frame.add(panel);
+		panel.setLayout(null);
+
+		panel.add(shopName);
+		shopName.setHorizontalAlignment(SwingConstants.CENTER);
+		shopName.setFont(new Font("Century Schoolbook", Font.BOLD, 21));
+		shopName.setBounds(38, 28, 573, 27);
+
+		// PRODUCT SETTINGS
+		panel.add(product);
+		product.setFont(new Font("Century Schoolbook", Font.BOLD, 18));
+		product.setBounds(38, 80, 209, 27);
+
+		panel.add(laptop);
+		laptop.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		laptop.setBounds(38, 116, 103, 21);
+
+		panel.add(smartphone);
+		smartphone.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		smartphone.setBounds(38, 145, 103, 21);
+
+		panel.add(tablet);
+		tablet.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tablet.setBounds(38, 178, 103, 21);
+
+		ButtonGroup group = new ButtonGroup(); //The purpose of this button group is to make sure that the user can only select one type of product
+		group.add(laptop);
+		group.add(smartphone);
+		group.add(tablet);
+
+		// PRODUCT PRICE SETTINGS
+		panel.add(price);
+		price.setHorizontalAlignment(SwingConstants.RIGHT);
+		price.setFont(new Font("Century Schoolbook", Font.BOLD, 18));
+		price.setBounds(104, 80, 209, 27);
+
+		panel.add(laptopPrice);
+		laptopPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		laptopPrice.setBounds(257, 119, 68, 15);
+
+		panel.add(smartphonePrice);
+		smartphonePrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		smartphonePrice.setBounds(257, 148, 68, 15);
+
+		panel.add(tabletPrice);
+		tabletPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tabletPrice.setBounds(257, 181, 68, 15);
+
+		// ACCESSORIES SETTINGS
+		panel.add(accessories);
+		accessories.setFont(new Font("Century Schoolbook", Font.BOLD, 18));
+		accessories.setBounds(38, 219, 209, 27);
+
+		panel.add(mouse);
+		mouse.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		mouse.setBounds(38, 252, 148, 21);
+
+		panel.add(earphones);
+		earphones.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		earphones.setBounds(38, 284, 148, 21);
+
+		panel.add(powerBank);
+		powerBank.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		powerBank.setBounds(38, 315, 148, 21);
+
+		// ACCESSORIES PRICE SETTINGS
+		panel.add(mousePrice);
+		mousePrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		mousePrice.setBounds(257, 255, 68, 15);
+
+		panel.add(earphonePrice);
+		earphonePrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		earphonePrice.setBounds(257, 284, 68, 15);
+
+		panel.add(powerBankPrice);
+		powerBankPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		powerBankPrice.setBounds(257, 318, 68, 15);
+
+		// RECEIPT SETTINGS
+		panel.add(lblReceipt);
+		lblReceipt.setHorizontalAlignment(SwingConstants.CENTER);
+		lblReceipt.setFont(new Font("Century Schoolbook", Font.BOLD, 18));
+		lblReceipt.setBounds(347, 80, 264, 27);
+
+		// BUTTON SETTINGS
+		panel.add(showOrderBtn);
+		showOrderBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		showOrderBtn.setBounds(38, 361, 275, 27);
+		showOrderBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ex) {
+				
+				try { 
+					
+					// This help reset total price
+					totalPrice = 0;
+					productOption = "";
+					priceLaptop = priceSmartphone = priceTablet = 0;
+
+					// For selecting a product
+					if (laptop.isSelected()) {
+						productOption = laptop.getText();
+						priceLaptop = 35000;
+					} else if (smartphone.isSelected()) {
+						productOption = smartphone.getText();
+						priceSmartphone = 20000;
+					} else if (tablet.isSelected()) {
+						productOption = tablet.getText();
+						priceTablet = 15000;
+					}
+
+					if (productOption.isEmpty()) { //Will be shown by the program once the user didn't select any product 
+						JOptionPane.showMessageDialog(null, "Please select a product to place an order!", null, JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					// Get quantity
+					String quantityInput = JOptionPane.showInputDialog("Enter product quantity:"); //This will ask the user how many product they want to buy
+					
+					if (quantityInput == null || quantityInput.trim().isEmpty()) { //When the user didn't select how many product they want, this will show a message "Please enter a valid quantity."
+					    JOptionPane.showMessageDialog(null, "Please enter a valid quantity!", null, JOptionPane.ERROR_MESSAGE);
+					    return;
+					}
+					
+					int productQuantity = (quantityInput != null) ? Integer.parseInt(quantityInput) : 1; //This will store how many product the users want add it for the total price of the order
+
+					// For selecting accessories
+					String accessoriesChoice = ""; //This allows the user to select multiple accessories as many as they want
+					if (mouse.isSelected()) {
+						accessoriesChoice += "Wireless Mouse, ";
+						priceMouse = 1500;
+						String mouseQuantity = JOptionPane.showInputDialog("Enter mouse quantity:"); //This will ask the user how many product they want to buy
+						
+						if (mouseQuantity == null || mouseQuantity.trim().isEmpty()) { //When the user didn't select how many product they want, this will show a message "Please enter a valid quantity."
+						    JOptionPane.showMessageDialog(null, "Please enter a valid quantity!", null, JOptionPane.ERROR_MESSAGE);
+						    return;
+						}
+						
+						acMouseQuantity = (mouseQuantity != null) ? Integer.parseInt(mouseQuantity) : 1;
+					}
+					if (earphones.isSelected()) {
+						accessoriesChoice += "Earphones, ";
+						priceEarphones = 2000;
+						String earphonesQuantity = JOptionPane.showInputDialog("Enter earphones quantity:"); //This will ask the user how many product they want to buy
+						
+						if (earphonesQuantity == null || earphonesQuantity.trim().isEmpty()) { //When the user didn't select how many product they want, this will show a message "Please enter a valid quantity."
+						    JOptionPane.showMessageDialog(null, "Please enter a valid quantity!", null, JOptionPane.ERROR_MESSAGE);
+						    return;
+						}
+						
+						acEarphoneQuantity = (earphonesQuantity != null) ? Integer.parseInt(earphonesQuantity) : 1;
+						
+					}
+					if (powerBank.isSelected()) {
+						accessoriesChoice += "Power Bank, ";
+						pricePowerBank = 2500;
+						String pBankQuantity = JOptionPane.showInputDialog("Enter power bank quantity:"); //This will ask the user how many product they want to buy
+						
+						if (pBankQuantity == null || pBankQuantity.trim().isEmpty()) { //When the user didn't select how many product they want, this will show a message "Please enter a valid quantity."
+						    JOptionPane.showMessageDialog(null, "Please enter a valid quantity!", null, JOptionPane.ERROR_MESSAGE);
+						    return;
+						}
+						
+						acBankQuantity = (pBankQuantity != null) ? Integer.parseInt(pBankQuantity) : 1;
+						
+					}
+					if (accessoriesChoice.isEmpty()) {
+						accessoriesChoice = "No accessories selected.";
+					}
+					
+					
+					totalPrice = (priceLaptop + priceSmartphone + priceTablet) * productQuantity + (priceMouse * acMouseQuantity) + (priceEarphones * acEarphoneQuantity) + (pricePowerBank * acBankQuantity); //This solve the total price of the order
+					
+					//In text area, the users selected product and accessories will be shown along with its quantity and the total price of the order
+					JTextArea receipt = new JTextArea("\n PRODUCT: " + productOption + "\n\n" // "\n\n" is added to make the output more organize
+							                         + " PRODUCT QUANTITY: " + productQuantity + "\n\n"
+							                         + " ACCESSORIES: " + accessoriesChoice + "\n\n"
+							                         + " TOTAL PRICE: " + totalPrice + "\n\n");
+					receipt.setBounds(347, 116, 264, 266);
+					panel.add(receipt);
+					panel.repaint(); // This will refresh the panel and ensure that changes will be displayed properly
+					
+				} catch (Exception e) {
+					
+					JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); //This will be display if the program failed to run
+					
+				}
+			}
+		});//END OF ACTION LISTENER
+	}//END OF MAIN METHOD
+}
