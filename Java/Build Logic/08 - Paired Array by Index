@@ -1,0 +1,26 @@
+import java.util.Scanner;
+public class PairedArrayByIndex {
+	public static void main(String[] args) {
+		
+		Scanner in = new Scanner(System.in);
+		
+		String email [] = {"ace@gmail.com"};
+		String username [] = {"MidnightDishWasher"};
+		String pass [] = {"acelangmalakas"};
+		
+		System.out.print("Enter a Number (1 to 10): ");
+		int num = in.nextInt();
+		int numeric = num - 1;
+		
+		if (numeric == 0) {
+			System.out.println("Index: " + numeric);
+			System.out.println("Email: " + email[0]);
+			System.out.println("Username: " + username[0]);
+			System.out.println("Password: " + pass[0]);
+		} else {
+			System.out.println("Wrong input, please try again.");
+		}
+
+	}
+
+}
