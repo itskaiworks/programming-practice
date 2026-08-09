@@ -1,0 +1,689 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class MainSystem {
+   static StudentList students = new StudentList();
+   static CourseList courses = new CourseList();
+   static EnrollmentList enrollments = new EnrollmentList();
+   static ReportModule reports = new ReportModule();
+   static BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+   public static void main(String[] args) throws IOException {
+       // STUDENTS DUMMY DATA
+       students.addStudent(new Student("Pauleen", "Balean", 1, "BSIT"));
+       students.addStudent(new Student("Eleyn", "Batacan", 4, "BSIE"));
+       students.addStudent(new Student("Abraham", "Buquid", 1, "BSIT"));
+       students.addStudent(new Student("Jerome", "Beato", 2, "BSCS"));
+       students.addStudent(new Student("Kurt", "Cabrera", 2, "BSCS"));
+       students.addStudent(new Student("Richardson", "Cabaluna", 3, "CAS"));
+       students.addStudent(new Student("Mikaela", "Cosino", 2, "BSIE"));
+       students.addStudent(new Student("Brenda", "Lazado", 3, "CAS"));
+       students.addStudent(new Student("Jerick", "Salvador", 3, "BSIE"));
+       // COURSES DUMMY DATA
+       courses.addCourse(new Course("GE1", "Understanding the Self", 3, 50));
+       courses.addCourse(new Course("GE3", "The Contemporary World", 3, 50));
+       courses.addCourse(new Course("GE5", "Purposive Communication", 3, 50));
+       courses.addCourse(new Course("GE6", "Art Appreciation", 3, 50));
+       courses.addCourse(new Course("GE8", "Ethics", 3, 50));
+       // ENROLLMENTS DUMMY DATA
+       enrollments.enrollStudent(students.findStudentByID(1001), courses.findCourseByCode("GE1"));
+       enrollments.enrollStudent(students.findStudentByID(1001), courses.findCourseByCode("GE3"));
+       enrollments.enrollStudent(students.findStudentByID(1001), courses.findCourseByCode("GE8"));
+       enrollments.enrollStudent(students.findStudentByID(1002), courses.findCourseByCode("GE5"));
+       enrollments.enrollStudent(students.findStudentByID(1002), courses.findCourseByCode("GE6"));
+       enrollments.enrollStudent(students.findStudentByID(1002), courses.findCourseByCode("GE3"));
+       enrollments.enrollStudent(students.findStudentByID(1003), courses.findCourseByCode("GE1"));
+       enrollments.enrollStudent(students.findStudentByID(1003), courses.findCourseByCode("GE5"));
+       enrollments.enrollStudent(students.findStudentByID(1003), courses.findCourseByCode("GE6"));
+       // GRADES UPDATE DUMMY DATA
+       enrollments.updateGrades(1001, 56, 59, "GE1");
+       enrollments.updateGrades(1001, 98, 91, "GE3");
+       enrollments.updateGrades(1001, 89, 90, "GE8");
+       enrollments.updateGrades(1002, 76, 82, "GE5");
+       enrollments.updateGrades(1002, 68, 70, "GE6");
+       enrollments.updateGrades(1002, 80, 78, "GE3");
+       enrollments.updateGrades(1003, 92, 91, "GE1");
+       enrollments.updateGrades(1003, 89, 94, "GE5");
+       enrollments.updateGrades(1003, 96, 97, "GE6");
+       displayMainMenu();//shows display main menu
+   }
+   public static void displayMainMenu() throws IOException {
+       while (true) {
+           print("\n=======================================");
+           print("\n     UNIVERSITY ENROLLMENT SYSTEM      ");
+           print("\n       > Registrar Management <        ");
+           print("\n=======================================\n");
+           print("\n [1] Student Management" +
+                 "\n [2] Course Management" +
+                 "\n [3] Enrollment & Grades" +
+                 "\n [4] Reports and Summary" +
+                 "\n [0] Exit" +
+                 "\n\n---------------------------------------");
+           int choice = getIntInput("\n Enter your choice: ");
+           switch (choice) {
+               case 1:
+                   displayStudentManagementMenu();//calls method menu for student management
+                   break;
+               case 2:
+                   displayCourseManagementMenu();//calls method menu for course management
+                   break;
+               case 3:
+                   displayEnrollmentAndGradesMenu();//calls method menu for enrollment and grades
+                   break;
+               case 4:
+                   displayReportsAndSummaryMenu();//calls method for reports and summary menu
+                   break;
+               case 0:
+                   print("\n Terminating system...");
+                   System.exit(0);//system exits
+                   break;
+               default:
+                   print("\n [!] Invalid choice. Please enter a number between 0 and 4.\n");//prompts an error message
+                   break;
+           }
+       }
+   }
+   public static void displayStudentManagementMenu() throws IOException {
+   	//declare local variables used for student data and menu choices
+       String newInfo, searchLastName = "", firstName, lastName, program;
+       int checkExist, deleteId, choiceSearch, searchId, studentID = 0, choiceUpdate = 0, newValue, yearLevel, choiceView, numOfStudents;
+       //loop to keep the mnu running until the user chooses to exit or go back
+       while (true) {
+           print("\n=======================================");
+           print("\n     UNIVERSITY ENROLLMENT SYSTEM      ");
+           print("\n        > Student Management <         ");
+           print("\n=======================================\n");
+           print("\n [1] Add Student" +
+                 "\n [2] View All Students" +
+                 "\n [3] Update Student Information" +
+                 "\n [4] Delete Student Record" +
+                 "\n [5] Search Student" +
+                 "\n [6] Back" +
+                 "\n [0] Exit System" +
+                 "\n\n---------------------------------------");
+           int choice = getIntInput("\n Enter your choice: ");//gets user input
+           switch (choice) {
+           //add student
+           case 1:
+           	//ask how many students to add
+           	numOfStudents = getPositiveIntInput("\n Enter how many students to add: ");
+               for (int index = 1; index <= numOfStudents; index++) {//loop for each student to add
+                   print("\n Student " + index + ": ");
+                   print("\n Enter First Name: ");
+                   firstName = read.readLine();
+                   print(" Enter Last Name: ");
+                   lastName = read.readLine();
+                   //validate year level input must be between 1 and 4
+                   do {
+                   	yearLevel = getIntInput(" Enter Year Level (1-4): ");
+                   	
+                   	if(yearLevel < 0 || yearLevel > 4) {
+                   		print("\n [!] Please enter a number between 1 and 4. \n");
+                   	}
+                   	
+                   }while(yearLevel < 0 || yearLevel > 4);
+                  
+                   print(" Enter Program: ");
+                   program = read.readLine();
+                   //adds student to the list
+                   students.addStudent(new Student(firstName, lastName, yearLevel, program));
+                   print("\n Adding a student...");
+                   print("\n [✓] Student " + lastName + ", " + firstName + " added successfully.\n");
+               }
+               break;
+              
+               case 2://view students
+                   if (students.isEmpty()) {//check if student list is empty
+                       print("\n [!] No enrolled students to display.\n");
+                       break;
+                   }
+                   //submenu for viewing directions
+                   print("\n Choose preferred layout: " +
+                           "\n [1] Forward" +
+                           "\n [2] Backward" +
+                           "\n [3] Back \n ");
+                  
+                   while (true) {
+                         choiceView = getIntInput("\n Enter your choice: ");
+                        
+                   	if (choiceView == 1) {
+                           students.viewStudentsForward();//if 1, view forward
+                           break;
+                       } else if (choiceView == 2) {
+                           students.viewStudentsBackward();//if 2, view backward
+                           break;
+                       } else if (choiceView == 3) {//otherwise back
+                           break;
+                       } else {
+                           print("\n [!] Invalid choice. Try again. \n");
+                       }
+                   }
+                  
+                   break;
+               case 3://update student
+                   if (students.isEmpty()) {//check if student list is empty
+                       print("\n [!] Cannot update — student list is empty.\n");
+                       break;
+                   }
+                   studentID = getIntInput("\n Enter Student ID to update: ");
+                   //check if students exist, searchStudentById is called in StudentList class
+                   checkExist = students.searchStudentByID(studentID);
+                   if (checkExist == 0) break;// if student not found
+                  
+                   print("\n Choose what to update: \n");
+                   print(" [1] First Name\n" +
+                         " [2] Last Name\n" +
+                         " [3] Year Level\n" +
+                         " [4] Program\n" +
+                         " [5] Entire Record\n" +
+                         " [6] Back\n");
+                   while (true) {
+                       choiceUpdate = getIntInput("\n Enter your choice: ");
+                       //choice to go back
+                       if (choiceUpdate == 6) break;
+                       //resets all input variables before each update
+                       newInfo = "";
+                       newValue = 0;
+                       firstName = "";
+                       lastName = "";
+                       program = "";
+                       yearLevel = 0;
+                       //handles pdate choices
+                       switch (choiceUpdate) {
+                           case 1:
+                           	//updates first names
+                               print("\n Enter new First Name: ");
+                               newInfo = read.readLine();
+                               break;
+                           case 2:
+                           	//updates last name
+                               print("\n Enter new Last Name: ");
+                               newInfo = read.readLine();
+                               break;
+                           case 3:
+                           	//update year level
+                           	do {
+                           		newValue = getIntInput("\n Enter new Year Level (1-4): ");
+                           		if(newValue < 0 || newValue > 4) {
+                               		print("\n [!] Please enter a number between 1 and 4. \n");
+                               	}
+                           	}while(newValue < 0 || newValue > 4);
+                               break;
+                           case 4:
+                           	//update program
+                               print("\n Enter new Program: ");
+                               newInfo = read.readLine();
+                               break;
+                           case 5:
+                           	//update entire record
+                               print("\n Enter First Name: ");
+                               firstName = read.readLine();
+                               print(" Enter Last Name: ");
+                               lastName = read.readLine();
+                               //validating year lvel
+                               do {
+                               	yearLevel = getIntInput(" Enter Year Level (1-4): ");
+                               	
+                               	if(yearLevel < 0 || yearLevel > 4) {
+                               		print("\n [!] Please enter a number between 1 and 4. \n");
+                               	}
+                               	
+                               }while(yearLevel < 0 || yearLevel > 4);
+                               print(" Enter Program: ");
+                               program = read.readLine();
+                               break;
+                           default:
+                           	//handles invalid menu input
+                               print("\n [!] Invalid choice. Please select from 1–6.\n");
+                               continue;
+                       }
+                       //apply the update based on selected field
+                       students.updateStudent(studentID, choiceUpdate, newInfo, newValue, firstName, lastName, yearLevel, program);
+                       break;
+                      
+                   }
+                   break;
+               //delete student
+               case 4:
+                   if (students.isEmpty()) {//check if student list is empty
+                       print("\n [!] Cannot delete — student list is empty.\n");
+                       break;
+                   }
+                   //ask for student id to delete
+                   deleteId = getIntInput("\n Enter Student ID to delete: ");
+                   students.deleteStudent(deleteId);//delete student from the list
+                   break;
+               case 5://search student method
+                   if (students.isEmpty()) {
+                       print("\n [!] Cannot search — student list is empty.\n");
+                       break;
+                   }
+                   print("\n Choose searching method: " +
+                         "\n [1] ID" +
+                         "\n [2] Last Name" +
+                         "\n [3] Back\n");
+                   while (true) {
+                   	choiceSearch = getIntInput("\n Enter your choice: ");
+                       if (choiceSearch == 1) {
+                       	//search by id
+                           searchId = getIntInput("\n Enter Student ID to search: ");
+                           checkExist = students.searchStudentByID(searchId);
+                           if (checkExist == 0) break;
+                           break;
+                          
+                       } else if (choiceSearch == 2) {
+                       	//search last name
+                           print("\n Enter Student Last Name: ");
+                           searchLastName = read.readLine();
+                           students.searchStudentByName(searchLastName);
+                           break;
+                       } else if (choiceSearch == 3) {//go back to student menu
+                           break;
+                       } else {
+                           print("\n [!] Invalid choice. Try again. \n");
+                       }
+                   }
+                   break;
+               case 6:
+               	//back to main menu
+                   displayMainMenu();
+                   break;
+               case 0://exits system
+                   print("\n Terminating system...");
+                   System.exit(0);
+                   break;
+               default:
+                   print("\n Invalid choice. Please enter between 0 and 6.\n");
+                   break;
+           }
+       }
+   }
+   public static void displayCourseManagementMenu() throws IOException {
+       String newInfo = "", courseCode = "", courseTitle = "";
+       int newValue = 0, choiceUpdate = 0, units = 0, slot = 0, checkExist, numOfCourse;
+       while (true) {
+           print("\n=======================================");
+           print("\n     UNIVERSITY ENROLLMENT SYSTEM      ");
+           print("\n        > Course Management <          ");
+           print("\n=======================================\n");
+           print("\n [1] Add Course" +
+                 "\n [2] View All Courses" +
+                 "\n [3] Update Course Information" +
+                 "\n [4] Delete Course" +
+                 "\n [5] Search Course by Code" +
+                 "\n [6] Back" +
+                 "\n [0] Exit System" +
+                 "\n\n---------------------------------------");
+           int choice = getIntInput("\n Enter your choice: "); //Get user input 
+           switch (choice) { //The system will function based on the user input
+               case 1: //Add course 
+               		
+               	numOfCourse = getPositiveIntInput("\n Enter how many course to add: "); //Gets how many course the user wants to add
+                   for (int index = 1; index <= numOfCourse; index++) { //Looping while getting the course information until meets the desired counts to add
+                   	print("\n Course " + index + ": "); //This ensure the clear collection of course data
+                   	print("\n Enter course code: ");
+                       courseCode = read.readLine();
+                       checkExist = courses.searchCourseByCode(courseCode);
+                       if(checkExist == 1) { //Checks if the course code is already added
+                       	print("\n [✓] Course code " + courseCode + " is already added.\n");
+                       	break;
+                       }
+                       print(" Enter course title: ");
+                       courseTitle = read.readLine();
+                       units = getPositiveIntInput(" Enter units: ");
+                       slot = getPositiveIntInput(" Enter number of slots: ");
+                       courses.addCourse(new Course(courseCode, courseTitle, units, slot)); //This will links the input data for add course method in the course list
+                       print("\n Adding a course...");
+                       print("\n [✓] Course code " + courseCode + " added successfully.\n"); //Confirmation once the course code added successfully
+                   }
+                   break;
+               case 2: //View all course
+                   if (courses.isEmpty()) {//Checks if the course list is empty
+                       print("\n [!] No courses available to display.\n");
+                       break;
+                   }
+                   courses.viewAllCourses(); //This method from course list will display the list of courses
+                   break;
+               case 3: //Update course
+                   if (courses.isEmpty()) {//Checks if the course list is empty
+                       print("\n [!] Cannot update — course list is empty.\n");
+                       break;
+                   }
+                   print("\n Enter course code to update: ");
+                   String originalCourseCode = read.readLine();
+                   checkExist = courses.searchCourseByCode(originalCourseCode); //This checks if the course code already exist in the course list
+                   if (checkExist == 0) {
+                   	print("\n [!] No course " + courseCode + " found in the list.\n"); //Will be the warning once the course list is empty
+                   	break;
+                   }
+                  
+                   print("\n\n Choose what to update: \n");
+                   print(" [1] Course Code\n" +
+                         " [2] Course Title\n" +
+                         " [3] Units\n" +
+                         " [4] Slots\n" +
+                         " [5] Full Information\n" +
+                         " [6] Back\n");
+                   while (true) { //This will keep looping until the user input is valid
+                       choiceUpdate = getIntInput("\n Enter your choice: ");
+                       if (choiceUpdate == 6) break;
+                       if (choiceUpdate == 1 || choiceUpdate == 2) { //If the user want's to update is the course code or course title
+                           print("\n Enter new information: ");
+                           newInfo = read.readLine();
+                       }
+                       if (choiceUpdate == 3 || choiceUpdate == 4) { //If the user want's to update is the course units and slots
+                           newValue = getPositiveIntInput("\n Enter new value: ");
+                       }
+                       if (choiceUpdate == 5) { //If the user want's to update the overall information of the specific course
+                           print("\n Enter course code: ");
+                           courseCode = read.readLine();
+                           print(" Enter course title: ");
+                           courseTitle = read.readLine();
+                           units = getPositiveIntInput(" Enter units: ");
+                           slot = getPositiveIntInput(" Enter number of slots: ");
+                       }
+                       // Call update inside the loop so each choice updates immediately
+                       int result = courses.updateCourse(originalCourseCode, choiceUpdate, newInfo, newValue, courseCode,
+                       		                          courseTitle, units, slot); //This will links the user input to update in the update methods in course list
+                       if (result == 0) {
+                           print("\n [!] Invalid choice. Please enter a number between 1 and 6.\n"); //Warning once the user input is invalid
+                       } else if (result == 1) { 
+                           break;
+                       }
+                   }
+                   break;
+               case 4: //Delete course
+                   if (courses.isEmpty()) { //Checks if the course list is empty
+                       print("\n [!] Cannot delete — course list is empty.\n");
+                       break;
+                   }
+                   print("\n Enter a course code to delete: ");
+                   courseCode = read.readLine();
+                   courses.deleteCourse(courseCode); //This will links the data that the user wants to delete in delete course method in the course list
+                   break;
+               case 5: //Search course
+                   if (courses.isEmpty()) {//Checks if the course list is empty
+                       print("\n [!] Cannot search — course list is empty.\n");
+                       break;
+                   }
+                   print("\n Enter course code: ");
+                   courseCode = read.readLine();
+                   checkExist = courses.searchCourseByCode(courseCode); //This will links the user input to search for specific course in the course list
+                   if(checkExist == 0 ) {
+                   	print("\n [!] No course " + courseCode + " found in the list.\n"); //Warning if the course list is empty
+                   	break;
+                   }
+                   break;
+               case 6: //Back to the main menu
+                   displayMainMenu();
+                   break;
+               case 0: //Terminate program
+                   print("\n Terminating system...");
+                   System.exit(0);
+                   break;
+               default: //Error handling
+                   print("\n Invalid choice. Please enter a number between 0 and 6.\n"); //Warning if the user input is invalid
+                   break;
+           }
+       }
+   }
+   public static void displayEnrollmentAndGradesMenu() throws IOException {
+       String courseCode, deleteCourse, periodCourse;
+       int choice, studentID, periodUpdate, deleteStudent, generateReport, numCourse, coursesGrade, deleteRecord, checkExist, result, studentsToEnroll;
+       boolean hasRecords;
+       while (true) {
+           print("\n=======================================");
+           print("\n     UNIVERSITY ENROLLMENT SYSTEM      ");
+           print("\n       > Enrollment & Grades <         ");
+           print("\n=======================================\n");
+           print("\n [1] Enroll Student to a Course" +
+                 "\n [2] Update Students Grade" +
+                 "\n [3] Delete Enrollment Record" +
+                 "\n [4] View All Enrollments" +
+                 "\n [5] Generate Grade Report per Student" +
+                 "\n [6] Back" +
+                 "\n [0] Exit" +
+                 "\n\n---------------------------------------");
+           choice = getIntInput("\n Enter your choice: "); //Gets the user menu choice
+           switch (choice) {
+           case 1: //Enroll Student
+               if (students.isEmpty()) {//Checks if the course list is empty
+                   print("\n [!] Cannot enroll — student list is empty.\n");
+                   break;
+               }
+              
+               studentsToEnroll = getPositiveIntInput("\n Enter how many student to enroll: "); //Gets how many students the user wants to enroll
+               for (int index = 1; index <= studentsToEnroll; index++) { //Will keep looping until it meets how many student the user to enroll
+            	print("\n Student " + index + ": ");
+               	studentID = getIntInput("\n Enter student ID: ");
+                   checkExist = students.searchStudentByID(studentID); //Displaying the student info by searching
+                   if (checkExist == 0) continue;
+                   Student student = students.findStudentByID(studentID); //Find the student by id but will not displaying any output, for inner data
+                  
+                   if (courses.isEmpty()) { //Checks if the course list is empty
+                       print("\n [!] Cannot enroll — course list is empty.\n");
+                       break;
+                   } else {
+                       courses.viewAllCourses(); //Will display the course list so the user can choose
+                   }
+                   numCourse = getPositiveIntInput("\n Enter how many courses to enroll: "); //Will get how many course the user want's to enroll for student
+                   for (int count = 1; count <= numCourse; count++) {
+                       Course course = null;
+                       // Keep asking until a valid course is entered
+                       while (course == null) {
+                           print("\n Enter course code " + count + ": ");
+                           courseCode = read.readLine();
+                           course = courses.findCourseByCode(courseCode);
+                           if (course == null) {
+                               print("\n [!] Please enter a course from the list.\n"); //Warning if the user input does not exist in the list of courses
+                           }
+                       }
+                       result = enrollments.enrollStudent(student, course); //Will links the student and course to the enroll student method in the enrollment list
+                      
+                       if (result == 1) {
+                       	print("\n Enrolling a student...");
+                           print("\n [✓] Student " + student.getLastName() + ", " + student.getFirstName() +
+                                 " successfully enrolled in " + course.getCourseCode() + ".\n"); //Confirmation that the student enrolled successfully
+                       } else if (result == 0) {
+                       	break;
+                       }
+                   }
+               }
+              
+               break;
+           case 2: // Update grades of students
+        	    if (enrollments.isEmpty()) { // Checks if the course list is empty before proceeding
+        	        print("\n [!] Cannot update — enrollment list is empty.\n"); // Prompts message if no students are enrolled
+        	        break;
+        	    }
+        	    while (true) { // Loop for grade update menu
+        	        print("\n Choose period to update: \n"); // Displays options for which period to update
+        	        print(" [1] Midterm\n" +
+        	              " [2] Finals\n" +
+        	              " [3] Both Period\n" +
+        	              " [4] Back\n");
+        	        periodUpdate = getIntInput("\n Enter your choice: "); // Gets user's choice
+        	        if (periodUpdate == 4) break; // Goes back to main menu if user selects "Back"
+        	        if (periodUpdate < 1 || periodUpdate > 3) { // Validates input range
+        	            print("\n [!] Invalid choice. Please enter a number between 1 and 4.\n"); // Error message for invalid input
+        	            continue; // Repeats menu if invalid
+        	        }
+
+        	        studentID = getIntInput("\n Enter student ID: "); // Asks user for student ID
+        	        int check = students.searchStudentByID(studentID); // Searches for the student in the list
+        	        if (check == 0) break; // Exits if student is not found
+
+        	        enrollments.whatCoursesStudentIsEnrolled(studentID); // Displays all courses that the student is enrolled in
+
+        	        coursesGrade = getPositiveIntInput("\n Enter how many courses to update: "); // Asks how many courses to update grades for
+
+        	        for (int count = 1; count <= coursesGrade; count++) { // Loops through each course to update
+        	            print("\n Enter course code " + count + ": "); // Prompts for course code
+        	            periodCourse = read.readLine().trim(); // Reads and trims the input for course code
+
+        	            double midterm = -1; // Initializes midterm grade variable
+        	            double finals = -1;  // Initializes finals grade variable
+
+        	            // Ask for grades before calling update
+        	            if (periodUpdate == 1 || periodUpdate == 3) { // If updating midterm or both
+        	                while (true) {
+        	                    midterm = getDoubleInput("\n Enter Midterm Grade (0-100): "); // Requests midterm grade
+        	                    if (midterm >= 0 && midterm <= 100) break; // Accepts valid grade only
+        	                    print("\n [!] Invalid input. Grade must be between 0 and 100.\n"); // Displays error for invalid input
+        	                }
+        	            }
+
+        	            if (periodUpdate == 2 || periodUpdate == 3) { // If updating finals or both
+        	                while (true) {
+        	                    finals = getDoubleInput("\n Enter Finals Grade (0-100): "); // Requests finals grade
+        	                    if (finals >= 0 && finals <= 100) break; // Accepts valid grade only
+        	                    print("\n [!] Invalid input. Grade must be between 0 and 100.\n"); // Displays error for invalid input
+        	                }
+        	            }
+
+        	            // ✅ Perform update after input
+        	            int updated = enrollments.updateGrades(studentID, midterm, finals, periodCourse); // Calls method to update student grades
+        	            if (updated == 1) { // If update is successful
+        	                print("\n [✓] Grades updated successfully.\n"); // Displays success message
+        	            } else { // If student not found in the given course
+        	                print("\n [!] Student not enrolled in " + periodCourse + ".\n"); // Displays error message
+        	            }
+        	        }
+        	        break; // Ends the update process after completion
+        	    }
+        	    break; // Exits the case
+
+           case 3: // Delete enrollment record(s) of a student
+        	    if (enrollments.isEmpty()) { // Checks if there are any enrollment records in the list
+        	        print("\n [!] Cannot delete — enrollment list is empty.\n"); // Warns if there’s nothing to delete
+        	        break; // Exits the delete process
+        	    }
+
+        	    deleteStudent = getIntInput("\n Enter student ID: "); // Prompts the user to enter the student’s ID
+        	    int check = students.searchStudentByID(deleteStudent); // Checks if the entered student ID exists in the student list
+        	    if (check == 0) break; // If student not found, exit the case
+
+        	    hasRecords = enrollments.whatCoursesStudentIsEnrolled(deleteStudent); // Displays all courses that the student is currently enrolled in
+        	    if (!hasRecords) break; // If the student has no records, exit the process
+
+        	    deleteRecord = getPositiveIntInput("\n Enter how many records to delete: "); // Asks how many courses the user wants to delete
+
+        	    for (int count = 1; count <= deleteRecord; count++) { // Loop runs based on how many records to delete
+        	        print("\n Enter course code " + count + ": "); // Prompts user to input each course code one by one
+        	        deleteCourse = read.readLine(); // Reads the entered course code
+
+        	        boolean deleted = enrollments.deleteEnrollment(deleteStudent, deleteCourse); // Attempts to delete the student’s enrollment for the given course
+
+        	        if (deleted) { // If deletion was successful
+        	            print("\n [✓] Enrollment for " + deleteCourse + " deleted successfully.\n"); // Confirmation message for successful deletion
+        	        } else { // If no matching record was found
+        	            print("\n [!] No record found for course " + deleteCourse + ".\n"); // Error message for invalid or non-existent record
+        	        }
+        	    }
+        	    break; // Ends the delete operation
+           case 4: // View all enrollment records
+        	    if (enrollments.isEmpty()) { // Checks if there are any records in the enrollment list
+        	        print("\n [!] No enrollment records to display.\n"); // Displays a warning if the list is empty
+        	        break; // Exits this case if no records exist
+        	    }
+        	    enrollments.viewAllEnrollments(); // Calls method to display all existing enrollment records
+        	    break; // Ends case 4
+
+        	case 5: // Generate report for a specific student
+        	    if (enrollments.isEmpty()) { // Checks if there are any enrollment records
+        	        print("\n [!] Cannot generate report — no enrollment records found.\n"); // Displays a message if none exist
+        	        break; // Exits this case
+        	    }
+        	    generateReport = getIntInput("\n Enter student ID: "); // Prompts user to input a student ID for report generation
+        	    enrollments.generateStudentReport(generateReport); // Calls method to generate and display the student’s report
+        	    break; // Ends case 5
+
+        	case 6: // Return to main menu
+        	    displayMainMenu(); // Calls method to display the main menu
+        	    break; // Ends case 6
+
+        	case 0: // Exit the program
+        	    print("\n Terminating system..."); // Displays system termination message
+        	    System.exit(0); // Closes the entire program
+        	    break; // (Unreachable after System.exit, but kept for consistency)
+
+        	default: // Handles invalid menu choices
+        	    print("\n [!] Invalid choice. Please enter a number between 0 and 6.\n"); // Displays error for out-of-range inputs
+        	    break; // Returns to menu for a valid input
+
+           }
+       }
+   }
+   public static void displayReportsAndSummaryMenu() throws IOException {
+	    while (true) { // Loop to continuously display the Reports & Summary menu until the user exits or goes back
+	        print("\n=======================================");
+	        print("\n     UNIVERSITY ENROLLMENT SYSTEM      ");
+	        print("\n        > Reports & Summary <          ");
+	        print("\n=======================================\n");
+
+	        students.totalStudents(); // Displays the total number of registered students
+	        courses.totalCourses(); // Displays the total number of available courses
+	        enrollments.listFailedStudents(); // Lists all students who failed any course
+	        enrollments.averageGradePerStudent(enrollments); // Displays the average grade of each student
+
+	        // Menu options for user navigation
+	        print("\n---------------------------------------" +
+	              "\n [1] Back" + // Option to return to the previous menu
+	              "\n [0] Exit" + // Option to terminate the system
+	              "\n---------------------------------------");
+
+	        int choiceReport = getIntInput("\n Enter your choice: "); // Prompts user for a menu selection
+
+	        switch (choiceReport) { // Handles user’s input choice
+	            case 1: // If user chooses "Back"
+	                return; // Returns to the previous menu (exits this method)
+	            case 0: // If user chooses "Exit"
+	                print("\n Terminating system..."); // Displays system termination message
+	                System.exit(0); // Ends the entire program
+	                break;
+	            default: // Handles invalid menu inputs
+	                print("\n Invalid choice. Please enter 0 or 1.\n"); // Displays warning for invalid input
+	                break;
+	        }
+	    }
+	}
+   public static int getIntInput(String message) throws IOException {
+	    // This method gets an integer input from the user with validation.
+	    while (true) { // Loop until a valid integer is entered
+	        print(message); // Displays the input prompt message
+	        try {
+	            return Integer.parseInt(read.readLine()); // Reads input and converts it to an integer
+	        } catch (NumberFormatException e) { // Catches invalid inputs (e.g., letters or symbols)
+	            print("\n [!] Invalid input! Please enter valid number.\n"); // Displays error message
+	        }
+	    }
+	}
+
+	public static double getDoubleInput(String message) throws IOException {
+	    // This method gets a double (decimal) input from the user with validation.
+	    while (true) { // Loop until a valid double is entered
+	        print(message); // Displays the input prompt message
+	        try {
+	            return Double.parseDouble(read.readLine()); // Reads input and converts it to a double
+	        } catch (NumberFormatException e) { // Catches invalid inputs (e.g., text instead of numbers)
+	            print("\n [!] Invalid input! Please enter valid number.\n"); // Displays error message
+	        }
+	    }
+	}
+
+	public static int getPositiveIntInput(String message) throws IOException {
+	    // This method gets a positive integer input from the user.
+	    int value;
+	    do {
+	        value = getIntInput(message); // Calls getIntInput() to read user input
+	        if (value < 0) { // Checks if the input number is negative
+	            print("\n [!] Invalid input! Please enter valid number.\n"); // Displays error for negative values
+	        }
+	    } while (value < 0); // Repeats until a non-negative number is entered
+	    return value; // Returns the valid positive integer
+	}
+
+	public static void print(String word) {
+	    // Simple helper method to print messages to the console without adding a new line.
+	    System.out.print(word);
+	}
+}
