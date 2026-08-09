@@ -1,0 +1,48 @@
+package arrayAct2;
+import java.util.Scanner;
+public class arrayAverageNumber {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int loopItem, inputItem, addition = 0, average = 0, input, aboveAverage = 0;
+		
+		do {
+			System.out.print("Enter the Number of Items: ");
+			inputItem = sc.nextInt();
+			
+			int numItems[] = new int[inputItem];
+			
+			if (inputItem <= 100) {
+				System.out.println("Enter " + inputItem + " Number: ");
+				for (loopItem = 0; loopItem < numItems.length; loopItem++) {
+					numItems[loopItem] = sc.nextInt();
+				}
+				
+				System.out.print("Average is: ");
+				for (loopItem = 0; loopItem < numItems.length; loopItem++) {
+					addition += numItems[loopItem];
+				}
+				average = addition / numItems.length;
+				System.out.println(average);
+				for (loopItem = 0; loopItem < numItems.length; loopItem++) {
+					if (numItems[loopItem] > average) {
+						aboveAverage++;
+					}
+				}
+				System.out.println("Number of elements above average is: " + aboveAverage);
+				
+			} else {
+				System.out.println();
+				System.out.println("Please enter valid integer (1 - 100) ");
+			}
+			System.out.println();
+			System.out.print("Do you want to try again? (1 - yes / 2 - no): ");
+			input = sc.nextInt();
+			System.out.println();
+			
+		} while(input == 1);
+		
+		System.out.println("Ending program...");
+	}
+
+}
