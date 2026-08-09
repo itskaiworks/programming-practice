@@ -1,0 +1,101 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner (System.in);
+		Function function = new Function();
+		int choice, elementCount, elementIndices;
+		
+		while (true) {
+			System.out.print("\n\n======== WELCOME ========");
+			System.out.print("\nDisplay?"
+							+ "\n1. Count Elements"
+							+ "\n2. Indices of Element"
+							+ "\n3. Find Elements Duplicate"
+							+ "\n4. Most Occuring Element"
+							+ "\n5. First Non-repeating Element"
+							+ "\n6. Shift to Right"
+							+ "\n7. Shift to Left"
+							+ "\n8. Shift to Selected Index"
+							+ "\n9. Exit Program");
+			System.out.print("\n\nEnter Choice: ");
+			choice = sc.nextInt();
+			
+			switch (choice) {
+			case 1:
+				
+				function.displayArray(function.array);
+				System.out.print("\nEnter element to count: ");
+				elementCount = sc.nextInt();
+				function.countElement(function.array, elementCount);
+				
+				break;
+			case 2:
+				
+				function.displayArray(function.array);
+				System.out.print("\nEnter element to find indices: ");
+				elementIndices = sc.nextInt();
+				function.indicesOfElement(function.array, elementIndices);
+				
+				break;
+			case 3:
+				
+				function.displayArray(function.array);
+				function.elementsDuplicate(function.array);
+				
+				break;
+			case 4:
+				
+				function.displayArray(function.array);
+				function.mostOccuringElement(function.array);
+				
+				break;
+			case 5:
+				
+				function.displayArray(function.array);
+				function.firstNonRepeatElement(function.array);
+				
+				break;
+			case 6:
+				
+				function.displayArray(function.array);
+				System.out.print("\nEnter element to shift: ");
+				int right = sc.nextInt();
+				function.shiftRight(function.array, right);
+				function.displayArray(function.array);
+				
+				break;
+			case 7:
+				
+				function.displayArray(function.array);
+				System.out.print("\nEnter element to shift: ");
+				int left = sc.nextInt();
+				function.shiftLeft(function.array, left);
+				function.displayArray(function.array);
+				
+				break;
+			case 8:
+				
+				function.displayArray(function.array);
+				System.out.print("\nEnter element to shift: ");
+				int shift = sc.nextInt();
+				System.out.print("Enter index number: ");
+				int index = sc.nextInt();
+				function.shiftIndex(function.array, shift, index);
+				function.displayArray(function.array);
+				
+				break;
+			case 9:
+				
+				System.out.print("Program Terminated...");
+				System.exit(0);
+				
+				break;
+			}
+		}
+
+	}
+
+}
