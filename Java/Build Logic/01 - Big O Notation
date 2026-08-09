@@ -1,0 +1,97 @@
+import java.util.Scanner;
+
+public class bigO {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String ans;
+        
+        do {
+            // 1. Input size validation
+            int input;
+            do {
+                System.out.print("Enter the size of an array: ");
+                while (!sc.hasNextInt()) {
+                    System.out.println("Invalid input! Enter a positive integer.");
+                    sc.next(); // Clear invalid input
+                }
+                input = sc.nextInt();
+                if (input <= 0) {
+                    System.out.println("Size must be > 0!");
+                }
+            } while (input <= 0);
+
+            // 2. Populate array
+            int[] array = new int[input];
+            System.out.println("Enter " + input + " numbers:");
+            for (int loop = 0; loop < array.length; loop++) {
+                while (!sc.hasNextInt()) {
+                    System.out.println("Invalid input! Enter an integer.");
+                    sc.next(); // Clear invalid input
+                }
+                array[loop] = sc.nextInt();
+            }
+
+            // 3. Initialize variables (reset per run)
+            int highest = array[0]; // Start with first element
+            int lowest = array[0];
+            String found = "Number not found";
+            
+            // 4. Find highest/lowest
+            for (int loop = 1; loop < array.length; loop++) {
+                if (array[loop] > highest) {
+                    highest = array[loop];
+                }
+                if (array[loop] < lowest) {
+                    lowest = array[loop];
+                }
+            }
+
+            // 5. Search logic
+            System.out.print("Enter a number to search: ");
+            int search = sc.nextInt();
+            for (int loop = 0; loop < array.length; loop++) {
+                if (search == array[loop]) {
+                    found = search + " found at index " + loop;
+                    break;
+                }
+            }
+
+            // 6. Count odd/even (with printing)
+            System.out.println("\n------------------------------------");
+            System.out.println("            OUTPUT DISPLAY          ");
+            System.out.println("------------------------------------");
+            System.out.print("Transverse Array: ");
+            for (int loop = 0; loop < array.length; loop++) {
+                System.out.print(array[loop] + " ");
+            }
+            
+            System.out.println("\nHighest Value: " + highest);
+            System.out.println("Lowest Value: " + lowest);
+            System.out.println("Search Result: " + found);
+            
+            System.out.print("Odd Numbers: ");
+            for (int loop = 0; loop < array.length; loop++) {
+                if (array[loop] % 2 != 0) {
+                    System.out.print(array[loop] + " ");
+                }
+            }
+            
+            System.out.print("\nEven Numbers: ");
+            for (int loop = 0; loop < array.length; loop++) {
+                if (array[loop] % 2 == 0) {
+                    System.out.print(array[loop] + " ");
+                }
+            }
+            
+            System.out.println("\n------------------------------------");
+            
+            // 7. Continue?
+            System.out.print("\nRepeat program? (Yes/No): ");
+            ans = sc.next().toLowerCase();
+        } while (ans.equals("yes"));
+        
+        sc.close();
+        System.out.println("Program terminated.");
+    }
+}
