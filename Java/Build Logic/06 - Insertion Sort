@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+public class InsertionSort {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Enter Size: ");
+		int size = sc.nextInt();
+		
+		int [] arr = new int[size];
+		
+		System.out.print("Enter " + size + " Numbers: ");
+		for (int index = 0; index < arr.length; index++) {
+			arr[index] = sc.nextInt();
+		}
+		sortSelection(arr);
+		
+		System.out.print("Sorted Array: ");
+		printArray(arr);
+		
+		
+	} public static void sortSelection (int arr[]) {
+		for (int outer = 0; outer < arr.length; outer++) {
+			int key = arr[outer];
+			int inner = outer - 1;
+			
+			while (inner >= 0 && arr[inner] > key) {
+				arr[inner + 1] = arr[inner];
+				inner--;
+			}
+			arr[inner + 1] = key;
+		}
+	} public static void printArray (int arr[]) {
+		for (int num : arr) {
+			System.out.print(num + " ");
+		}
+	}
+	public static void sort (int arr[]) {
+		for (int outer = 0; outer < arr.length; outer++) {
+			int key = arr[outer];
+			int inner = outer - 1;
+			
+			while (inner >= 0 && arr[inner] > key) {
+				arr[inner + 1] = arr[inner];
+				inner--;
+			}
+			arr[inner + 1] = key;
+		}
+	}
+
+}
