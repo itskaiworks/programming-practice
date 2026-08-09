@@ -1,0 +1,153 @@
+public class Function {
+
+	int [] array = {4, 2, 5, 2, 7, 4, 8, 5, 9};
+	
+	public void displayArray (int [] array) {
+		System.out.print("Array: [ ");
+		for (int loop = 0; loop < array.length; loop++) {
+			System.out.print(array[loop] + " ");
+		}
+		System.out.print("]");
+	}
+	
+	public void countElement (int [] array, int elementCount) {
+		int count = 0;
+		for (int loop = 0; loop < array.length; loop++) {
+			if (array[loop] == elementCount) {
+				count ++;
+			}
+		}
+		System.out.print("The element " + elementCount + " occurs " + count + " times in the array");
+	}
+	
+	public void indicesOfElement (int [] array, int elementIndices) {
+		System.out.print("The element " + elementIndices + " found at indices: ");
+		boolean foundAny = false;
+		for (int loop = 0; loop < array.length; loop++) {
+			if (array[loop] == elementIndices) {
+				if (foundAny) {
+					System.out.print(", ");
+				}
+				System.out.print(loop);
+				foundAny = true;
+			}
+		}
+	}
+	
+	public void elementsDuplicate (int [] array) {
+		System.out.print("\nElements with duplicate: ");
+		boolean foundAny = false;
+		boolean foundDuplicate;
+		for (int outer = 0; outer < array.length; outer++) {
+			foundDuplicate = false;
+			for (int inner = outer + 1; inner < array.length; inner++) {
+				if (array[outer] == array[inner]) {
+					foundDuplicate = true;
+					break;
+				}
+			}
+			boolean alreadyPrinted = false;
+			for (int loop = 0; loop < outer; loop++) {
+				if (array[outer] == array[loop]) {
+					alreadyPrinted = true;
+					break;
+				}
+			}
+			if (foundDuplicate && !alreadyPrinted) {
+				if (foundAny) {
+					System.out.print(", ");
+				}
+				sortElement(array);
+				System.out.print(array[outer]);
+				foundAny = true;
+			}
+		}
+	}
+	
+	public void mostOccuringElement (int [] array) {
+		int count = 0;
+		System.out.print("\nMost occuring element: ");
+		for (int outer = 0; outer < array.length; outer++) {
+			for (int inner = 0; inner < array.length; inner++) {
+				sortElement(array);
+				if (array[outer] == array[inner]) {
+					count++;
+				}
+			}
+			System.out.print(array[outer]);
+			break;
+		}
+		System.out.print(" (occurs " + count + " times)");
+	}
+	
+	public void firstNonRepeatElement (int [] array) {
+		boolean duplicateElement;
+		System.out.print("\nFirst non-repeating element: ");
+		for (int outer = 0; outer < array.length; outer++) {
+			duplicateElement = false;
+			for (int inner = 0; inner < array.length; inner++) {
+				if (outer != inner && array[outer] == array[inner]) {
+					duplicateElement = true;
+					break;
+				}
+			}
+			if (!duplicateElement) {
+				System.out.print(array[outer]);
+				break;
+			}
+		}
+	}
+	
+	public void shiftRight (int [] array, int right) {
+		for (int loop = 0; loop < array.length - 1; loop++) {
+			if (array[loop] == right) {
+				int temp = array[loop];
+				array[loop] = array[loop + 1];
+				array[loop + 1] = temp;
+				break;
+			}
+		}
+	}
+	
+	public void shiftLeft (int [] array, int left) {
+		for (int loop = 0; loop < array.length - 1; loop++) {
+			if (array[loop] == left) {
+				int temp = array[loop];
+				array[loop] = array[loop - 1];
+				array[loop - 1] = temp;
+				break;
+			}
+		}
+	}
+	
+	public void shiftIndex (int [] array, int shift, int index) {
+		for (int outer = 0; outer < array.length - 1; outer++) {
+			if (array[outer] == shift) {
+				for (int inner = 0; inner < array.length; inner++) {
+					if (array[inner] == index) {
+						int temp = array[outer];
+						array[outer] = array[inner];
+						array[inner] = temp;
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	public void sortElement (int [] array) {
+		boolean swapped;
+		for (int outer = 0; outer < array.length - 1; outer++) {
+			swapped = false;
+			for (int inner = 0; inner < array.length - outer - 1; inner++) {
+				if (array[inner] > array[inner + 1]) {
+					int temp = array[inner + 1];
+					array[inner + 1] = array[inner];
+					array[inner] = temp;
+					swapped = true;
+				}
+			}
+			if (swapped == false) break;
+		}
+	}
+}
