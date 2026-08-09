@@ -1,0 +1,55 @@
+package arrayPractice2;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Scanner;
+public class commonElements {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int arr;
+		
+		int array1[] = new int[5];
+		
+		System.out.println("Enter first array: ");
+		for (arr = 0; arr < array1.length; arr++) {
+			array1[arr] = sc.nextInt();
+		}
+		
+		int array2[] = new int[5];
+		
+		System.out.println("Enter second array: ");
+		for (arr = 0; arr < array2.length; arr++) {
+			array2[arr] = sc.nextInt();
+		}
+		
+		System.out.println();
+		
+		System.out.print("Array1 : [ ");
+		for (arr = 0; arr < array1.length; arr++) {
+			System.out.print(array1[arr] + " ");
+		}
+		
+		System.out.print("]");
+		
+		System.out.println();
+		
+		System.out.print("Array2 : [ ");
+		for (arr = 0; arr < array2.length; arr++) {
+			System.out.print(array2[arr] + " ");
+		}
+		
+		System.out.print("]");
+		System.out.println();
+		
+		ArrayList<Integer> common = new ArrayList<>();
+		for (arr = 0; arr < array1.length; arr++) {
+			for (arr = 0; arr < array2.length; arr++) {
+				if (array1[arr] == array2[arr]) {
+					common.add(array1[arr]);
+					System.out.println("Common element is: " + common);
+				}
+			}
+		}
+	}
+
+}
