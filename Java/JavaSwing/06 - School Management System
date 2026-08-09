@@ -1,0 +1,568 @@
+package activity2;
+
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+
+public class schoolManagement extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	static JMenuItem mntmLogIn, mntmLogOut, mntmExit;
+	static JMenuBar menuBarManagement, menuBarAccount;
+	static JMenu mnManagement, mnAccount, mntmCollege, mntmCourse, mntmStudent;
+	static JMenuItem mntmCollegeAdd, mntmCollegeUpdate, mntmCollegeDelete;
+	static JMenuItem mntmCourseAdd, mntmCourseUpdate, mntmCourseDelete;
+	static JMenuItem mntmStudentAdd, mntmStudentUpdate, mntmStudentDelete;
+	static JScrollPane spnCollege, spnCourse, spnStudent;
+	static JLabel lblNewLabel, lblCourseRecord, lblStudentRecord, lblCourseId, studentIdMess;
+	static JFrame logInFrame, collegeRecordFrame, courseRecordFrame, studentRecordFrame;
+	static JPanel logInPanel, pnlCollegeRecord, coursePanel, studentPanel;
+	static JLabel lblUserName, lblPassword, lblCollegeName, collegeIdMess, lblCollegeId, lblStudentId, lblFirstName, lblLastName, lblMiddleName, lblCollegeStudent;
+	static JTextField txtUserName, txtCollegeName, txtFirstName, txtLastName, txtMiddleName;
+	static JPasswordField password;
+	static JButton btnLogIn, btnCancel, btnCollegeAdd, btnStudentAdd;
+	static int collegeId = 1, courseId = 1, studentId = 1;
+	
+	static String firstName, lastName, middleName;
+
+	// Added global components for courseRecord
+	static JLabel lblCourseIdLabel, lblCollegeNameLabel, lblCourseNameLabel;
+	static JComboBox cboCollege, cboRecordCol, cboCourse;
+	static JTextField txtCourse;
+	static JLabel courseIdLabel;
+	static JButton btnCourseAdd;
+	
+	//COLUMN ITEMS
+	private String[] collegeTitle = {"ID", "COLLEGE NAME"};
+	private String[] courseTitle = {"ID", "COLLEGE NAME", "COURSE NAME"};
+	private String[] studentTitle = {"ID", "FIRST NAME", "LAST NAME", "MIDDLE NAME","COLLEGE NAME", "COURSE NAME"};
+	private DefaultTableModel modelCollegeRecord = new DefaultTableModel();
+	private DefaultTableModel modelCourseRecord = new DefaultTableModel();
+	private DefaultTableModel modelStudentRecord = new DefaultTableModel();
+	private boolean isCollegeAdd = false, isCollegeUpdate = false, isCollegeDelete = false, isCourseAdd = false, isCourseUpdate = false, isCourseDelete = false, isStudentAdd = false, isStudentUpdate = false, isStudentDelete = false;
+	int selectedRow;
+	private JTable collegeTable;
+	private JTable courseTable;
+	private JTable studentTable;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					schoolManagement frame = new schoolManagement();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public schoolManagement() {
+		mainFrame();
+	}
+	
+	public void mainFrame() {
+	    setTitle("School Management");
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setBounds(100, 100, 772, 497);
+	    setLocationRelativeTo(null);
+
+	    contentPane = new JPanel();
+	    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	    contentPane.setLayout(null);
+	    setContentPane(contentPane);
+
+	    // Menu bar for Account
+	    menuBarAccount = new JMenuBar();
+	    menuBarAccount.setBounds(0, 0, 91, 22);
+	    contentPane.add(menuBarAccount);
+
+	    mnAccount = new JMenu("Account Menu");
+	    menuBarAccount.add(mnAccount);
+
+	    mntmLogIn = new JMenuItem("Log in");
+	    mnAccount.add(mntmLogIn);
+	    mntmLogIn.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            logInForm();
+	        }
+	    });
+
+	    mntmLogOut = new JMenuItem("Log out");
+	    mntmLogOut.setEnabled(false);
+	    mnAccount.add(mntmLogOut);
+	    mntmLogOut.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            JOptionPane.showMessageDialog(null, "Log out successfully");
+	            mntmLogIn.setEnabled(true);
+	            mntmLogOut.setEnabled(false);
+	        }
+	    });
+
+	    mnAccount.addSeparator();
+
+	    mntmExit = new JMenuItem("Exit");
+	    mnAccount.add(mntmExit);
+	    mntmExit.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            System.exit(0);
+	        }
+	    });
+
+	    // Menu bar for Management
+	    menuBarManagement = new JMenuBar();
+	    menuBarManagement.setBounds(89, 0, 120, 22);
+	    contentPane.add(menuBarManagement);
+
+	    mnManagement = new JMenu("Management Menu");
+	    mnManagement.setEnabled(false);
+	    menuBarManagement.add(mnManagement);
+
+	    // College menu
+	    mntmCollege = new JMenu("College");
+	    mnManagement.add(mntmCollege);
+
+	    mntmCollegeAdd = new JMenuItem("Add");
+	    mntmCollege.add(mntmCollegeAdd);
+	    mntmCollegeAdd.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            collegeRecord();
+	        }
+	    });
+
+	    mntmCollegeUpdate = new JMenuItem("Update");
+	    mntmCollege.add(mntmCollegeUpdate);
+
+	    mntmCollegeDelete = new JMenuItem("Delete");
+	    mntmCollege.add(mntmCollegeDelete);
+
+	    // Course menu
+	    mntmCourse = new JMenu("Course");
+	    mnManagement.add(mntmCourse);
+
+	    mntmCourseAdd = new JMenuItem("Add");
+	    mntmCourse.add(mntmCourseAdd);
+	    mntmCourseAdd.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            courseRecord();
+	        }
+	    });
+
+	    mntmCourseUpdate = new JMenuItem("Update");
+	    mntmCourse.add(mntmCourseUpdate);
+
+	    mntmCourseDelete = new JMenuItem("Delete");
+	    mntmCourse.add(mntmCourseDelete);
+
+	    // Student menu
+	    mntmStudent = new JMenu("Student");
+	    mnManagement.add(mntmStudent);
+
+	    mntmStudentAdd = new JMenuItem("Add");
+	    mntmStudent.add(mntmStudentAdd);
+	    mntmStudentAdd.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            studentRecord();
+	        }
+	    });
+
+	    mntmStudentUpdate = new JMenuItem("Update");
+	    mntmStudent.add(mntmStudentUpdate);
+
+	    mntmStudentDelete = new JMenuItem("Delete");
+	    mntmStudent.add(mntmStudentDelete);
+
+	    // College Table
+	    spnCollege = new JScrollPane();
+	    spnCollege.setBounds(25, 70, 340, 136);
+	    contentPane.add(spnCollege);
+
+	    collegeTable = new JTable(modelCollegeRecord) {
+	        public boolean editCellAt(int row, int col, java.util.EventObject e) {
+	            return false;
+	        }
+	    };
+	    collegeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    collegeTable.setEnabled(false);
+	    collegeTable.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	            if (isCollegeAdd || isCollegeDelete) {
+	                selectedRow = collegeTable.getSelectedRow();
+	                collegeIdMess.setText(modelCollegeRecord.getValueAt(selectedRow, 0).toString());
+	                txtCollegeName.setText(modelCollegeRecord.getValueAt(selectedRow, 1).toString());
+	            }
+	        }
+	    });
+	    modelCollegeRecord.setColumnIdentifiers(collegeTitle);
+	    spnCollege.setViewportView(collegeTable);
+
+	    // Course Table
+	    spnCourse = new JScrollPane();
+	    spnCourse.setBounds(387, 70, 340, 136);
+	    contentPane.add(spnCourse);
+
+	    courseTable = new JTable(modelCourseRecord) {
+	        public boolean editCellAt(int row, int col, java.util.EventObject e) {
+	            return false;
+	        }
+	    };
+	    courseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    courseTable.setEnabled(false);
+	    courseTable.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	            if (isCourseAdd || isCourseDelete) {
+	                selectedRow = courseTable.getSelectedRow();
+	                courseIdLabel.setText(modelCourseRecord.getValueAt(selectedRow, 0).toString());
+	                
+	            }
+	        }
+	    });
+	    modelCourseRecord.setColumnIdentifiers(courseTitle);
+	    spnCourse.setViewportView(courseTable);
+
+	    // Student Table
+	    spnStudent = new JScrollPane();
+	    spnStudent.setBounds(25, 254, 702, 193);
+	    contentPane.add(spnStudent);
+
+	    studentTable = new JTable(modelStudentRecord) {
+	        public boolean editCellAt(int row, int col, java.util.EventObject e) {
+	            return false;
+	        }
+	    };
+	    studentTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    studentTable.setEnabled(false);
+	    studentTable.addMouseListener(new MouseAdapter() {
+	        public void mouseClicked(MouseEvent e) {
+	            if (isStudentAdd || isStudentDelete) {
+	                selectedRow = studentTable.getSelectedRow();
+	                studentIdMess.setText(modelCollegeRecord.getValueAt(selectedRow, 0).toString());
+	            }
+	        }
+	    });
+	    modelStudentRecord.setColumnIdentifiers(studentTitle);
+	    spnStudent.setViewportView(studentTable);
+
+	    // Labels
+	    lblNewLabel = new JLabel("College Record:");
+	    lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+	    lblNewLabel.setBounds(25, 45, 156, 22);
+	    contentPane.add(lblNewLabel);
+
+	    lblCourseRecord = new JLabel("Course Record:");
+	    lblCourseRecord.setFont(new Font("Tahoma", Font.BOLD, 12));
+	    lblCourseRecord.setBounds(387, 45, 156, 22);
+	    contentPane.add(lblCourseRecord);
+
+	    lblStudentRecord = new JLabel("Student Record:");
+	    lblStudentRecord.setFont(new Font("Tahoma", Font.BOLD, 12));
+	    lblStudentRecord.setBounds(25, 231, 156, 22);
+	    contentPane.add(lblStudentRecord);
+	}
+
+	public void logInForm() {
+		logInPanel = new JPanel();
+		logInPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		logInFrame = new JFrame();
+		logInFrame.setTitle("Log In Form");
+		logInFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		logInFrame.setBounds(100, 100, 401, 262);
+		logInFrame.setLocationRelativeTo(null);
+		logInFrame.setVisible(true);
+		logInFrame.getContentPane().add(logInPanel);
+
+		logInPanel.setLayout(null);
+
+		lblUserName = new JLabel("USER NAME:");
+		lblUserName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblUserName.setBounds(50, 50, 129, 24);
+		logInPanel.add(lblUserName);
+
+		lblPassword = new JLabel("PASSWORD:");
+		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPassword.setBounds(50, 95, 129, 24);
+		logInPanel.add(lblPassword);
+
+		txtUserName = new JTextField();
+		txtUserName.setBounds(142, 50, 206, 24);
+		logInPanel.add(txtUserName);
+		txtUserName.setColumns(10);
+
+		password = new JPasswordField();
+		password.setBounds(142, 94, 206, 24);
+		logInPanel.add(password);
+
+		btnLogIn = new JButton("Log in");
+		btnLogIn.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnLogIn.setBounds(50, 154, 89, 23);
+		logInPanel.add(btnLogIn);
+		btnLogIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String userName = txtUserName.getText();
+				String pass = new String(password.getPassword());
+
+				if (userName.equals("admin") && pass.equals("admin")) {
+					JOptionPane.showMessageDialog(null, "Log in successfully");
+					mntmLogIn.setEnabled(false);
+					mntmLogOut.setEnabled(true);
+					mnManagement.setEnabled(true);
+					logInFrame.setVisible(false);
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Invalid username or password!");
+				}
+				
+			}
+		});
+
+		btnCancel = new JButton("Cancel");
+		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnCancel.setBounds(259, 154, 89, 23);
+		logInPanel.add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				logInFrame.dispose();
+			}
+		});
+	}
+
+	public void collegeRecord() {
+		pnlCollegeRecord = new JPanel();
+		pnlCollegeRecord.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		collegeRecordFrame = new JFrame();
+		collegeRecordFrame.setTitle("College Record");
+		collegeRecordFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		collegeRecordFrame.setBounds(100, 100, 293, 191);
+		collegeRecordFrame.setLocationRelativeTo(null);
+		collegeRecordFrame.setVisible(true);
+		collegeRecordFrame.getContentPane().add(pnlCollegeRecord);
+
+		pnlCollegeRecord.setLayout(null);
+
+		lblCollegeName = new JLabel("College Name:");
+		lblCollegeName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblCollegeName.setBounds(38, 68, 129, 24);
+		pnlCollegeRecord.add(lblCollegeName);
+
+		txtCollegeName = new JTextField();
+		txtCollegeName.setBounds(142, 69, 120, 24);
+		pnlCollegeRecord.add(txtCollegeName);
+		txtCollegeName.setColumns(10);
+
+		lblCollegeId = new JLabel("College Id:");
+		lblCollegeId.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblCollegeId.setBounds(38, 32, 129, 24);
+		pnlCollegeRecord.add(lblCollegeId);
+
+		collegeIdMess = new JLabel("");
+		collegeIdMess.setFont(new Font("Tahoma", Font.BOLD, 12));
+		collegeIdMess.setBounds(142, 32, 129, 24);
+		pnlCollegeRecord.add(collegeIdMess);
+
+		btnCollegeAdd = new JButton("Add");
+		btnCollegeAdd.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnCollegeAdd.setBounds(88, 118, 89, 23);
+		pnlCollegeRecord.add(btnCollegeAdd);
+	}
+
+	public void courseRecord() {
+		
+		coursePanel = new JPanel();
+		coursePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		courseRecordFrame = new JFrame();
+		courseRecordFrame.setTitle("Course Record");
+		courseRecordFrame.setVisible(true);
+		courseRecordFrame.setLocationRelativeTo(null);
+		courseRecordFrame.setSize(423, 297);
+		courseRecordFrame.getContentPane().add(coursePanel);
+		
+		coursePanel.setLayout(null);
+
+		lblCourseIdLabel = new JLabel("Course ID:");
+		lblCourseIdLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblCourseIdLabel.setBounds(36, 47, 91, 13);
+		coursePanel.add(lblCourseIdLabel);
+
+		lblCollegeNameLabel = new JLabel("College Name:");
+		lblCollegeNameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblCollegeNameLabel.setBounds(36, 83, 132, 27);
+		coursePanel.add(lblCollegeNameLabel);
+		
+		String[] dept = {"COED", "CBAA", "CCS", "COE", "CON", "CAS"};
+	    cboCollege = new JComboBox<>(dept);
+		cboCollege.setBounds(171, 85, 148, 27);
+		coursePanel.add(cboCollege);
+
+		lblCourseNameLabel = new JLabel("Course Name:");
+		lblCourseNameLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblCourseNameLabel.setBounds(36, 137, 132, 27);
+		coursePanel.add(lblCourseNameLabel);
+
+		txtCourse = new JTextField();
+		txtCourse.setBounds(171, 139, 148, 27);
+		coursePanel.add(txtCourse);
+		txtCourse.setColumns(10);
+
+		courseIdLabel = new JLabel("");
+		courseIdLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		courseIdLabel.setBounds(171, 47, 91, 13);
+		coursePanel.add(courseIdLabel);
+
+		btnCourseAdd = new JButton("Add");
+		btnCourseAdd.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCourseAdd.setBounds(36, 209, 336, 34);
+		coursePanel.add(btnCourseAdd);
+	}
+	
+	public void studentRecord() {
+	    studentPanel = new JPanel();
+	    studentPanel.setLayout(null);
+
+	    studentRecordFrame = new JFrame();
+	    studentRecordFrame.setTitle("Student Record");
+	    studentRecordFrame.setVisible(true);
+	    studentRecordFrame.setLocationRelativeTo(null);
+	    studentRecordFrame.setSize(968, 302);
+	    studentRecordFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+	    studentRecordFrame.setContentPane(studentPanel);
+
+	    lblStudentId = new JLabel("Student ID:");
+	    lblStudentId.setFont(new Font("Tahoma", Font.BOLD, 14));
+	    lblStudentId.setBounds(36, 47, 91, 13);
+	    studentPanel.add(lblStudentId);
+
+	    studentIdMess = new JLabel(""); // This will show the generated Student ID
+	    studentIdMess.setFont(new Font("Tahoma", Font.BOLD, 14));
+	    studentIdMess.setBounds(171, 47, 200, 13);
+	    studentPanel.add(studentIdMess);
+
+	    lblFirstName = new JLabel("First Name:");
+	    lblFirstName.setFont(new Font("Tahoma", Font.BOLD, 14));
+	    lblFirstName.setBounds(36, 83, 91, 13);
+	    studentPanel.add(lblFirstName);
+
+	    txtFirstName = new JTextField();
+	    txtFirstName.setBounds(171, 79, 148, 27);
+	    studentPanel.add(txtFirstName);
+	    txtFirstName.setColumns(10);
+
+	    lblLastName = new JLabel("Last Name:");
+	    lblLastName.setFont(new Font("Tahoma", Font.BOLD, 14));
+	    lblLastName.setBounds(342, 85, 91, 13);
+	    studentPanel.add(lblLastName);
+
+	    txtLastName = new JTextField();
+	    txtLastName.setBounds(463, 78, 148, 27);
+	    studentPanel.add(txtLastName);
+	    txtLastName.setColumns(10);
+
+	    lblMiddleName = new JLabel("Middle Name:");
+	    lblMiddleName.setFont(new Font("Tahoma", Font.BOLD, 14));
+	    lblMiddleName.setBounds(648, 83, 124, 13);
+	    studentPanel.add(lblMiddleName);
+
+	    txtMiddleName = new JTextField();
+	    txtMiddleName.setBounds(782, 78, 148, 27);
+	    studentPanel.add(txtMiddleName);
+	    txtMiddleName.setColumns(10);
+
+	    lblCollegeStudent = new JLabel("College Name:");
+	    lblCollegeStudent.setFont(new Font("Tahoma", Font.BOLD, 14));
+	    lblCollegeStudent.setBounds(36, 116, 132, 27);
+	    studentPanel.add(lblCollegeStudent);
+
+	    // Correct initialization
+	    String[] dept = {"COED", "CBAA", "CCS", "COE", "CON", "CAS"};
+	    cboRecordCol = new JComboBox<>(dept);
+	    cboRecordCol.setBounds(171, 118, 148, 27);
+	    studentPanel.add(cboRecordCol);
+
+	    lblCourseRecord = new JLabel("Course Name:");
+	    lblCourseRecord.setFont(new Font("Tahoma", Font.BOLD, 14));
+	    lblCourseRecord.setBounds(342, 116, 132, 27);
+	    studentPanel.add(lblCourseRecord);
+
+	    cboCourse = new JComboBox<>();
+	    cboCourse.setBounds(463, 118, 148, 27);
+	    studentPanel.add(cboCourse);
+
+	    // Add listener to cboRecordCol to update cboCourse based on selection
+	    cboRecordCol.addActionListener( new ActionListener () {
+	    	public void actionPerformed (ActionEvent e) {
+	    		String selectedDept = (String) cboRecordCol.getSelectedItem();
+		        cboCourse.removeAllItems();
+		        if (selectedDept != null) {
+		            switch (selectedDept) {
+		                case "COED":
+		                    cboCourse.addItem("BEED");
+		                    cboCourse.addItem("BSSED");
+		                    break;
+		                case "CBAA":
+		                    cboCourse.addItem("BSA");
+		                    cboCourse.addItem("BSBA");
+		                    break;
+		                case "CCS":
+		                    cboCourse.addItem("BSIT");
+		                    cboCourse.addItem("BSCS");
+		                    break;
+		                case "COE":
+		                    cboCourse.addItem("BSCPE");
+		                    cboCourse.addItem("BSIE");
+		                    cboCourse.addItem("BSECE");
+		                    break;
+		                case "CON":
+		                    cboCourse.addItem("BSN");
+		                    break;
+		                case "CAS":
+		                    cboCourse.addItem("BSPSY");
+		                    break;
+		            }
+		        }
+	    	}
+	    });
+
+	    btnStudentAdd = new JButton("Add");
+	    btnStudentAdd.setFont(new Font("Tahoma", Font.BOLD, 12));
+	    btnStudentAdd.setBounds(322, 200, 336, 34);
+	    studentPanel.add(btnStudentAdd);
+	    btnStudentAdd.addActionListener (new ActionListener () {
+	    	public void actionPerformed (ActionEvent e) {
+	    		firstName = txtFirstName.getText().trim();
+	    		lastName = txtLastName.getText().trim();
+	    		middleName = txtMiddleName.getText().trim();
+	    	}
+	    });;
+	}
+}
