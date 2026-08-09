@@ -1,0 +1,132 @@
+package pizzaMenu;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
+public class PizzaMenu {
+
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Pizza Menu");
+		JPanel panel = new JPanel();
+		JLabel menu = new JLabel("Menu");
+		JRadioButton hawaiian = new JRadioButton("Hawaiian");
+		JRadioButton pepperoni = new JRadioButton("Pepperoni");
+		JRadioButton hamCheese = new JRadioButton("Ham and Cheese");
+		JLabel addOns = new JLabel("Add-Ons");
+		JCheckBox cheese = new JCheckBox("Cheese");
+		JCheckBox ketchup = new JCheckBox("Ketchup");
+		JCheckBox veggies = new JCheckBox("Veggies");
+		JButton showBtn = new JButton("Show Order");
+		
+		//FRAME SETTINGS
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 440, 311);
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		
+		//PANEL SETTING
+		frame.add(panel);
+		panel.setLayout(null);
+		
+		//MENU LABEL SETTING
+		panel.add(menu);
+		menu.setFont(new Font("Tahoma", Font.BOLD, 16));
+		menu.setBounds(33, 31, 93, 32);
+		
+		//MENU OPTION SETTINGS
+		panel.add(hawaiian);
+		hawaiian.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		hawaiian.setBounds(43, 69, 103, 21);
+		
+		panel.add(pepperoni);
+		pepperoni.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		pepperoni.setBounds(148, 69, 103, 21);
+		
+		panel.add(hamCheese);
+		hamCheese.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		hamCheese.setBounds(253, 69, 163, 21);
+		
+		ButtonGroup group = new ButtonGroup(); // Applied on the program so the user can only choose one pizza at a time
+		group.add(hawaiian);
+		group.add(pepperoni);
+		group.add(hamCheese);
+		
+		//ADD-ONS LABEL SETTINGS
+		panel.add(addOns);
+		addOns.setFont(new Font("Tahoma", Font.BOLD, 15));
+		addOns.setBounds(33, 107, 93, 32);
+		
+		//ADD-ONS SETTINGS
+		panel.add(cheese);
+		cheese.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		cheese.setBounds(43, 160, 93, 21);
+		
+		panel.add(ketchup);
+		ketchup.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		ketchup.setBounds(148, 160, 93, 21);
+		
+		panel.add(veggies);
+		veggies.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		veggies.setBounds(253, 162, 93, 21);
+		
+		//SHOW ORDER BUTTON SETTINGS
+		panel.add(showBtn);
+		showBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		showBtn.setBounds(33, 210, 359, 32);
+		showBtn.addActionListener(new ActionListener () {
+			public void actionPerformed (ActionEvent ex) {
+				
+				String addOnsChoice =""; // This will allow the user to choose add-ons as many as they want
+				
+				if (cheese.isSelected()) {
+					
+					addOnsChoice += cheese.getText() + "\n"; 
+					
+				} 
+				if (ketchup.isSelected()) {
+					
+					addOnsChoice += ketchup.getText() + "\n";
+					
+				}
+				if (veggies.isSelected()) {
+					
+					addOnsChoice += veggies.getText() + "\n";
+					
+				}
+				
+				// The program will show the confirmation of the user's order based on the user choice
+				
+				if (hawaiian.isSelected()) {
+					
+					JOptionPane.showMessageDialog(frame, "Your Pizza is: " + hawaiian.getText() + "\n Your Add-Ons are:\n" + addOnsChoice);
+					
+				} else if (pepperoni.isSelected()) {
+					
+					JOptionPane.showMessageDialog(frame, "Your Pizza is: " + pepperoni.getText() + "\n Your Add-Ons are:\n" + addOnsChoice);
+					
+				} else if (hamCheese.isSelected()) {
+					
+					JOptionPane.showMessageDialog(frame, "Your Pizza is: " + hamCheese.getText() + "\n Your Add-Ons are:\n" + addOnsChoice);
+				}
+				
+				// Showed when the user clicked the button but don't choose any pizza and add-ons
+				if (!hawaiian.isSelected() && !pepperoni.isSelected() && !hamCheese.isSelected() && !cheese.isSelected() && !ketchup.isSelected() && !veggies.isSelected()) {
+					
+					JOptionPane.showMessageDialog(frame, "NO ORDERS CREATED", "Notice", JOptionPane.ERROR_MESSAGE);
+					
+				} 
+			}
+		}); //END OF ACTION LISTENER
+	} //END OF MAIN METHOD
+
+} 
