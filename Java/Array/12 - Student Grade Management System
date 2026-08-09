@@ -1,0 +1,119 @@
+import java.util.Scanner;
+
+public class StudentsGradeManagementSystem {
+	
+	static Scanner scan = new Scanner(System.in);
+	
+	static double[] grades;
+	static String[] name;
+	static int sizeOfStudents;
+	static int index;
+
+	public static void main(String[] args) {
+		
+		println("\n============= WELCOME! ==============");
+		println("== Student Grade Management System ==");
+		print("\nEnter Number of Students: ");
+		sizeOfStudents = scan.nextInt();
+		
+		name = new String[sizeOfStudents];
+		grades = new double[sizeOfStudents];
+		
+		for (index = 0; index < sizeOfStudents; index++) {
+			println("\nStudent " + (index + 1) + ": ");
+			print("Name: ");
+			scan.nextLine();
+			name[index] = scan.nextLine();
+			
+            do {
+                print("Grades: ");
+                grades[index] = scan.nextDouble();
+                if (grades[index] < 0 || grades[index] > 100) {
+                    println("\nInvalid grade. Must be between 0 to 100");
+                }
+                
+            }while (grades[index] < 0 || grades[index] > 100);  
+    
+		}
+		
+		computeClassAverage();
+		countPassingStudents();
+		countAboveAverage();
+		findGrades();
+		calculateFailedPercentage();
+	} 
+	
+	public static void computeClassAverage() {
+		double sum = 0;
+		for(index = 0; index < sizeOfStudents; index++) {
+			sum += grades[index];
+		}
+		double average = sum / sizeOfStudents;
+		println("\nClass Average: " + average);
+	}
+	
+	public static void countPassingStudents() {
+		int passedCount = 0;
+		for(index = 0; index < sizeOfStudents; index++) {
+			if(grades[index] >= 75) {
+				passedCount++;
+			}
+		}
+		println("List of Passed Students: " + passedCount);
+	}
+	
+	public static void countAboveAverage() {
+		double sumAboveAverage = 0;
+		for(index = 0; index < sizeOfStudents; index++) {
+			sumAboveAverage += grades[index];
+		}
+		
+		double average = sumAboveAverage / sizeOfStudents;
+		int aboveAverage = 0;
+		
+		for(index = 0; index < sizeOfStudents; index++) {
+			if(grades[index] > average) {
+				aboveAverage++;
+			}
+		}
+		
+		println("Students Above Class Average: " + aboveAverage);
+	}
+	
+	public static void findGrades() {
+		print("\nEnter Grade to Search: ");
+		double searchGrade = scan.nextDouble();
+		
+		boolean found = false;
+		println("Students with Grade " + searchGrade + ": ");
+		
+		for(index = 0; index < sizeOfStudents; index++) {
+			if(grades[index] == searchGrade) {
+				println("- " + name[index]);
+				found = true;
+			}
+		}
+		
+		if(!found) {
+			println("No student has this grade.");
+		}
+	}
+	
+	public static void calculateFailedPercentage() {
+		int failed = 0;
+		for(index = 0; index < sizeOfStudents; index++) {
+			if(grades[index] < 75) {
+				failed++;
+			}
+		}
+		double percentage = ((double) failed / sizeOfStudents) * 100;
+		println("Percentage of Students Who Failed: " + percentage + "%");
+	}
+
+	public static void print(String word) {
+		System.out.print(word);
+	}
+	public static void println(String word) {
+		System.out.println(word);
+	}
+}
