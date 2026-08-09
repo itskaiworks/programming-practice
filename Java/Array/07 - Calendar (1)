@@ -1,0 +1,62 @@
+package calendar;
+import java.util.Scanner;
+
+public class calendarPractice {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int month, year, startDay, daysInMonth, i, day;
+
+        // Month Names
+        String[] months = {
+            "", "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        };
+
+        // Days in Each Month
+        int[] days = {
+            0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+        };
+
+        // User Input
+        System.out.print("Enter month (1-12): ");
+        month = sc.nextInt();
+        System.out.print("Enter year: ");
+        year = sc.nextInt();
+
+        // Leap Year Check
+        if (month == 2 && (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0))) {
+            days[2] = 29;
+        }
+
+        daysInMonth = days[month];
+
+        // Zeller's Congruence Algorithm for First Day of the Month
+        int q = 1;
+        int m = (month < 3) ? (month + 12) : month;
+        int K = year % 100;
+        int J = year / 100;
+        startDay = (q + ((13 * (m + 1)) / 5) + K + (K / 4) + (J / 4) - (2 * J)) % 7;
+        startDay = (startDay + 6) % 7; // Adjust for Sunday as start
+
+        // Print Calendar Header
+        System.out.println("\n     " + months[month] + " " + year);
+        System.out.println("Sun Mon Tue Wed Thu Fri Sat");
+
+        // Print Leading Spaces
+        for (i = 0; i < startDay; i++) {
+            System.out.print("    ");
+        }
+
+        // Print Calendar Days
+        for (day = 1; day <= daysInMonth; day++) {
+            System.out.printf("%3d ", day);
+            if ((day + startDay) % 7 == 0) {
+                System.out.println();
+            }
+        }
+        System.out.println();
+
+        sc.close();
+    }
+}
