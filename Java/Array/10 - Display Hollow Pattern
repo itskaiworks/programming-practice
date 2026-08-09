@@ -1,0 +1,35 @@
+package jan28;
+
+import java.util.Scanner;
+
+public class hollowPattern {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int size, row, col;
+		
+		while(true) {
+			System.out.print("Enter size: ");
+			size = sc.nextInt();
+			
+			if(size > 4 && size % 2 != 0) {
+				break;
+			} else {
+				System.out.println("Enter odd number greater than 4");
+			}
+		}
+		
+		for(row = 0; row < size; row++) {
+			for(col = 0; col < size; col++) {
+				if(row == 0 || row == size - 1 || col == 0 || col == size - 1 || row == col || row + col == size - 1) {
+					System.out.print("*");
+				} else {
+					System.out.print(" ");
+				}
+			}
+			System.out.println();
+		}
+		
+	}
+
+}
