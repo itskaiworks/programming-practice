@@ -1,0 +1,149 @@
+package coffeeShopOrderingManagementSystem;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+public class CoffeeShop extends JFrame {
+
+    public static final long serialVersionUID = 1L;
+
+    // PANELS
+    private JPanel contentPane;
+    private JPanel rightPanel;
+
+    // MENU BAR
+    private JMenuBar menuBar;
+    private JMenu mnMenu;
+    private JMenuItem mntmOrder;
+    private JMenuItem mntmTransaction;
+    private JMenuItem mntmClose;
+
+    // LABELS
+    private JLabel lblShopName;
+
+    // BACKGROUND PANEL CLASS FIELD
+    private BackgroundPanel backgroundPanel;
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                // Create and show the main CoffeeShop frame
+                CoffeeShop frame = new CoffeeShop();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public CoffeeShop() {
+        // Set frame title and basic window settings
+        setTitle("Coffee Shop Ordering Management System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 725, 475);
+        setVisible(true);
+        setLocationRelativeTo(null);
+
+        // Background panel with image
+        contentPane = new BackgroundPanel("C:\\Users\\mikae\\Downloads\\wallPaper.jpg");
+        contentPane.setLayout(new BorderLayout());
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+
+        // Menu Bar
+        menuBar = new JMenuBar();
+        menuBar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        setJMenuBar(menuBar);
+
+        // Main menu item
+        mnMenu = new JMenu("Menu");
+        menuBar.add(mnMenu);
+
+        // "Set Order" menu item - opens the SetOrder window
+        mntmOrder = new JMenuItem("Set Order");
+        mnMenu.add(mntmOrder);
+        mntmOrder.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SetOrder orderWindow = new SetOrder();
+                orderWindow.setVisible(true);
+                dispose(); // Close current frame
+            }
+        });
+
+        // "Transaction Log" menu item - opens the LogInForm window first before opening the transaction log
+        mntmTransaction = new JMenuItem("Transaction Log");
+        mnMenu.add(mntmTransaction);
+        mntmTransaction.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                LogInForm loginWindow = new LogInForm();
+                loginWindow.setVisible(true);
+                dispose(); // Close current frame
+            }
+        });
+
+        // Separator between items
+        mnMenu.addSeparator();
+
+        // "Close" menu item - exits the program
+        mntmClose = new JMenuItem("Close");
+        mnMenu.add(mntmClose);
+        mntmClose.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0); // Exit application
+            }
+        });
+
+        // RIGHT PANEL with label
+        lblShopName = new JLabel("Coffee & Pastry");
+        lblShopName.setFont(new Font("Cooper Black", Font.BOLD, 36));
+        lblShopName.setForeground(Color.WHITE); // White text for visibility on background
+        lblShopName.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblShopName.setVerticalAlignment(SwingConstants.CENTER);
+
+        rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setOpaque(false); // Let background show through
+        rightPanel.setPreferredSize(new Dimension(600, 0)); // Set width of the right side
+        rightPanel.add(lblShopName, BorderLayout.CENTER);
+
+        contentPane.add(rightPanel, BorderLayout.EAST);
+
+        // Add padding to right of label
+        lblShopName.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 40)); // top, left, bottom, right
+    }
+
+    /**
+     * Panel that paints a background image
+     */
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            try {
+                // Load the background image from file
+                backgroundImage = ImageIO.read(new File(imagePath));
+            } catch (IOException e) {
+                e.printStackTrace(); // Print error if image can't be loaded
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            // Draw the background image to fit the panel
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
+    }
+}
