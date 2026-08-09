@@ -1,0 +1,34 @@
+package practice2dArray;
+public class twoDarray {
+	public static void main(String[] args) {
+		
+		int [][] seat = {
+				{1 , 0 , 1 , 1 },
+				{0 , 0 , 1 , 0 },
+				{1 , 0 , 1 , 0 }
+		};
+		
+		boolean seatFound = false;
+		
+		for (int row = 0; row < seat.length; row++) {
+			for (int col = 0; col < seat[row].length; col++) {
+				if (seat[row][col] == 0) {
+					System.out.println("Seat available at row " + (row + 1) + ", column " + (col + 1));
+					seatFound = true;
+					break;
+				}
+				
+				if (seatFound) {
+					break;
+				}
+			}
+				
+			if (!seatFound) {
+				System.out.println("Sorry, no seat available right now");
+				break;
+			}
+			
+		}
+	}
+
+}
