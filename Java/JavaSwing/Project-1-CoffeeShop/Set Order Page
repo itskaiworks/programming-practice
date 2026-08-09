@@ -1,0 +1,1381 @@
+package coffeeShopOrderingManagementSystem;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import java.awt.Font;
+import java.awt.Color;
+
+public class SetOrder extends JFrame {
+
+    public static final long serialVersionUID = 1L;
+    public static JPanel contentPane;
+    public static JLabel lblFlavored, lblFrappe, lblCold;
+    public static JButton btnClear, btnCheckOut;
+    public static JPanel drinksTab, pastriesTab,addOnsTab; //Different tabs for coffee, pastries, and add-ons
+    public static String coffee, pastries, addOns;
+    public static boolean coffeeSelected, pastriesSelected, add0nsSelected, coffeeHasSelected, pastriesHasSelected, addOnsHasSelected;
+    public static int coffeePrice, pastriesPrice, addOnsPrice,  pastriesQtty, coffeeQtty, qtyCoffee, qtyPastries, qtyAddOns, addOnsQtty;
+    /* 
+     * COFFEE ITEMS SETTINGS AND COMPONENTS SETTINGS
+     */
+    public static JTextField txtMangwa, txtShrek, txtKampink, txtMasarap,
+                       txtGrava, txtKalbrew, txtLumot, txtEquality, txtFast;
+
+    public static JCheckBox chkbxMangwa, chkbxShrek, chkbxKampink, chkbxMasarap,
+                      chkbxGrava, chkbxKalbrew, chkbxLumot, chkbxEquality, chkbxFast;
+
+    private static JLabel iconMangwa, lblMangwa, iconShrek, lblMangwaPrice, lblShrek, iconKampink, iconMasarap,
+                   iconGrava, iconKalbrew, iconLumot, iconEquality, iconFast, lblShrekPrice, lblKampink, lblKampinkPrice, lblMasarap, lblKalbrew,
+                   lblGrava, lblLumot, lblMasarapPrice, lblGravaPrice, lblKalbrewPrice, lblEquality, lblFast, lblEqualityPrice, lblFastPrice, lblLumotPrice;
+    
+    /*
+     * ADD-ONS ITEMS AND COMPONENTS SETTINGS
+     */
+    public static JLabel iconXtra, iconChoco, lblChoco, lblChocoPrice, iconStrawberry, lblStrawberry, lblXtraPrice, lblXtra, iconMilk, lblMilk, lblMilkPrice,
+    		 	  lblStrawberryPrice, lblMatcha, lblMatchaPrice, iconSugar, lblSugar,lblSugarPrice, iconMatcha;
+    
+    public static JTextField txtXtra, txtMilk, txtChoco, txtStrawberry, txtMatcha, txtSugar;
+    
+    public static JCheckBox chkbxChoco, chkbxStrawberry, chkbxMatcha, chkbxSugar, chkbxXtra, chkbxMilk;
+    
+    /*
+     * PASTRIES ITEMS AND COMPONENT SETTINGS
+     */
+    public static JLabel iconSinamon, lblSinamon, lblSinamonPrice, iconSokolet, lblSokolet, lblSokoletPrice, iconLava, lblLava, lblLavaPrice, iconMapin, lblMapin, lblMapinPrice,
+    			  iconPande, lblPande, lblPandePrice, lblFunkin, iconFunkin, lblFunkinPrice;
+    
+    public static JTextField txtFunkin, txtSinamon, txtSokolet, txtLava, txtMapin, txtPande;
+    
+    public static JCheckBox chkbxSinamon, chkbxSokolet, chkbxLava, chkbxMapin, chkbxPande, chkbxFunkin;
+    
+    public static String customerName, category, order;
+    public static int price;
+    
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                SetOrder frame = new SetOrder();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public SetOrder() {
+        setTitle("Cafe Products");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1146, 750);
+        setVisible(true);
+        setLocationRelativeTo(null);
+        
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        setJMenuBar(menuBar);
+
+        JMenu mnMenu = new JMenu("Menu");
+        menuBar.add(mnMenu);
+
+        JMenuItem mntmOrder = new JMenuItem("Set Order");
+        mnMenu.add(mntmOrder);
+        mntmOrder.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		mntmOrder.setEnabled(false);
+        	}
+        });
+
+        JMenuItem mntmTransaction = new JMenuItem("Transaction Log");
+        mnMenu.add(mntmTransaction);
+        mntmTransaction.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		LogInForm loginWindow = new LogInForm();
+                loginWindow.setVisible(true);
+                dispose();
+        	}
+        });
+
+        mnMenu.addSeparator();
+
+        JMenuItem mntmClose = new JMenuItem("Close");
+        mnMenu.add(mntmClose);
+        mntmClose.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		System.exit(0);
+        	}
+        });
+        
+        //Coffee Panel Settings
+        
+        drinksTab = new BackgroundPanel("C:\\Users\\mikae\\Downloads\\cafeProductBg.jpg");
+        drinksTab.setBorder(new EmptyBorder(5, 5, 5, 5));
+        drinksTab.setLayout(new BorderLayout());
+        setContentPane(drinksTab);
+        getContentPane().setLayout(null);
+        
+        JTabbedPane coffeeTab = new JTabbedPane(JTabbedPane.TOP);
+        coffeeTab.setBounds(10, 10, 1112, 596);
+        drinksTab.add(coffeeTab);
+        
+        drinksTab = new JPanel();
+        drinksTab.setBackground(new Color(255, 238, 247));
+        coffeeTab.addTab("Drinks", drinksTab);
+        drinksTab.setLayout(null);
+        
+        lblFlavored = new JLabel("FLAVORED DRINKS");
+        lblFlavored.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblFlavored.setBounds(101, 51, 172, 26);
+        drinksTab.add(lblFlavored);
+        
+        lblFrappe = new JLabel("FRAPPE DRINKS");
+        lblFrappe.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblFrappe.setBounds(424, 51, 140, 26);
+        drinksTab.add(lblFrappe);
+        
+        lblCold = new JLabel("COLD COFFEE DRINKS");
+        lblCold.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblCold.setBounds(742, 51, 202, 26);
+        drinksTab.add(lblCold);
+        
+        //MOCHANG FAST COFFEE SETTINGS
+        iconFast = new JLabel("");
+        iconFast.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\americano.png"));
+        iconFast.setBounds(777, 426, 111, 94);
+        drinksTab.add(iconFast);
+        
+        txtFast = new JTextField();
+        txtFast.setEditable(false);
+        txtFast.setText("0");
+        txtFast.setColumns(10);
+        txtFast.setBounds(898, 499, 96, 19);
+        drinksTab.add(txtFast);
+        
+        chkbxFast = new JCheckBox("");
+        chkbxFast.setBounds(742, 499, 21, 21);
+        chkbxFast.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtFast.setEditable(chkbxFast.isSelected());
+            }
+        });
+        drinksTab.add(chkbxFast);
+        
+        lblFast = new JLabel("Mochang Fast");
+        lblFast.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblFast.setBounds(898, 442, 147, 23);
+        drinksTab.add(lblFast);
+        
+        lblFastPrice = new JLabel("Price: 49");
+        lblFastPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblFastPrice.setBounds(898, 471, 96, 13);
+        drinksTab.add(lblFastPrice);
+        
+        //MOCHANG MASARAP COFFEE SETTINGS
+        iconMasarap = new JLabel("");
+        iconMasarap.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\cafe mocha.png"));
+        iconMasarap.setBounds(444, 98, 96, 94);
+        drinksTab.add(iconMasarap);
+        
+        txtMasarap = new JTextField();
+        txtMasarap.setEditable(false);
+        txtMasarap.setText("0");
+        txtMasarap.setColumns(10);
+        txtMasarap.setBounds(565, 173, 96, 19);
+        drinksTab.add(txtMasarap);
+        
+        chkbxMasarap = new JCheckBox("");
+        chkbxMasarap.setBounds(411, 171, 21, 21);
+        chkbxMasarap.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtMasarap.setEditable(chkbxMasarap.isSelected());
+            }
+        });
+        drinksTab.add(chkbxMasarap);
+        
+        lblMasarapPrice = new JLabel("Price: 69");
+        lblMasarapPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblMasarapPrice.setBounds(565, 142, 111, 13);
+        drinksTab.add(lblMasarapPrice);
+        
+        lblMasarap = new JLabel("Mochang Masarap");
+        lblMasarap.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblMasarap.setBounds(565, 107, 147, 23);
+        drinksTab.add(lblMasarap);
+        
+        //GRAVA CHEP FRAPPE COFFEE SETTINGS
+        iconGrava = new JLabel("");
+        iconGrava.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\okinawa brown.png"));
+        iconGrava.setBounds(444, 257, 82, 94);
+        drinksTab.add(iconGrava);
+        
+        lblGrava = new JLabel("Grava Chep Frappe");
+        lblGrava.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblGrava.setBounds(565, 274, 147, 23);
+        drinksTab.add(lblGrava);
+        
+        chkbxGrava = new JCheckBox("");
+        chkbxGrava.setBounds(411, 331, 21, 21);
+        chkbxGrava.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtGrava.setEditable(chkbxGrava.isSelected());
+            }
+        });
+        drinksTab.add(chkbxGrava);
+        
+        lblGravaPrice = new JLabel("Price: 69");
+        lblGravaPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblGravaPrice.setBounds(565, 307, 111, 13);
+        drinksTab.add(lblGravaPrice);
+        
+        txtGrava = new JTextField();
+        txtGrava.setEditable(false);
+        txtGrava.setText("0");
+        txtGrava.setColumns(10);
+        txtGrava.setBounds(565, 332, 96, 19);
+        drinksTab.add(txtGrava);
+        
+        //SHEK LATTE COFFEE SETTINGS
+        iconShrek = new JLabel("");
+        iconShrek.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\lumot damo latte.png"));
+        iconShrek.setBounds(126, 257, 71, 94);
+        drinksTab.add(iconShrek);
+        
+        lblShrek = new JLabel("Shrek Latte");
+        lblShrek.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblShrek.setBounds(234, 274, 147, 23);
+        drinksTab.add(lblShrek);
+        
+        lblShrekPrice = new JLabel("Price: 59");
+        lblShrekPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblShrekPrice.setBounds(234, 307, 96, 13);
+        drinksTab.add(lblShrekPrice);
+        
+        txtShrek = new JTextField();
+        txtShrek.setEditable(false);
+        txtShrek.setText("0");
+        txtShrek.setColumns(10);
+        txtShrek.setBounds(234, 332, 96, 19);
+        drinksTab.add(txtShrek);
+        
+        chkbxShrek = new JCheckBox("");
+        chkbxShrek.setBounds(101, 332, 21, 21);
+        chkbxShrek.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtShrek.setEditable(chkbxShrek.isSelected());
+            }
+        });
+        drinksTab.add(chkbxShrek);
+        
+        //KAKAM-PINK TEA COFFEE SETTINGS
+        iconKampink = new JLabel("");
+        iconKampink.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\sakura latte.png"));
+        iconKampink.setBounds(126, 426, 71, 94);
+        drinksTab.add(iconKampink);
+        
+        chkbxKampink = new JCheckBox("");
+        chkbxKampink.setBounds(101, 499, 21, 21);
+        chkbxKampink.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtKampink.setEditable(chkbxKampink.isSelected());
+            }
+        });
+        drinksTab.add(chkbxKampink);
+        
+        lblKampink = new JLabel("Kakam-pink Tea");
+        lblKampink.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblKampink.setBounds(234, 436, 147, 23);
+        drinksTab.add(lblKampink);
+        
+        lblKampinkPrice = new JLabel("Price: 59");
+        lblKampinkPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblKampinkPrice.setBounds(234, 469, 111, 13);
+        drinksTab.add(lblKampinkPrice);
+        
+        txtKampink = new JTextField();
+        txtKampink.setEditable(false);
+        txtKampink.setText("0");
+        txtKampink.setColumns(10);
+        txtKampink.setBounds(234, 501, 96, 19);
+        drinksTab.add(txtKampink);
+        
+        //LUMOT LATTE COFFEE SETTINGS
+        iconLumot = new JLabel("");
+        iconLumot.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\green tea latte.png"));
+        iconLumot.setBounds(777, 98, 96, 94);
+        drinksTab.add(iconLumot);
+        
+        lblLumot = new JLabel("Lumot Latte");
+        lblLumot.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblLumot.setBounds(898, 107, 147, 23);
+        drinksTab.add(lblLumot);
+        
+        lblLumotPrice = new JLabel("Price: 49");
+        lblLumotPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblLumotPrice.setBounds(899, 142, 95, 13);
+        drinksTab.add(lblLumotPrice);
+        
+        txtLumot = new JTextField();
+        txtLumot.setEditable(false);
+        txtLumot.setText("0");
+        txtLumot.setColumns(10);
+        txtLumot.setBounds(898, 173, 96, 19);
+        drinksTab.add(txtLumot);
+        
+        chkbxLumot = new JCheckBox("");
+        chkbxLumot.setBounds(744, 171, 21, 21);
+        chkbxLumot.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtLumot.setEditable(chkbxLumot.isSelected());
+            }
+        });
+        drinksTab.add(chkbxLumot);
+
+        //KALBREW COFFEE SETTINGS
+        iconKalbrew = new JLabel("");
+        iconKalbrew.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\yuzu cold brew.png"));
+        iconKalbrew.setBounds(444, 426, 77, 94);
+        drinksTab.add(iconKalbrew);
+        
+        lblKalbrew = new JLabel("Kalbrew");
+        lblKalbrew.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblKalbrew.setBounds(565, 436, 147, 23);
+        drinksTab.add(lblKalbrew);
+        
+        chkbxKalbrew = new JCheckBox("");
+        chkbxKalbrew.setBounds(411, 499, 21, 21);
+        chkbxKalbrew.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtKalbrew.setEditable(chkbxKalbrew.isSelected());
+            }
+        });
+        drinksTab.add(chkbxKalbrew);
+        
+        lblKalbrewPrice = new JLabel("Price: 69");
+        lblKalbrewPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblKalbrewPrice.setBounds(565, 471, 96, 13);
+        drinksTab.add(lblKalbrewPrice);
+        
+        txtKalbrew = new JTextField();
+        txtKalbrew.setEditable(false);
+        txtKalbrew.setText("0");
+        txtKalbrew.setColumns(10);
+        txtKalbrew.setBounds(565, 501, 96, 19);
+        drinksTab.add(txtKalbrew);
+        
+        //EQUALITY DRINK COFFEE SETTINGS
+        iconEquality = new JLabel("");
+        iconEquality.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\asian dolce.png"));
+        iconEquality.setBounds(777, 257, 96, 94);
+        drinksTab.add(iconEquality);
+        
+        lblEquality = new JLabel("Equality Drink");
+        lblEquality.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblEquality.setBounds(898, 274, 147, 23);
+        drinksTab.add(lblEquality);
+        
+        lblEqualityPrice = new JLabel("Price: 49");
+        lblEqualityPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblEqualityPrice.setBounds(899, 307, 95, 13);
+        drinksTab.add(lblEqualityPrice);
+        
+        txtEquality = new JTextField();
+        txtEquality.setEditable(false);
+        txtEquality.setText("0");
+        txtEquality.setColumns(10);
+        txtEquality.setBounds(898, 332, 96, 19);
+        drinksTab.add(txtEquality);
+        
+        chkbxEquality = new JCheckBox("");
+        chkbxEquality.setBounds(744, 330, 21, 21);
+        chkbxEquality.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtEquality.setEditable(chkbxEquality.isSelected());
+            }
+        });
+        drinksTab.add(chkbxEquality);
+        
+        //MANGWA FASHION PRUT COFFEE SETTINGS
+        iconMangwa = new JLabel("");
+        iconMangwa.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\mango passionfruit.png"));
+        iconMangwa.setBounds(126, 98, 86, 94);
+        drinksTab.add(iconMangwa);
+        
+        lblMangwa = new JLabel("Mangwa Fashion Prut");
+        lblMangwa.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblMangwa.setBounds(234, 107, 147, 23);
+        drinksTab.add(lblMangwa);
+        
+        lblMangwaPrice = new JLabel("Price: 59");
+        lblMangwaPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblMangwaPrice.setBounds(234, 140, 111, 13);
+        drinksTab.add(lblMangwaPrice);
+        
+        chkbxMangwa = new JCheckBox("");
+        chkbxMangwa.setBounds(101, 171, 21, 21);
+        chkbxMangwa.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtMangwa.setEditable(chkbxMangwa.isSelected());
+            }
+        });
+        drinksTab.add(chkbxMangwa);
+        
+        txtMangwa = new JTextField();
+        txtMangwa.setEditable(false);
+        txtMangwa.setText("0");
+        txtMangwa.setBounds(234, 171, 96, 19);
+        drinksTab.add(txtMangwa);
+        txtMangwa.setColumns(10);
+        
+        //Pastries Panel Settings
+        
+        pastriesTab = new JPanel();
+        pastriesTab.setBackground(new Color(255, 238, 247));
+        coffeeTab.addTab("Pastries", pastriesTab);
+        pastriesTab.setLayout(null);
+        
+        iconFunkin = new JLabel("");
+        iconFunkin.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\Hazel Nut Choc Chip Muffin.png"));
+        iconFunkin.setBounds(145, 69, 111, 111);
+        pastriesTab.add(iconFunkin);
+        
+        lblFunkin = new JLabel("Funkin Mapin");
+        lblFunkin.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblFunkin.setBounds(266, 81, 138, 19);
+        pastriesTab.add(lblFunkin);
+        
+        txtFunkin = new JTextField("0");
+        txtFunkin.setEditable(false);
+        txtFunkin.setBounds(266, 161, 96, 19);
+        pastriesTab.add(txtFunkin);
+        txtFunkin.setColumns(10);
+        
+        chkbxFunkin = new JCheckBox("");
+        chkbxFunkin.setBounds(118, 161, 21, 21);
+        chkbxFunkin.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtFunkin.setEditable(chkbxFunkin.isSelected());
+            }
+        });
+        pastriesTab.add(chkbxFunkin);
+        
+        lblFunkinPrice = new JLabel("Price: 49");
+        lblFunkinPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblFunkinPrice.setBounds(266, 121, 68, 19);
+        pastriesTab.add(lblFunkinPrice);
+        
+        iconSinamon = new JLabel("");
+        iconSinamon.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\sinamon.png"));
+        iconSinamon.setBounds(145, 263, 111, 111);
+        pastriesTab.add(iconSinamon);
+        
+        chkbxSinamon = new JCheckBox("");
+        chkbxSinamon.setBounds(118, 353, 21, 21);
+        chkbxSinamon.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtMangwa.setEditable(chkbxMangwa.isSelected());
+            }
+        });
+        pastriesTab.add(chkbxSinamon);
+        
+        lblSinamon = new JLabel("Sinamon Twerk");
+        lblSinamon.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblSinamon.setBounds(266, 275, 138, 19);
+        pastriesTab.add(lblSinamon);
+        
+        lblSinamonPrice = new JLabel("Price: 69");
+        lblSinamonPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblSinamonPrice.setBounds(266, 312, 68, 19);
+        pastriesTab.add(lblSinamonPrice);
+        
+        txtSinamon = new JTextField();
+        txtSinamon.setEditable(false);
+        txtSinamon.setText("0");
+        txtSinamon.setColumns(10);
+        txtSinamon.setBounds(266, 355, 96, 19);
+        pastriesTab.add(txtSinamon);
+        
+        iconSokolet = new JLabel("");
+        iconSokolet.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\pain au chocolat.png"));
+        iconSokolet.setBounds(145, 422, 111, 111);
+        pastriesTab.add(iconSokolet);
+        
+        chkbxSokolet = new JCheckBox("");
+        chkbxSokolet.setBounds(118, 512, 21, 21);
+        chkbxSokolet.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtSokolet.setEditable(chkbxSokolet.isSelected());
+            }
+        });
+        pastriesTab.add(chkbxSokolet);
+        
+        lblSokolet = new JLabel("Pain Auch Sokolet");
+        lblSokolet.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblSokolet.setBounds(266, 441, 138, 19);
+        pastriesTab.add(lblSokolet);
+        
+        lblSokoletPrice = new JLabel("Price: 59");
+        lblSokoletPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblSokoletPrice.setBounds(266, 478, 68, 19);
+        pastriesTab.add(lblSokoletPrice);
+        
+        txtSokolet = new JTextField();
+        txtSokolet.setEditable(false);
+        txtSokolet.setText("0");
+        txtSokolet.setColumns(10);
+        txtSokolet.setBounds(266, 514, 96, 19);
+        pastriesTab.add(txtSokolet);
+        
+        iconLava = new JLabel("");
+        iconLava.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\Mississippi.png"));
+        iconLava.setBounds(597, 69, 111, 111);
+        pastriesTab.add(iconLava);
+        
+        chkbxLava = new JCheckBox("");
+        chkbxLava.setBounds(570, 161, 21, 21);
+        chkbxLava.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtLava.setEditable(chkbxLava.isSelected());
+            }
+        });
+        pastriesTab.add(chkbxLava);
+        
+        lblLava = new JLabel("Lava Walk");
+        lblLava.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblLava.setBounds(718, 81, 138, 19);
+        pastriesTab.add(lblLava);
+        
+        lblLavaPrice = new JLabel("Price: 59");
+        lblLavaPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblLavaPrice.setBounds(718, 121, 68, 19);
+        pastriesTab.add(lblLavaPrice);
+        
+        txtLava = new JTextField();
+        txtLava.setEditable(false);
+        txtLava.setText("0");
+        txtLava.setColumns(10);
+        txtLava.setBounds(718, 161, 96, 19);
+        pastriesTab.add(txtLava);
+        
+        iconMapin = new JLabel("");
+        iconMapin.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\rise and shine muffin.png"));
+        iconMapin.setBounds(597, 263, 111, 111);
+        pastriesTab.add(iconMapin);
+        
+        lblMapin = new JLabel("Sunrise Mapin");
+        lblMapin.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblMapin.setBounds(718, 275, 138, 19);
+        pastriesTab.add(lblMapin);
+        
+        lblMapinPrice = new JLabel("Price: 49");
+        lblMapinPrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblMapinPrice.setBounds(718, 312, 68, 19);
+        pastriesTab.add(lblMapinPrice);
+        
+        txtMapin = new JTextField();
+        txtMapin.setEditable(false);
+        txtMapin.setText("0");
+        txtMapin.setColumns(10);
+        txtMapin.setBounds(718, 355, 96, 19);
+        pastriesTab.add(txtMapin);
+        
+        chkbxMapin = new JCheckBox("");
+        chkbxMapin.setBounds(570, 353, 21, 21);
+        chkbxMapin.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtMapin.setEditable(chkbxMapin.isSelected());
+            }
+        });
+        pastriesTab.add(chkbxMapin);
+        
+        iconPande = new JLabel("");
+        iconPande.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\Duffin.png"));
+        iconPande.setBounds(597, 422, 111, 111);
+        pastriesTab.add(iconPande);
+        
+        chkbxPande = new JCheckBox("");
+        chkbxPande.setBounds(570, 512, 21, 21);
+        chkbxPande.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtPande.setEditable(chkbxPande.isSelected());
+            }
+        });
+        pastriesTab.add(chkbxPande);
+        
+        lblPande = new JLabel("Pande Regla");
+        lblPande.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblPande.setBounds(718, 441, 138, 19);
+        pastriesTab.add(lblPande);
+        
+        lblPandePrice = new JLabel("Price: 39");
+        lblPandePrice.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblPandePrice.setBounds(718, 478, 68, 19);
+        pastriesTab.add(lblPandePrice);
+        
+        txtPande = new JTextField();
+        txtPande.setEditable(false);
+        txtPande.setText("0");
+        txtPande.setColumns(10);
+        txtPande.setBounds(718, 512, 96, 19);
+        pastriesTab.add(txtPande);
+        
+        //Add-Ons Tab Setting
+        
+        addOnsTab = new JPanel();
+        addOnsTab.setBackground(new Color(255, 238, 247));
+        coffeeTab.addTab("Add-Ons",  addOnsTab);
+        addOnsTab.setLayout(null);
+        
+        iconXtra = new JLabel("");
+        iconXtra.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\xtraShot.png"));
+        iconXtra.setBounds(202, 62, 119, 73);
+        addOnsTab.add(iconXtra);
+        
+        chkbxXtra = new JCheckBox("");
+        chkbxXtra.setBounds(174, 114, 22, 21);
+        chkbxXtra.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtXtra.setEditable(chkbxXtra.isSelected());
+            }
+        });
+        addOnsTab.add(chkbxXtra);
+        
+        lblXtra = new JLabel("Xtra Kopi");
+        lblXtra.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblXtra.setBounds(331, 69, 151, 13);
+        addOnsTab.add(lblXtra);
+        
+        lblXtraPrice = new JLabel("Price: 29");
+        lblXtraPrice.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        lblXtraPrice.setBounds(331, 92, 151, 13);
+        addOnsTab.add(lblXtraPrice);
+        
+        txtXtra = new JTextField();
+        txtXtra.setEditable(false);
+        txtXtra.setText("0");
+        txtXtra.setBounds(331, 114, 119, 19);
+        addOnsTab.add(txtXtra);
+        txtXtra.setColumns(10);
+        
+        iconMilk = new JLabel("");
+        iconMilk.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\milk.png"));
+        iconMilk.setBounds(202, 227, 119, 86);
+        addOnsTab.add(iconMilk);
+        
+        chkbxMilk = new JCheckBox("");
+        chkbxMilk.setBounds(174, 292, 22, 21);
+        chkbxMilk.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtMilk.setEditable(chkbxMilk.isSelected());
+            }
+        });
+        addOnsTab.add(chkbxMilk);
+        
+        lblMilk = new JLabel("Milk");
+        lblMilk.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblMilk.setBounds(331, 248, 151, 13);
+        addOnsTab.add(lblMilk);
+        
+        lblMilkPrice = new JLabel("Price: 29");
+        lblMilkPrice.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        lblMilkPrice.setBounds(331, 271, 151, 13);
+        addOnsTab.add(lblMilkPrice);
+        
+        txtMilk = new JTextField();
+        txtMilk.setEditable(false);
+        txtMilk.setText("0");
+        txtMilk.setColumns(10);
+        txtMilk.setBounds(331, 294, 119, 19);
+        addOnsTab.add(txtMilk);
+        
+        iconChoco = new JLabel("");
+        iconChoco.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\chocoSyrup.png"));
+        iconChoco.setBounds(202, 395, 119, 86);
+        addOnsTab.add(iconChoco);
+        
+        chkbxChoco = new JCheckBox("");
+        chkbxChoco.setBounds(174, 460, 22, 21);
+        chkbxChoco.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtChoco.setEditable(chkbxChoco.isSelected());
+            }
+        });
+        addOnsTab.add(chkbxChoco);
+        
+        lblChoco = new JLabel("Chocolate Syrup");
+        lblChoco.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblChoco.setBounds(331, 410, 151, 13);
+        addOnsTab.add(lblChoco);
+        
+        lblChocoPrice = new JLabel("Price: 19");
+        lblChocoPrice.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        lblChocoPrice.setBounds(331, 437, 151, 13);
+        addOnsTab.add(lblChocoPrice);
+        
+        txtChoco = new JTextField();
+        txtChoco.setEditable(false);
+        txtChoco.setText("0");
+        txtChoco.setColumns(10);
+        txtChoco.setBounds(331, 462, 119, 19);
+        addOnsTab.add(txtChoco);
+        
+        iconStrawberry = new JLabel("");
+        iconStrawberry.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\strawSyrup.png"));
+        iconStrawberry.setBounds(627, 49, 119, 86);
+        addOnsTab.add(iconStrawberry);
+        
+        txtStrawberry = new JTextField();
+        txtStrawberry.setEditable(false);
+        txtStrawberry.setText("0");
+        txtStrawberry.setColumns(10);
+        txtStrawberry.setBounds(762, 116, 119, 19);
+        addOnsTab.add(txtStrawberry);
+        
+        chkbxStrawberry = new JCheckBox("");
+        chkbxStrawberry.setBounds(599, 114, 22, 21);
+        chkbxStrawberry.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtStrawberry.setEditable(chkbxStrawberry.isSelected());
+            }
+        });
+        addOnsTab.add(chkbxStrawberry);
+        
+        lblStrawberry = new JLabel("Strawberry Syrup");
+        lblStrawberry.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblStrawberry.setBounds(762, 69, 151, 13);
+        addOnsTab.add(lblStrawberry);
+        
+        lblStrawberryPrice = new JLabel("Price: 19");
+        lblStrawberryPrice.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        lblStrawberryPrice.setBounds(762, 93, 151, 13);
+        addOnsTab.add(lblStrawberryPrice);
+        
+       
+        
+        iconMatcha = new JLabel("");
+        iconMatcha.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\matchaSyrup.png"));
+        iconMatcha.setBounds(642, 180, 171, 181);
+        addOnsTab.add(iconMatcha);
+        
+        chkbxMatcha = new JCheckBox("");
+        chkbxMatcha.setBounds(599, 292, 22, 21);
+        chkbxMatcha.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtMatcha.setEditable(chkbxMatcha.isSelected());
+            }
+        });
+        addOnsTab.add(chkbxMatcha);
+        
+        lblMatcha = new JLabel("Matcha Syrup");
+        lblMatcha.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblMatcha.setBounds(762, 249, 151, 13);
+        addOnsTab.add(lblMatcha);
+        
+        lblMatchaPrice = new JLabel("Price: 29");
+        lblMatchaPrice.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        lblMatchaPrice.setBounds(762, 272, 151, 13);
+        addOnsTab.add(lblMatchaPrice);
+        
+        txtMatcha = new JTextField();
+        txtMatcha.setEditable(false);
+        txtMatcha.setText("0");
+        txtMatcha.setColumns(10);
+        txtMatcha.setBounds(762, 294, 119, 19);
+        addOnsTab.add(txtMatcha);
+        
+        iconSugar = new JLabel("");
+        iconSugar.setIcon(new ImageIcon("C:\\Users\\mikae\\Downloads\\sugarSyrup.png"));
+        iconSugar.setBounds(627, 395, 119, 86);
+        addOnsTab.add(iconSugar);
+        
+        chkbxSugar = new JCheckBox("");
+        chkbxSugar.setBounds(599, 460, 22, 21);
+        chkbxSugar.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                txtSugar.setEditable(chkbxSugar.isSelected());
+            }
+        });
+        addOnsTab.add(chkbxSugar);
+        
+        lblSugar = new JLabel("Sugar Cane Syrup");
+        lblSugar.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblSugar.setBounds(762, 411, 151, 13);
+        addOnsTab.add(lblSugar);
+        
+        lblSugarPrice = new JLabel("Price: 19");
+        lblSugarPrice.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        lblSugarPrice.setBounds(762, 438, 151, 13);
+        addOnsTab.add(lblSugarPrice);
+        
+        txtSugar = new JTextField();
+        txtSugar.setEditable(false);
+        txtSugar.setText("0");
+        txtSugar.setColumns(10);
+        txtSugar.setBounds(762, 462, 119, 19);
+        addOnsTab.add(txtSugar);
+		
+        //CLEAR BUTTON
+		btnClear = new JButton("CLEAR"); //Once clicked, all the selected check box and text field input will be cleared
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTextField[] textField = {txtMangwa, txtShrek, txtKampink, txtMasarap,
+	                       					txtGrava, txtKalbrew, txtLumot, txtEquality, txtFast , 
+	                       					txtXtra, txtMilk, txtChoco, txtStrawberry, txtMatcha, txtSugar,
+	                       					txtFunkin, txtSinamon, txtSokolet, txtLava, txtMapin, txtPande};
+				
+				for(int i = 0; i < textField.length; i++) {
+					textField[i].setText("0");
+				}
+				
+				JCheckBox[] checkBox = {chkbxMangwa, chkbxShrek, chkbxKampink, chkbxMasarap,
+	                      					chkbxGrava, chkbxKalbrew, chkbxLumot, chkbxEquality, chkbxFast,
+	                      					chkbxChoco, chkbxStrawberry, chkbxMatcha, chkbxSugar, chkbxXtra, chkbxMilk,
+	                      					chkbxSinamon, chkbxSokolet, chkbxLava, chkbxMapin, chkbxPande, chkbxFunkin};
+				
+				for(int i = 0; i < checkBox.length; i++) {
+					checkBox[i].setSelected(false);
+				}
+			}
+		});
+		btnClear.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnClear.setBounds(930, 630, 118, 28);
+		btnClear.setBackground(new Color(255, 238, 247));
+		getContentPane().add(btnClear);
+		
+		//CHECK OUT BUTTON
+		btnCheckOut = new JButton("CHECK OUT");
+		btnCheckOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JDialog nameDialog = new JDialog(SetOrder.this, "Enter Customer Name", true); //This will get the customers name
+				nameDialog.setSize(300, 150);
+				nameDialog.setLocationRelativeTo(null);
+				nameDialog.getContentPane().setLayout(null);
+				nameDialog.setResizable(false);
+
+				JLabel lblName = new JLabel("Customer Name:");
+				lblName.setBounds(20, 20, 120, 25);
+			    JTextField txtName = new JTextField();
+				txtName.setBounds(130, 20, 130, 25);
+
+				JButton btnProceed = new JButton("Proceed"); //After clicking this button, the receipt will be shown along with the name and order/s of the customer
+				btnProceed.setBounds(90, 60, 100, 30);
+				btnProceed.addActionListener(new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				    	//Validation input for getting the customers name
+				        String enteredName = txtName.getText().trim();
+				        if (enteredName.isEmpty()) {
+				            JOptionPane.showMessageDialog(nameDialog, "Please enter your name.", "Missing Name", JOptionPane.WARNING_MESSAGE);
+				        } else {
+				            customerName = enteredName;
+				            nameDialog.dispose();
+				        }
+				    }
+				});
+
+				nameDialog.getContentPane().add(lblName);
+				nameDialog.getContentPane().add(txtName);
+				nameDialog.getContentPane().add(btnProceed);
+				nameDialog.setVisible(true);
+
+				// If user closes dialog or hits cancel, return
+				if (customerName.trim().isEmpty()) return;
+				
+				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to complete your order?", "Confirm Checkout", JOptionPane.YES_NO_OPTION);
+				if (response == JOptionPane.YES_OPTION) {
+				
+				    JDialog receiptDialog = new JDialog(SetOrder.this, "Receipt", true);
+				    receiptDialog.setSize(450, 400);
+				    receiptDialog.setLocationRelativeTo(null);
+				    receiptDialog.setResizable(false);
+				    
+				    //Receipt settings and validations
+				    JTextArea receipt = new JTextArea(); //Receipt is stored in JTextArea that will show the name and order of the customer as well as its price
+				    receipt.setEditable(false);
+				    
+				    receipt.append("                  Coffee Shop Receipt\n");
+				    receipt.append("  ----------------------------------------------------------------------------------------------\n");
+				    receipt.append("Customer: " + customerName + "\n\n");
+				    receipt.append("========================================================\n\n");
+
+				    int total = 0;
+					/*
+					 * COFFEE CHECK OUT SETTINGS
+					 */
+					coffeeSelected = false;
+					coffeeHasSelected = chkbxMangwa.isSelected() || chkbxShrek.isSelected() || chkbxKampink.isSelected() || chkbxMasarap.isSelected() ||
+					                    chkbxGrava.isSelected() || chkbxKalbrew.isSelected() || chkbxLumot.isSelected() || chkbxEquality.isSelected() || chkbxFast.isSelected();
+		
+					try {
+						if (chkbxMangwa.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtMangwa.getText());
+							price = coffeeQtty * 59;
+							category = "Flavored Drinks";
+							order =	"Mangwa Fashion Prut";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxShrek.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtShrek.getText());
+							price = coffeeQtty * 59;
+							category = "Flavored Drinks";
+							order = "Shrek Latte";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxKampink.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtKampink.getText());
+							price = coffeeQtty * 59;
+							category = "Flavored Drinks";
+							order = "Kakam-pink Tea";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxMasarap.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtMasarap.getText());
+							price = coffeeQtty * 69;
+							category = "Frappe Drinks";
+							order = "Mochang Masarap";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxGrava.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtGrava.getText());
+							price = coffeeQtty * 69;
+							category =  "Frappe Drinks";
+							order = "Grava Chep Frappe";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxKalbrew.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtKalbrew.getText());
+							price = coffeeQtty * 69;
+							category = "Frappe Drinks";
+							order = "Kalbrew";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxLumot.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtLumot.getText());
+							price = coffeeQtty * 49;
+							category = "Cold Coffee Drinks";
+							order = "Lumot Latte";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxEquality.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtEquality.getText());
+							price = coffeeQtty * 49;
+							category = "Cold Coffee Drinks";
+							order = "Equality Drink";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxFast.isSelected()) {
+							coffeeQtty = Integer.parseInt(txtFast.getText());
+							price = coffeeQtty * 49;
+							category = "Flavored Drinks";
+							order = "Mochang Fast";
+							if (coffeeQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, coffeeQtty, price);
+							coffeeSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+					} catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Please enter a valid coffee quantity (greater than 0)", "Warning", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+		
+					/*
+					 * PASTRIES CHECK OUT SETTINGS
+					 */
+					pastriesSelected = false;
+					pastriesHasSelected = chkbxSinamon.isSelected() || chkbxSokolet.isSelected() || chkbxLava.isSelected() || chkbxMapin.isSelected() ||
+					                      chkbxFunkin.isSelected() || chkbxPande.isSelected();
+		
+					try {
+						if (chkbxSinamon.isSelected()) {
+							pastriesQtty = Integer.parseInt(txtSinamon.getText());
+							price = pastriesQtty * 69;
+							category = "Pastries";
+							order = "Sinamon Twerk";
+							if (pastriesQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, pastriesQtty, price);
+							pastriesSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxSokolet.isSelected()) {
+							pastriesQtty = Integer.parseInt(txtSokolet.getText());
+							price = pastriesQtty * 59;
+							category = "Pastries";
+							order = "Pain Auch Sokolet";
+							if (pastriesQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, pastriesQtty, price);
+							pastriesSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxLava.isSelected()) {
+							pastriesQtty = Integer.parseInt(txtLava.getText());
+							price = pastriesQtty * 59;
+							category = "Pastries";
+							order ="Lava Walk";
+							if (pastriesQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, pastriesQtty, price);
+							pastriesSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxMapin.isSelected()) {
+							pastriesQtty = Integer.parseInt(txtMapin.getText());
+							price = pastriesQtty * 49;
+							category = "Pastries";
+							order ="Sunrise Mapin";
+							if (pastriesQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, pastriesQtty, price);
+							pastriesSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxFunkin.isSelected()) {
+							pastriesQtty = Integer.parseInt(txtFunkin.getText());
+							price = pastriesQtty * 49;
+							category = "Pastries";
+							order ="Funkin Mapin";
+							if (pastriesQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, pastriesQtty, price);
+							pastriesSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxPande.isSelected()) {
+							pastriesQtty = Integer.parseInt(txtPande.getText());
+							price = pastriesQtty * 39;
+							category = "Pastries";
+							order ="Pande Regla";
+							if (pastriesQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, pastriesQtty, price);
+							pastriesSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+					} catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Please enter a valid pastry quantity (greater than 0)", "Warning", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+		
+					/*
+					 * ADD-ONS CHECK OUT SETTINGS
+					 */
+					add0nsSelected = false;
+					addOnsHasSelected = chkbxXtra.isSelected() || chkbxChoco.isSelected() || chkbxStrawberry.isSelected() || chkbxMilk.isSelected() ||
+					                    chkbxSugar.isSelected() || chkbxMatcha.isSelected();
+		
+					try {
+						if (chkbxXtra.isSelected()) {
+							addOnsQtty = Integer.parseInt(txtXtra.getText());
+							price = addOnsQtty * 29;
+							category = "Add-Ons";
+							order = "Xtra Kopi";
+							if (addOnsQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, addOnsQtty, price);
+							add0nsSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxChoco.isSelected()) {
+							addOnsQtty = Integer.parseInt(txtChoco.getText());
+							price = addOnsQtty * 19;
+							category = "Add-Ons";
+							order = "Chocolate Syrup";
+							if (addOnsQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, addOnsQtty, price);
+							add0nsSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxStrawberry.isSelected()) {
+							addOnsQtty = Integer.parseInt(txtStrawberry.getText());
+							price = addOnsQtty * 19;
+							category = "Add-Ons";
+							order = "Strawberry Syrup";
+							if (addOnsQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, addOnsQtty, price);
+							add0nsSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxMilk.isSelected()) {
+							addOnsQtty = Integer.parseInt(txtMilk.getText());
+							price = addOnsQtty * 29;
+							category = "Add-Ons";
+							order = "Milk";
+							if (addOnsQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, addOnsQtty, price);
+							add0nsSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxSugar.isSelected()) {
+							addOnsQtty = Integer.parseInt(txtSugar.getText());
+							price = addOnsQtty * 19;
+							category = "Add-Ons";
+							order = "Sugar Cane Syrup";
+							if (addOnsQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, addOnsQtty, price);
+							add0nsSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+						if (chkbxMatcha.isSelected()) {
+							addOnsQtty = Integer.parseInt(txtMatcha.getText());
+							price = addOnsQtty * 29;
+							category = "Add-Ons";
+							order = "Matcha Syrup";
+							if (addOnsQtty <= 0) throw new NumberFormatException();
+							transactionLog.addTransaction(customerName, category, order, addOnsQtty, price);
+							add0nsSelected = true;
+							
+							receipt.append("Order: " + order + "\n");
+							receipt.append("Category: " + category + "\n");
+							receipt.append("Quantity: " + coffeeQtty + "\n");
+							receipt.append("Price: " + price + " PHP\n\n");
+							receipt.append("  ----------------------------------------------------------------------------------------------\n");
+							total += price;
+						}
+					} catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Please enter a valid add-on quantity (greater than 0)", "Warning", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+		
+					/*
+					 * VERIFY AT LEAST ONE PRODUCT IS SELECTED
+					 */
+					if (!coffeeSelected && !pastriesSelected && !add0nsSelected) {
+						JOptionPane.showMessageDialog(null, "Please purchase at least one product to proceed.", "Warning", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+					
+					
+					
+					if (transactionLog.tableTransaction.getRowCount() == 0) {
+					    JOptionPane.showMessageDialog(null, "No orders to complete.", "Empty Order", JOptionPane.INFORMATION_MESSAGE);
+					    return;
+					}
+
+				
+				receipt.append("    ------------------------------------------------------------------------------------------\n\n");
+				receipt.append("Total Price: " + total + " PHP\n");
+				receipt.append("========================================================\n\n\n");
+				receipt.append("                  Thank you for your order!\n");
+
+				JScrollPane scrollPane = new JScrollPane(receipt);
+				scrollPane.setBounds(10, 10, 410, 310);
+				
+				JButton closeBtn = new JButton("Close");
+				closeBtn.setBounds(170, 320, 100, 30);
+				closeBtn.addActionListener(ev -> receiptDialog.dispose());
+
+				JPanel panel = new JPanel(null);
+				panel.add(scrollPane);
+				panel.add(closeBtn);
+
+				receiptDialog.setContentPane(panel);
+				receiptDialog.setVisible(true);
+				
+				JTextField[] textField = {txtMangwa, txtShrek, txtKampink, txtMasarap,
+       					txtGrava, txtKalbrew, txtLumot, txtEquality, txtFast , 
+       					txtXtra, txtMilk, txtChoco, txtStrawberry, txtMatcha, txtSugar,
+       					txtFunkin, txtSinamon, txtSokolet, txtLava, txtMapin, txtPande};
+
+				for(int i = 0; i < textField.length; i++) {
+				textField[i].setText("0");
+				}
+				
+				JCheckBox[] checkBox = {chkbxMangwa, chkbxShrek, chkbxKampink, chkbxMasarap,
+				      					chkbxGrava, chkbxKalbrew, chkbxLumot, chkbxEquality, chkbxFast,
+				      					chkbxChoco, chkbxStrawberry, chkbxMatcha, chkbxSugar, chkbxXtra, chkbxMilk,
+				      					chkbxSinamon, chkbxSokolet, chkbxLava, chkbxMapin, chkbxPande, chkbxFunkin};
+				
+				for(int i = 0; i < checkBox.length; i++) {
+				checkBox[i].setSelected(false);
+}
+				
+				}
+
+				
+			}
+		});
+		btnCheckOut.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnCheckOut.setBounds(787, 630, 118, 28);
+		btnCheckOut.setBackground(new Color(255, 238, 247));
+		getContentPane().add(btnCheckOut);
+        
+        
+    }
+
+    /**
+     * BackgroundPanel: Custom JPanel with a background image
+     */
+    class BackgroundPanel extends JPanel {
+        private Image backgroundImage;
+
+        public BackgroundPanel(String imagePath) {
+            try {
+                backgroundImage = ImageIO.read(new File(imagePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
+    }
+} 
