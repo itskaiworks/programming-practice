@@ -1,0 +1,141 @@
+public class DynamicArray {
+	private int [] array;
+	private int size;
+	private int capacity;
+	
+	public DynamicArray(int capacity) {
+		this.array = new int [capacity];
+		this.size = 0;
+		this.capacity = capacity;
+	}
+	
+	//getter methods
+	public int getSize() {
+		return this.size;
+	}
+	
+	public int getCapacity() {
+		return this.capacity;
+	}
+	
+	//class methods
+	public int getElement(int index) {
+		return this.array[index];
+	}
+	
+	public void addElement(int element) {
+		if (this.size >= this.capacity) {
+			increaseCapacity();
+		}
+		this.array[size] = element;
+		this.size++;
+	}
+	
+	public void increaseCapacity() {
+		int [] tempArray = new int [this.capacity * 2];
+		
+		for (int index = 0; index < this.capacity; index++) {
+			tempArray[index] = this.array[index];
+		}
+		this.array = tempArray;
+		this.capacity *= 2;
+	}
+	
+	public void removeElement(int delIndex) {
+		if (delIndex >= size || delIndex < 0) {
+			System.out.print("No element at this index");
+		} else {
+			for (int index = delIndex; index < size - 1; index++) {
+				this.array[index] = this.array[index + 1];
+			}
+			this.array[size - 1] = 0;
+			this.size--;
+		}
+	}
+	
+	//function methods
+	
+	public void sortElement() {
+		boolean swapped;
+		for (int index = 0; index < size; index++) {
+			for (int outer = 0; outer < this.size - 1; outer++) {
+				swapped = false;
+				for (int inner = 0; inner < this.size - outer - 1; inner++) {
+					if (this.array[inner] > this.array[inner + 1]) {
+						int temp = this.array[inner + 1];
+						this.array[inner + 1] = this.array[inner];
+						this.array[inner] = temp;
+						swapped = true;
+					}
+				}
+				if (swapped) break;
+			}
+		}
+	}
+	
+	public void replaceElement(int replace, int elementReplace) {
+		for (int index = 0; index < capacity; index++) {
+			if (replace == this.array[index]) {
+				this.array[index] = elementReplace;
+			}
+		}
+	}
+	
+	public void withDuplicate () {
+		boolean foundAny= false;
+		boolean isDuplicate;
+		boolean alreadyPrinted;
+		for (int outer = 0; outer < size; outer++) {
+			isDuplicate = false;
+			for (int inner = outer + 1; inner < size; inner++) {
+				if (this.array[outer] == this.array[inner]) {
+					isDuplicate = true;
+					break;
+				}
+			}
+			alreadyPrinted = false;
+			for (int index = 0; index < outer; index++) {
+				if (this.array[outer] == this.array[index]) {
+					alreadyPrinted = true;
+					break;
+				}
+			}
+			if (isDuplicate && !alreadyPrinted) {
+				if (foundAny) {
+					System.out.print(", ");
+				}
+				System.out.print(this.array[outer] + "");
+				foundAny = true;
+			}
+		}
+	}
+	
+	public void withoutDuplicate () {
+		boolean foundAny= false;
+		boolean isDuplicate;
+		boolean alreadyPrinted;
+		for (int outer = 0; outer < size; outer++) {
+			isDuplicate = false;
+			for (int inner = outer + 1; inner < size; inner++) {
+				if (this.array[outer] == this.array[inner]) {
+					isDuplicate = true;
+					break;
+				}
+			}
+			alreadyPrinted = false;
+			for (int index = 0; index < outer; index++) {
+				if (this.array[outer] == this.array[index]) {
+					alreadyPrinted = true;
+					break;
+				}
+			}
+			if (!isDuplicate && !alreadyPrinted) {
+				if (foundAny) {
+					System.out.print(", ");
+				}
+				System.out.print(this.array[outer] + "");
+				foundAny = true;
+			}
+		}
+	}
+}
