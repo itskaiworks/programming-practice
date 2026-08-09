@@ -1,0 +1,75 @@
+
+
+public class Student {
+  private static int studentCounter = 1000;//static counter to generate unique student IDs, starting from 1000
+  private int studentID;//unique id for the student
+  private String firstName;//for student's first name
+  private String lastName;//for student's last name
+  private String program;//for student's program
+  private int yearLevel;//for student's year level
+  private String status = "INACTIVE";// default student status is inactive
+  //constructore to initialize a new student object
+  public Student(String firstName, String lastName, int yearLevel, String program) {
+      this.studentID = generateID();//automatically generate new id
+      this.setFirstName(firstName);//sets student first name
+      this.setLastName(lastName);//sets student last name
+      this.setProgram(program);//sets student program
+      this.setYearLevel(yearLevel);//sets student year level
+  }
+  // Getters and Setters
+  public int getStudentID() {
+      return studentID;
+  }
+  public void setStudentID(int studentID) {
+      this.studentID = studentID;
+  }
+  public String getFirstName() {
+      return firstName;
+  }
+  public void setFirstName(String firstName) {
+      this.firstName = firstName;
+  }
+  public String getLastName() {
+      return lastName;
+  }
+  public void setLastName(String lastName) {
+      this.lastName = lastName;
+  }
+  public String getProgram() {
+      return program;
+  }
+  public void setProgram(String program) {
+      this.program = program;
+  }
+  public int getYearLevel() {
+      return yearLevel;
+  }
+  public void setYearLevel(int yearLevel) {
+      this.yearLevel = yearLevel;
+  }
+  public String getStatus() {
+      return status;
+  }
+  public void setStatus(String status) {
+      this.status = "ACTIVE";
+  }
+  // Display student details
+  public String getStudentDetails() {
+      return "\n Student ID  : S-" + this.studentID +
+             "\n Name        : " + this.lastName + ", " + this.firstName +
+             "\n Year Level  : " + this.yearLevel +
+             "\n Program     : " + this.program +
+             "\n---------------------------------------" +
+             "\n Status      : " + this.status +
+             "\n---------------------------------------\n";
+  }
+  // ID generator
+  public int generateID() {
+      studentCounter++;
+      return studentCounter;
+  }
+  //shorthand for sysout
+  public static void print(String word) {
+      System.out.print("\n " + word);
+  }
+}
