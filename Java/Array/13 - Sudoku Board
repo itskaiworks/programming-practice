@@ -1,0 +1,82 @@
+package randomPractice;
+import java.util.Scanner;
+public class randomPractice {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		// SUDOKU
+		final int size = 9;
+		int row, col, num, iterate, iteration;
+		int board[][] = new int[size][size];
+		boolean gameFinished = false;
+		
+		for (row = 0; row < size; row++) {
+			for (col = 0; col < size; col++) {
+				if (Math.random () < 0.3) {
+					board[row][col] = (int)(Math.random() * 9) + 1;
+				} else {
+					board[row][col] = 0;
+				}
+			}
+		}
+		
+		
+			System.out.println("SUDOKU BORAD");
+			for (row = 0; row < size; row++) {
+				if (row % 3 == 0) System.out.println("+-------+-------+-------+");
+				for (col = 0; col < size; col++) {
+					if (col % 3 == 0) System.out.print("| ");
+					System.out.print((board[row][col] == 0 ? "_" : board[row][col]) + " ");
+				}
+				System.out.println("|");
+			}
+			System.out.println("+-------+-------+-------+");
+			
+			System.out.println("Enter Row (1 - 9): ");
+			row = sc.nextInt() - 1;
+			System.out.println("Enter Column (1 - 9): ");
+			col = sc.nextInt() - 1;
+			System.out.println("Enter Number (1 - 9): ");
+			num = sc.nextInt();
+			
+			if (board[row][col] != 0) {
+				System.out.println("Cell already has a number. Try again");
+			}
+			
+			boolean validMode = true;
+			for (iterate = 0; iterate < size; iterate++) {
+				if (board[row][iterate] == num || board[iterate][col] == num) {
+					validMode = false;
+					break;
+				}
+			}
+			
+			int startRow = row - row % 3, startCol = col - col % 3;
+			for (row = 0; row < size; row++) {
+				for (col = 0; col < size; col++) {
+					if (board[startRow + 1][startCol + 1] == num) {
+						validMode = false;
+						break;
+					} 
+				}
+			}
+			
+			if (validMode) {
+				board[row][col] = num;
+			} else {
+				System.out.println("Invalid input. Try again");
+			}
+			
+			gameFinished = true;
+			for (row = 0; row < size; row++) {
+				for (col = 0; col < size; col++) {
+					if (board[row][col] == 0) {
+						gameFinished = false;
+						break;
+					} 
+				}
+	
+	if (!gameFinished) break;
+	 }
+   } // End of Main Method
+}
