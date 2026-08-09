@@ -1,0 +1,129 @@
+import java.util.Scanner;
+
+public class DynamicArray {
+
+    static Scanner sc = new Scanner(System.in);
+
+    static int[] array;         // Main array for storing elements
+    static int[] tempArray;     // Temporary array used when resizing
+    static int size = 0;        // Current number of elements in the array
+    static int capacity;        // Maximum capacity of the array
+    static int addElement, delElement, choice, index;
+
+    public static void main(String[] args) {
+
+        // Ask user for initial array size
+        print("Enter the capacity of the array: ");
+        capacity = sc.nextInt();
+        array = new int[capacity]; // Create the initial array
+
+        // Infinite loop until the user chooses to exit
+        while (true) {
+            println("");
+            println("== CHOOSE OPTIONS ==");
+            println("1. Add Element");
+            println("2. Delete Element");
+            println("3. View Output");
+            println("4. Exit Program");
+            print("\nEnter Choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    programDivider();
+                    println("Adding an element in the array...");
+
+                    for (index = 0; index < capacity; index++) {
+                    	// Ask user for a number to add
+                        print("Enter a number: ");
+                        addElement = sc.nextInt();
+
+                        // Check if the array is full, then resize (double capacity)
+                        if (size == capacity) {
+                            capacity = capacity * 2; // Double the capacity
+                            tempArray = new int[capacity];
+
+                            // Copy existing elements from old array to new array
+                            for (index = 0; index < size; index++) {
+                                tempArray[index] = array[index];
+                            }
+
+                            // Replace old array with the new one
+                            array = tempArray;
+                        }
+
+                        // Insert the element into the array
+                        array[size] = addElement;
+                        size++;
+                    }
+                    
+                    println("Element added successfully!");
+                    programDivider();
+                    break;
+
+                case 2:
+                    programDivider();
+                    println("Deleting an element in the array...");
+
+                    // Ask for the index to delete
+                    print("Enter an index to delete: ");
+                    delElement = sc.nextInt();
+
+                    // Check if the index is valid
+                    if (delElement >= size || delElement < 0) {
+                        println("No element at this index.");
+                    } else {
+                        // Shift elements to the left to fill the gap
+                        for (index = delElement; index < size - 1; index++) {
+                            array[index] = array[index + 1];
+                        }
+                        size--; // Reduce size after deletion
+                        println("Element removed successfully!");
+                    }
+                    programDivider();
+                    break;
+
+                case 3:
+                    programDivider();
+                    println("== PROGRAM OUTPUT ==");
+                    println("Current capacity: " + capacity);
+                    println("Current size: " + size);
+
+                    // Display stored elements
+                    print("Entered elements: ");
+                    for (index = 0; index < size; index++) {
+                        print("[" + array[index] + "]");
+                    }
+                    println("");
+                    programDivider();
+                    break;
+
+                case 4:
+                    println("\nExiting program...");
+                    System.exit(0); // Properly terminate the program
+                    break;
+
+                default:
+                    println("Invalid choice! Please try again.");
+                    break;
+            }
+        }
+    }
+
+    // Custom print method
+    public static void print(String word) {
+        System.out.print(word);
+    }
+
+    // Custom println method
+    public static void println(String word) {
+        System.out.println(word);
+    }
+
+    // Divider for better readability
+    public static void programDivider() {
+        println("");
+        System.out.println("====================================");
+        println("");
+    }
+}
