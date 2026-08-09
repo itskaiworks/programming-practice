@@ -1,0 +1,84 @@
+package coffeeShopOrderingManagementSystem;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+
+public class CustomersName extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField txtCstmrName;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CustomersName frame = new CustomersName();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public CustomersName() {
+		setTitle("Customer's Name");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 389, 234);
+		setLocationRelativeTo(null);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 230, 241));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblCstmrName = new JLabel("Customer's Name");
+		lblCstmrName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCstmrName.setFont(new Font("Cooper Black", Font.BOLD, 24));
+		lblCstmrName.setBounds(22, 25, 330, 64);
+		contentPane.add(lblCstmrName);
+		
+		txtCstmrName = new JTextField();
+		txtCstmrName.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtCstmrName.setBounds(22, 81, 330, 31);
+		contentPane.add(txtCstmrName);
+		txtCstmrName.setColumns(10);
+		
+		JButton btnEnter = new JButton("Enter");
+		btnEnter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String customerName = txtCstmrName.getText();
+				
+				SetOrder setOrder = new SetOrder();
+				
+				dispose();
+			}
+		});
+		btnEnter.setBackground(new Color(255, 238, 247));
+		btnEnter.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnEnter.setBounds(124, 129, 131, 31);
+		contentPane.add(btnEnter);
+	}
+}
