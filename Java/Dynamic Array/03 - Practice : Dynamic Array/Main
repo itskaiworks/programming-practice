@@ -1,0 +1,212 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		print("Enter array capacity: ");
+		int capacity = sc.nextInt();
+		DynamicArray dynamic = new DynamicArray(capacity); //with default capacity
+		int highestEven = dynamic.getElement(0);
+		int lowestEven =  dynamic.getElement(0);
+		int highestOdd = dynamic.getElement(0);
+		int lowestOdd =  dynamic.getElement(0);
+		
+		
+		while(true) {
+			print("\n\n-----------DYNAMIC ARRAY----------");
+			print("\nCHOOSE BETWEEN OPTIONS: ");
+			print("\n [1] Display Size & Capacity" + 
+				  "\n [2] Add Elements           " +
+				  "\n [3] Display Elements       " +
+				  "\n [4] Search Elements        " +
+				  "\n [5] Sort Elements          " +
+				  "\n [6] Replace Elements       " +
+				  "\n [7] Odd & Even             " +
+				  "\n [8] Highest & Lowest       " +
+				  "\n [9] Sum: Odd & Even        " +
+				  "\n [10] Elements Indices      " +
+				  "\n [11] w/ & w/o Dupilcate    " +
+				  "\n [12] Most Occuring Element " +
+				  "\n [13] 1st Non-repeating     " +
+				  "\n [14] 2nd Largest Element   " +
+				  "\n [15] Remove Element        " );
+			print("\n\n Enter Choice: ");
+			int choice = sc.nextInt();
+			
+			switch(choice) {
+			case 1:
+				print("\n Current Size: " + dynamic.getSize());
+				print("\n Current Capacity: " + dynamic.getCapacity());
+				break;
+			case 2:
+				for (int index = 0; index < capacity; index++) {
+					print(" Enter element at index " + index + ": ");
+					int element = sc.nextInt();
+					dynamic.addElement(element);
+				}
+				break;
+			case 3:
+				print("\n Elements: ");
+				for (int index = 0; index < capacity; index++) {
+					print(dynamic.getElement(index) + " ");
+				}
+				break;
+			case 4: 
+				print(" Enter element to search: ");
+				int search = sc.nextInt();
+				print(" Element " + search + " fount at index: ");
+				for (int index = 0; index < capacity; index++) {
+					if (search == dynamic.getElement(index)) {
+						print(index + " ");
+						break;
+					}
+				}
+				break;
+			case 5: 
+				print(" Sorted Elements: ");
+				dynamic.sortElement();
+				for (int index = 0; index < capacity; index++) {
+					print(dynamic.getElement(index) + " ");
+				}
+				break;
+			case 6: 
+				print(" Enter element to replace: ");
+				int replace = sc.nextInt();
+				print(" Enter replace element: ");
+				int elementReplace = sc.nextInt();
+				dynamic.replaceElement(replace, elementReplace);
+				break;
+			case 7: 
+				print(" Even elements: ");
+				
+				for (int index = 0; index < capacity; index++) {
+					if (dynamic.getElement(index) % 2 == 0) {
+						print(dynamic.getElement(index) + " ");
+					}
+				}
+				print("\n Odd elements: ");
+				for (int index = 0; index < capacity; index++) {
+					if (dynamic.getElement(index) % 2 != 0) {
+						print(dynamic.getElement(index) + " ");
+					}
+				}
+				break;
+			case 8: 
+				lowestEven =  dynamic.getElement(0);
+				for (int index = 0; index < capacity; index++) {
+					if (dynamic.getElement(index) % 2 == 0) {
+						if (highestEven < dynamic.getElement(index)) {
+							highestEven = dynamic.getElement(index);
+						} 
+						
+						if (lowestEven > dynamic.getElement(index)) {
+							lowestEven = dynamic.getElement(index);
+						}
+					}
+				}
+				
+				lowestOdd =  dynamic.getElement(0);
+				for (int index = 0; index < capacity; index++) {
+					if (dynamic.getElement(index) % 2 != 0) {
+						if (highestOdd < dynamic.getElement(index)) {
+							highestOdd = dynamic.getElement(index);
+						} 
+						
+						if (lowestOdd > dynamic.getElement(index)) {
+							lowestOdd = dynamic.getElement(index);
+						}
+					}
+				}
+				print(" Highest even element:  " + highestEven +
+					  "\n Lowest even element: " + lowestEven  +
+					  "\n Highest odd element: " + highestOdd  +
+					  "\n Lowest odd element:  " + lowestOdd);
+				break;
+			case 9: 
+				print(" SUM: " +
+			          "\n Highest even + Lowest even = " + (highestEven + lowestEven) +
+					  "\n Highest odd + Lowest odd = " + (highestOdd + lowestOdd) +
+			          "\n Highest even + Highest odd = " + (highestEven + highestOdd) +
+					  "\n Lowest even + Lowest odd = " + (lowestEven + lowestOdd) +
+			          "\n Highest even + Lowest odd = " + (highestEven + lowestOdd) +
+					  "\n Highest odd + Lowest even = " + (highestOdd + lowestEven) );
+				break;
+			case 10: 
+				boolean foundAny = false;
+				print(" Enter element: ");
+				int inputElement = sc.nextInt();
+				print("\n Element " + inputElement + " index/indices: ");
+				for (int index = 0; index < capacity; index++) {
+					if (inputElement == dynamic.getElement(index)) {
+						if (foundAny) {
+							print(", ");
+						}
+						print(index + "");
+						foundAny = true;
+					}
+				}
+				break;
+			case 11: 
+				print(" Elements with duplicate: ");
+				dynamic.withDuplicate();
+				print("\n Elements without duplicate: ");
+				dynamic.withoutDuplicate();
+				break;
+			case 12: 
+				int count = 0;
+				print(" Most occuring element: ");
+				for (int outerIndex = 0; outerIndex < capacity; outerIndex++) {
+					for (int innerIndex = 0; innerIndex < capacity; innerIndex++) {
+						if (dynamic.getElement(outerIndex) == dynamic.getElement(innerIndex)) {
+							count++;
+						}
+					}
+					print(dynamic.getElement(outerIndex) + " ");
+					break;
+				}
+				print("(appears in the index " + count + " times).");
+				break;
+			case 13: 
+				print(" First non-repeating element: ");
+				for (int outerIndex = 0; outerIndex < capacity; outerIndex++) {
+					boolean repeat = false;
+					for (int innerIndex = 0; innerIndex < capacity; innerIndex++) {
+						if (outerIndex != innerIndex && dynamic.getElement(outerIndex) == dynamic.getElement(innerIndex)) {
+							repeat = true;
+							break;
+						}
+					}
+					if (!repeat) {
+						print(dynamic.getElement(outerIndex) + " ");
+						break;
+					}
+				}
+				break;
+			case 14: 
+				dynamic.sortElement();
+				int largest = dynamic.getElement(capacity - 1);
+				for (int index = capacity - 2; index >= 0; capacity--) {
+					if (dynamic.getElement(index) < largest) {
+						largest = dynamic.getElement(index);
+						break;
+					}
+				}
+				print(" Second largest element: " + largest);
+				break;
+			case 15: 
+				print(" Enter element to remove: ");
+				int delIndex = sc.nextInt();
+				dynamic.removeElement(delIndex);
+				break;
+			}
+		}
+
+	}
+	public static void print(String word) {
+		System.out.print(word);
+	}
+
+}
