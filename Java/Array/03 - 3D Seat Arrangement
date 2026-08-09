@@ -1,0 +1,89 @@
+package seatArrangement3D;
+import java.util.Scanner;
+public class seatArrangement3D {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner (System.in);
+		
+		int table, row, col, grInput, rowInput, colInput;
+		String choice;
+		
+		String seat [][][] = {
+				{{"X", "X", "O", "O"},
+				 {"X", "O", "X", "X"}, 
+				 {"X", "O", "X", "X"}, 
+				 {"O", "O", "X", "O"}},
+				
+				{{"X", "O", "O", "O"}, 
+				 {"X", "O", "X", "X"}, 
+				 {"X", "O", "X", "X"}, 
+				 {"O", "O", "X", "O"}},
+				
+				{{"O", "O", "X", "O"}, 
+			     {"X", "O", "X", "X"}, 
+			     {"X", "O", "X", "X"}, 
+			     {"O", "O", "X", "O"}},
+				
+				{{"X", "X", "X", "X"}, 
+			     {"X", "O", "X", "X"}, 
+			     {"X", "O", "X", "X"}, 
+			     {"O", "O", "X", "O"}}
+		};
+		
+		do {
+			System.out.println("SEATING ARRANGEMENT:");
+			System.out.println();
+			for (table = 0; table < seat.length; table++) { //For group number of seat
+				System.out.println("Group " + table + ": "); //Print the group number to avoid confusion
+				for (row = 0; row < seat[table].length; row++) { //For row number
+					for (col = 0; col < seat[table][row].length; col++) { //For column number
+						System.out.print(seat[table][row][col] + " "); 
+					}
+					System.out.println();
+				}
+				System.out.println();
+			}
+			
+			System.out.println();
+			
+			System.out.println("CHOOSE BETWEEN 0 - 3");
+			System.out.println();
+			System.out.print("Enter the Group Number of Seat: ");
+			grInput = sc.nextInt();
+			System.out.print("Enter Row Number: ");
+			rowInput = sc.nextInt();
+			System.out.print("Enter Column Number: ");
+			colInput = sc.nextInt();
+			
+			sc.nextLine(); //Include to ensure that the user input in reserving the seat will be read by the system
+			
+			boolean seatFound = false;
+			
+			for (table = grInput; table < seat.length; table++) { //TABLE
+				for (row = rowInput; row < seat[table].length; row++) { //ROW
+					for (col = colInput; col < seat[table][row].length; col++) { //COLUMN
+						if (seat[table][row][col] == "O") {
+							System.out.println("You've successfully reserve a seat at group number " + (table) + ", row " + (row) +", column " + (col));
+							seatFound = true; //When seat is found empty, it will reserve the seat to the user
+							seat[table][row][col] = "X"; //Once the seat is reserve, its value will change to "X" for confirmation that the seat is already taken
+						} else if (seat[table][row][col] == "X") {
+							System.out.println("Seat is taken. Please choose another seat."); //Will print when the seat is taken to inform the user to choose another seat
+						} 
+						break; //Include to ensure that the confirmation of the reservation will not print again and again and again
+					}
+					break;
+				}
+				break;
+			}
+			
+			System.out.println();
+			
+			System.out.print("Do you want to select another seat? (Yes/No): ");
+			choice = sc.nextLine();
+			
+			System.out.println();
+			
+		} while (choice.equalsIgnoreCase("yes"));
+		
+	}
+
+}
