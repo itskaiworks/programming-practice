@@ -1,0 +1,232 @@
+public class StudentList {
+  private OverallNode head;
+  private OverallNode tail;
+  public void addStudent(Student student) {//method to add student to the list
+      OverallNode newNode = new OverallNode();
+      newNode.setStudent(student);//sets the student data in the node
+      if (head == null) {//if the list is empty, node sets as head and tail
+          head = newNode;
+          tail = newNode;
+      } else {//otherwise add it to the end
+          tail.setNext(newNode);//link old tail to new node
+          newNode.setPrev(tail);//link new node to old tail
+          tail = newNode;//update tail reference
+      }
+  }
+  //display all students from head to tail
+  public void viewStudentsForward() {
+      print("\n=======================================");
+      print("\n        ENROLLED STUDENT LIST          ");
+      print("\n             > Forward <               ");
+      print("\n=======================================");
+      OverallNode current = head;
+      while (current != null) {//travese forward
+          print("\n---------------------------------------");
+          print(current.getStudent().getStudentDetails());//prints student info
+          current = current.getNext();//move to next node
+      }
+  }
+  //display all students from tail to head
+  public void viewStudentsBackward() {
+      print("\n=======================================");
+      print("\n        ENROLLED STUDENT LIST          ");
+      print("\n            > Backward <               ");
+      print("\n=======================================");
+      OverallNode current = tail;
+      while (current != null) {//traverse backward
+          print("\n---------------------------------------");
+          print(current.getStudent().getStudentDetails());
+          current = current.getPrev();//move to previous node
+      }
+  }
+ 
+  //update student details based on the user's choice
+  public int updateStudent(int studentID, int choiceUpdate, String newInfo, int newValue,
+                           String newFirstName, String newLastName, int newYearLevel, String newProgram) {
+      if (isEmpty()) return -1;//return if no students exist
+      OverallNode current = head;
+      while (current != null) {
+   	   //check if student id matches
+          if (current.getStudent().getStudentID() == studentID) {
+              switch (choiceUpdate) {
+                  case 1:
+                      current.getStudent().setFirstName(newInfo);// update first name
+                      break;
+                  case 2:
+                      current.getStudent().setLastName(newInfo);//update last name
+                      break;
+                  case 3:
+                      current.getStudent().setYearLevel(newValue);//update year level
+                      break;
+                  case 4:
+                      current.getStudent().setProgram(newInfo);//update program
+                      break;
+                  case 5://update all fields or value
+                      current.getStudent().setFirstName(newFirstName);
+                      current.getStudent().setLastName(newLastName);
+                      current.getStudent().setYearLevel(newYearLevel);
+                      current.getStudent().setProgram(newProgram);
+                      break;
+                  default:
+                      print("\n [!] Invalid choice. Please enter a number between 1 and 6.\n");
+                      return 0;
+              }
+              print("\n Updating student information...");
+              print("\n---------------------------------------");
+              print("\n         Student Record Found:         ");
+              print("\n---------------------------------------");
+              print(current.getStudent().getStudentDetails());
+              print("\n [✓] Student information updated successfully.\n");
+              return 1;//successfully updated
+          }
+          current = current.getNext();//move to next node
+      }
+      return 2;//student not found
+  }
+  //delete a student by their ID
+  public void deleteStudent(int studentID) {
+      viewStudentsForward();//display student list first before deletion
+      OverallNode current = head;
+      while (current != null) {
+   	   //only for one node
+          if (current.getStudent().getStudentID() == studentID) {
+              if (current == head && current == tail) {
+                  head = null;
+                  tail = null;
+              } else if (current == head) {//deleting the head node
+                  head = head.getNext();
+                  if (head != null) head.setPrev(null);
+              } else if (current == tail) {//deleting the tail node
+                  tail = tail.getPrev();
+                  if (tail != null) tail.setNext(null);
+              } else {//deleting middle node
+                  current.getPrev().setNext(current.getNext());
+                  current.getNext().setPrev(current.getPrev());
+              }
+              print("\n Deleting student with ID " + current.getStudent().getStudentID() + "...");
+              print("\n [✓] Student " + current.getStudent().getStudentID() + " deleted successfully.\n");
+              return;
+          }
+          current = current.getNext();//move to next node
+      }
+      print("\n [!] Student number " + studentID + " not found.\n");//prompts student id not found
+  }
+ 
+  //search student by id
+  public int searchStudentByID(int studentID) {
+      if (isEmpty()) return -1;//no students in list
+      OverallNode current = head;
+      while (current != null) {
+          if (current.getStudent().getStudentID() == studentID) {//checks if the student id is equals to user input of student id
+              print("\n Searching student with ID " + current.getStudent().getStudentID() + "...");
+              print("\n---------------------------------------");
+              print("\n         Student Record Found:         ");
+              print("\n---------------------------------------");
+              print(current.getStudent().getStudentDetails());
+              return 1;//if matched student found
+          }
+          current = current.getNext();//move to next node
+      }
+      print("\n [!] Student number " + studentID + " not found.\n");
+      return 0;//if not student not found
+  }
+ 
+  //search student by last name
+  public void searchStudentByName(String lastName) {
+      if (isEmpty()) {//list is empty
+          print("\n [!] No students to search.\n");
+          return;
+      }
+      OverallNode current = head;
+      boolean found = false;//indicate student is not found yet
+      print("\n Searching student " + lastName + "...");
+      while (current != null) {
+   	   //check if students last name matches the user input last name
+          if (isSameString(current.getStudent().getLastName(), lastName)) {
+              print("\n---------------------------------------");
+              print("\n         Student Record Found:         ");
+              print("\n---------------------------------------");
+              print(current.getStudent().getStudentDetails());//prints student details
+              found = true;
+          }
+          current = current.getNext();//move to next node
+      }
+      if (!found) {//if not found, prompts that student is not found
+          print("\n [!] No student " + lastName + " found in the list.\n");
+      }
+  }
+  //count total students active or inactive
+  public void totalStudents() {
+      if (isEmpty()) {//if there are no enrolled students yet, return to menu
+          print("\n [!] No enrolled students to count.\n");
+          return;
+      }
+      OverallNode current = head;
+      int studentActiveCount = 0;//counts active student
+      int studentInactiveCount = 0;//counts inactive student
+     
+      while (current != null) {
+   	   //check the status of student if active
+   	   if(isSameString(current.getStudent().getStatus(), "Active")) {
+   		   studentActiveCount++;//counts 1 each student active status
+   	   }else {//otherwise, inactive
+   		   studentInactiveCount++;//counts 1 each student inactive status
+   	   }
+          current = current.getNext();//move to next node
+      }
+      print("\n Total Students Enrolled : " + studentActiveCount);
+      print("\n Total Students Inactive : " + studentInactiveCount);
+     
+  }
+  public boolean isEmpty() {
+      return head == null;//check if student is empty or list is empty
+  }
+  //compare two strings manually using ASCII logic, also alternative for equalsIgnoreCase built-in method
+  public boolean isSameString(String checkString1, String checkString2) {
+      int index = 0;//postion index
+      while (true) {
+          try {
+       	   char firstChar = checkString1.charAt(index);//get char from first string
+              char secondChar = checkString2.charAt(index);//get char from second string
+             
+              //convert lowercase to uppercase by using ASCII logic like 97 ('a') - 32 = 65 ('A')
+              if (firstChar >= 'a' && firstChar <= 'z') firstChar = (char)(firstChar - 32);
+              if (secondChar >= 'a' && secondChar <= 'z') secondChar = (char)(secondChar - 32);
+             
+              //if mismatch. return false
+              if (firstChar != secondChar) return false;
+              index++;//move to next char
+          } catch (StringIndexOutOfBoundsException e) {
+       	   //handles different string lengths
+              try {
+              	checkString1.charAt(index);
+                  return false;
+              } catch (StringIndexOutOfBoundsException ex1) {
+                  try {
+                  	checkString2.charAt(index);
+                      return false;
+                  } catch (StringIndexOutOfBoundsException ex2) {
+                      return true;//both strings are equal
+                  }
+              }
+          }
+      }
+  }
+  //find and return student object by id
+  public Student findStudentByID(int studentID) {
+      OverallNode current = head;
+      while (current != null) {
+          Student student = current.getStudent();
+          //check if students id matches the user input
+          if (student != null && student.getStudentID() == studentID) {
+              return student; //returns the found student
+          }
+          current = current.getNext();
+      }
+      return null;//return null for error handling
+  }
+  //shorthand for sysout
+  public void print(String word) {
+      System.out.print(word);
+  }
+}
