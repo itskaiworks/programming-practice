@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+public class diamondStar {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int inner, outer, size, blank, mid;
+        
+        System.out.print("Enter a Size: ");
+        size = sc.nextInt();
+        
+        // Adjust size if it's even (so the pattern remains symmetric)
+        if (size % 2 == 0) {
+            size += 1;
+        }
+        
+        mid = size / 2;
+
+        // Upper part of the diamond (including the middle row)
+        for (outer = 0; outer <= mid; outer++) {
+            // Print leading spaces
+            for (blank = mid; blank > outer; blank--) {
+                System.out.print(" ");
+            }
+            // Print stars
+            for (inner = 0; inner < 2 * outer + 1; inner++) {
+                System.out.print("*");
+            }
+            // Move to the next line
+            System.out.println();
+        }
+
+        // Lower part of the diamond
+        for (outer = mid - 1; outer >= 0; outer--) {
+            // Print leading spaces
+            for (blank = mid; blank > outer; blank--) {
+                System.out.print(" ");
+            }
+            // Print stars
+            for (inner = 0; inner < 2 * outer + 1; inner++) {
+                System.out.print("*");
+            }
+            // Move to the next line
+            System.out.println();
+        }
+        
+        sc.close();
+    }
+}
