@@ -1,0 +1,120 @@
+public class Enrollment {
+  //Encapsulation
+  private Student student;     //The student who is enrolled
+  private Course course;       //The course the student is enrolled in
+  private double midtermGrade; //Midterm grade (0–100)
+  private double finalGrade;   //Final grade (0–100)
+  private double average;      //Computed average of midterm and final
+  private String equivalent;   //Grade equivalent
+  private String remarks;      //Remarks (PASSED / FAILED)
+  //Constructor
+  public Enrollment(Student student, Course course) {
+      this.setStudent(student);
+      this.setCourse(course);
+  }
+  // Getters and Setters
+  public Student getStudent() {
+      return student;
+  }
+  public void setStudent(Student student) {
+      this.student = student;
+  }
+  public Course getCourse() {
+      return course;
+  }
+  public void setCourse(Course course) {
+      this.course = course;
+  }
+  public double getMidtermGrade() {
+      return midtermGrade;
+  }
+  public void setMidtermGrade(double midtermGrade) {
+      this.midtermGrade = midtermGrade;
+  }
+  public double getFinalGrade() {
+      return finalGrade;
+  }
+  public void setFinalGrade(double finalGrade) {
+      this.finalGrade = finalGrade;
+  }
+  public double getAverage() {
+      return average;
+  }
+  public void setAverage(double average) {
+      this.average = average;
+  }
+  public String getRemarks() {
+      return remarks;
+  }
+  public void setRemarks(String remarks) {
+      this.remarks = remarks;
+  }
+  public String getEquivalent() {
+      return equivalent;
+  }
+  public void setEquivalent(String equivalent) {
+      this.equivalent = equivalent;
+  }
+ 
+  //Methods
+  //Computes the average of midterm and final grades
+  public void computeAverageGrades() {
+      this.average = (midtermGrade + finalGrade) / 2.0; // Calculate average
+      if (average >= 60) {
+          remarks = "PASSED";
+      } else {
+          remarks = "FAILED";
+      }
+  }
+  //Updates midterm and final grades with validation
+  public void updateGrades(double newMidterm, double newFinal) {
+      //Check for invalid inputs
+      if ((newMidterm < 0 || newMidterm > 100) || (newFinal < 0 || newFinal > 100)) {
+          print("[!] Invalid grade input. Grades must be between 0 and 100.");
+          return;
+      }
+      //Update valid grades
+      this.midtermGrade = newMidterm;
+      this.finalGrade = newFinal;
+      //Recompute average and remarks after update
+      computeAverageGrades();
+      generateRemarkBasedOnAverage();
+  }
+  //Determines grade equivalent and remarks based on the average
+  public void generateRemarkBasedOnAverage() {
+      if (average >= 96 && average <= 100) {
+          setEquivalent("1.00");
+          remarks = "PASSED";
+      } else if (average >= 92) {
+          setEquivalent("1.25");
+          remarks = "PASSED";
+      } else if (average >= 88) {
+          setEquivalent("1.50");
+          remarks = "PASSED";
+      } else if (average >= 84) {
+          setEquivalent("1.75");
+          remarks = "PASSED";
+      } else if (average >= 80) {
+          setEquivalent("2.00");
+          remarks = "PASSED";
+      } else if (average >= 75) {
+          setEquivalent("2.25");
+          remarks = "PASSED";
+      } else if (average >= 70) {
+          setEquivalent("2.50");
+          remarks = "PASSED";
+      } else if (average >= 65) {
+          setEquivalent("2.75");
+          remarks = "PASSED";
+      } else if (average >= 60) {
+          setEquivalent("3.00");
+          remarks = "PASSED";
+      } else {
+          setEquivalent("5.00");
+          remarks = "FAILED";
+      }
+  }
+  public static void print(String word) {
+      System.out.print("\n " + word);//Shorthand for sysout
+  }
+}
