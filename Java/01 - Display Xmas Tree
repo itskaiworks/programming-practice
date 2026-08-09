@@ -1,0 +1,111 @@
+package ccs102IndividualTask;
+import java.util.Scanner;
+public class christmasTree {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int height, row, col, stars;
+		
+		// This will keep ask the user if the user input is invalid.
+		while (true) {
+			System.out.print("Enter the height of the Christmas Tree greater than 2: ");
+			height = sc.nextInt();
+			
+			if (height >= 3) {  // The user should input at least 3 layered of height segment before processing.
+				break; 
+			} else {
+				System.out.println("Please input a valid segment height."); // Will print if the user doesn't meet the program's condition.
+			}
+		}
+		
+		// For first layer of the Christmas Tree
+		col = 1;
+		while (col <= height) {
+			row = height;
+			while (row + 2 > col) {
+				System.out.print(" ");
+				row--;
+			}
+			stars = 1;
+			while (stars <= (2 * col - 1)) {
+				System.out.print("*"); 
+				stars++;
+			}
+			System.out.println();
+			col++;
+		}
+		
+		// For second layer of the Christmas Tree
+		col = 2;
+		while (col <= height + 1) {
+			row = height;
+			while (row + 1 >= col) {
+				System.out.print(" ");
+				row--;
+			}
+			stars = 1;
+			while (stars <= (2 * col - 1)) {
+				System.out.print("*"); 
+				stars++;
+			}
+			System.out.println();
+			col++;
+		}
+		
+		// For third layer of the Christmas Tree
+		col = 3;
+		while (col <= height + 2) {
+			row = height;
+			while (row + 1 >= col) {
+				System.out.print(" ");
+				row--;
+			}
+			stars = 1;
+			while (stars <= (2 * col - 1)) {
+				System.out.print("*"); 
+				stars++;
+			}
+			System.out.println();
+			col++;
+		}
+		
+		// For the Trunk of the Christmas Tree
+		if (height % 2 == 0) {   // Will processed if the user input for the height of the Christmas Tree is even.
+			col = 1;
+			while (col <= height / 2) {
+				row = 1;
+				while (row <= height) {
+					System.out.print(" ");
+					row++;
+				}
+				stars = 1;
+				while (stars <= height / 2 + 1) {
+					System.out.print("*"); 
+					stars++;
+				}
+				System.out.println();
+				col++;
+			}  
+		} else {  // Will processed if the user input for the height of the Christmas Tree is odd.
+			col = 1;
+			while (col <= height / 2 + 1) {
+				row = 1;
+				while (row <= height) {
+					System.out.print(" ");
+					row++;
+				}
+				stars = 1;
+				while (stars <= height / 2 + 1) {
+					System.out.print("*"); 
+					stars++;
+				}
+				System.out.println();
+				col++;
+			}
+		
+		}
+
+	}
+
+}
