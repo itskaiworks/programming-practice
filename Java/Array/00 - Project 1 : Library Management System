@@ -1,0 +1,246 @@
+package finalsProject;
+import java.util.Scanner;
+public class LibraryManagementSystem {
+	
+	//Global Variables
+	public static final int BOOK_CAPACITY = 100;
+	public static String [][] books = new String[BOOK_CAPACITY][4];
+	public static String [][] borrowedBooks = new String[BOOK_CAPACITY][2];
+	
+	public static Scanner sc = new Scanner(System.in);
+	
+	public static String info, bookID, title, author, genre, borrower;
+	public static int choice, book, quantity, index, borrowIndex, bookIndex, bookCount = 0, borrowedBookCount = 0;
+	
+	public static void main(String[] args) {
+		
+		//Local Variables
+		
+		addDummyData(); 
+		
+		while(true) {
+			println ("_____________________________");
+			println ("|                           |");
+			println ("| LIBRARY MANAGEMENT SYSTEM |");
+			println ("|___________________________|");
+			
+			System.out.println();
+			
+			println ("           WELCOME!          ");
+			println ("  Choose the Desired Ouput.  ");
+			
+			System.out.println();
+			
+			println ("_____________________________");
+			println ("|                           |");
+			println ("|         MAIN MENU         |");
+			println ("|___________________________|");
+			println ("|                           |");
+			println ("| 1. Add Book               |");
+			println ("| 2. View Books             |");
+			println ("| 3. Update Book            |");
+			println ("| 4. Delete Book            |");
+			println ("| 5. Borrow Book            |");
+			println ("| 6. Return Book            |");
+			println ("| 7. Exit                   |");
+			println ("|___________________________|");
+			
+			System.out.println();
+			
+			print ("Enter your Choice: ");
+			choice = sc.nextInt();
+			
+			switch (choice) {
+			case 1: addBook();
+				break;
+			case 2: viewBook();
+				break;
+			case 3: updateBook();
+				break;
+			case 4: deleteBook();
+				break;
+			case 5: borrowBook();
+				break;
+			case 6: returnBook();
+				break;
+			case 7:
+				System.out.println("Exiting the Program.");
+				break;
+			default:
+				System.out.println("Invalid choice. Please try again.");
+				break;
+			}
+			
+		}
+
+	}
+	
+	public static void addDummyData() {
+        books[bookCount++] = new String[]{"B001", "All about Java", "Ameer Tan", "Programming", "9"};
+        books[bookCount++] = new String[]{"B002", "Phyton Basics", "Aaron Angeles", "Programming", "5"};
+    }
+	
+	public static void addBook () {
+		println ("ENTER THE BOOK INFORMATION");
+		info = sc.nextLine();
+		print ("Book ID: ");
+		bookID = sc.nextLine();
+
+		for (book = 0; book < bookCount; book++) {
+            if (books[book][0].equals(bookID)) {
+                println("Book ID already exists. Try again.");
+                return;
+            }
+		}
+		
+		print ("Title: ");
+		title = sc.nextLine();
+		print ("Author: ");
+		author = sc.nextLine();
+		print ("Genre: ");
+		genre = sc.nextLine();
+		print ("Quantity: ");
+		quantity = sc.nextInt();
+		
+		if (quantity < 0) {
+			println ("Invalid input. Quantity cannot be negative. Please try again.");
+			return;
+		  }
+		
+		books[bookCount++] = new String[]{bookID, title, author, genre, String.valueOf(quantity)};
+        System.out.println("Book added successfully.");
+	}
+	
+	public static void viewBook () {
+		if (bookCount == 0) {
+			println("No books in the library.");
+			return;
+		}
+			println ("ID\tTitle\tAuthor\tGenre\tQuantity");
+			for (book = 0; book < bookCount; book++) {
+	            println(String.join("\t", books[bookCount])); 
+	        }
+		}
+	
+	public static void updateBook() {
+		println ("REMEBER: Book ID starts with 0");
+		info = sc.nextLine();
+        print ("Enter Book ID to update: ");
+        bookID = sc.nextLine();
+        index = findBookIndex(bookID);
+
+        if (index < 0) {
+            println("Book ID not found.");
+            return;
+        }
+        
+        print ("Enter New Title: ");
+        books[index][1] = sc.nextLine();
+        print ("Enter New Author: ");
+        books[index][2] = sc.nextLine();
+        print ("Enter New Genre: ");
+        books[index][3] = sc.nextLine();
+        print ("Enter New Quantity: ");
+        books[index][4] = sc.nextLine();
+        
+        System.out.println();
+        
+        println ("Book Update Successfully.");
+      }
+	
+	public static void deleteBook() {
+		println ("REMEBER: Book ID starts with 0");
+		info = sc.nextLine();
+		print ("Enter Book ID to delete: ");
+		bookID = sc.nextLine();
+		index = findBookIndex(bookID);
+		
+		if (index < 0) {
+            println("Book ID not found.");
+            return;
+        }
+		
+		for (book = index; book < bookCount - 1; book++) {
+            books[book] = books[book + 1];
+        }
+        bookCount--;
+
+        System.out.println("Book deleted successfully.");
+    }
+		
+	
+	public static void borrowBook() {
+		println ("REMEBER: Book ID starts with 0");
+		info = sc.nextLine();
+		print ("Enter Book ID to borrow: ");
+		bookID = sc.nextLine();
+		index = findBookIndex(bookID);
+		quantity = Integer.parseInt(books[index][4]);
+		
+		if (index < 0) {
+			println("Book ID not found.");
+            return;
+		}else if (quantity == 0) {
+			println("Book you want to borrow is out of stock.");
+			return;
+		}
+		
+		print ("Enter the Borrower Name: ");
+		borrower = sc.nextLine();
+		
+		borrowedBooks[borrowedBookCount++] = new String[]{bookID, borrower, books[index][1]};
+        books[index][4] = String.valueOf(quantity - 1);
+
+        System.out.println("Book borrowed successfully.");
+	}
+	
+	public static void returnBook() {
+		println ("REMEBER: Book ID starts with 0");
+		info = sc.nextLine();
+		print("Enter Book ID to return: ");
+		bookID = sc.nextLine();
+		
+		borrowIndex = findBorrowedIndex(bookID);
+
+        if (borrowIndex == -1) {
+            System.out.println("No record of this book being borrowed.");
+            return;
+        }
+
+        bookIndex = findBookIndex(bookID);
+        books[bookIndex][4] = String.valueOf(Integer.parseInt(books[bookIndex][4]) + 1);
+
+        for (book = borrowIndex; book < borrowedBookCount - 1; book++) {
+            borrowedBooks[book] = borrowedBooks[book + 1];
+        }
+        borrowedBookCount--;
+
+        System.out.println("Book returned successfully.");
+	}
+	
+	public static void println (String word) {
+		System.out.println(word);
+	}
+	public static void print (String word) {
+		System.out.print(word);
+	}
+	
+	public static int findBookIndex(String bookID) {
+        for (book = 0; book < bookCount; book++) {
+            if (books[book][0].equals(bookID)) {
+                return book;
+            }
+        }
+        return -1;
+    }
+	
+	public static int findBorrowedIndex(String bookID) {
+        for (book = 0; book < borrowedBookCount; book++) {
+            if (borrowedBooks[book][0].equals(bookID)) {
+                return book;
+            }
+        }
+        return -1;
+    }
+	
+}
