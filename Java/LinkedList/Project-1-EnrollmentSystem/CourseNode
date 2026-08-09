@@ -1,0 +1,57 @@
+public class Course {
+  // Private instance variables
+  private String courseCode; //Stores the unique course code
+  private String courseTitle; //Stores the title or name of the course
+  private int units; //Stores the number of academic units for the course
+  private int slots; //Stores the number of available slots for student enrollment
+  // Constructor to initialize the Course
+  public Course(String courseCode, String courseTitle, int units, int slots) {
+      this.setCourseCode(courseCode); //Calls setter to assign courseCode
+      this.setCourseTitle(courseTitle); //Calls setter to assign courseTitle
+      this.setUnits(units); //Calls setter to assign units
+      this.setSlots(slots); //Calls setter to assign slots
+  }
+  // Getter and Setter methods for encapsulation
+  public String getCourseCode() {
+      return courseCode;
+  }
+  public void setCourseCode(String courseCode) {
+      this.courseCode = courseCode;
+  }
+  public String getCourseTitle() {
+      return courseTitle;
+  }
+  public void setCourseTitle(String courseTitle) {
+      this.courseTitle = courseTitle;
+  }
+  public int getUnits() {
+      return units;
+  }
+  public void setUnits(int units) {
+      this.units = units;
+  }
+  public int getSlots() {
+      return slots;
+  }
+  public void setSlots(int slots) {
+      this.slots = slots;
+  }
+  //Method to display complete course details including slots
+  public String getCourseDetails() {
+      return "\n Course Code   : " + this.courseCode +
+             "\n Course Title  : " + this.courseTitle +
+             "\n Units         : " + this.units +      
+             "\n Slots         : " + this.slots +    
+             "\n---------------------------------------";
+  }
+  //Method to display course details for enrolled students (no slots)
+  public String getEnrolledCourseDetails() {
+      return "\n Course Code   : " + this.courseCode +
+             "\n Course Title  : " + this.courseTitle +
+             "\n Units         : " + this.units +      
+             "\n---------------------------------------";
+  }
+   public static void print(String word) {
+      System.out.print("\n " + word); //Prints text with a newline at the start
+  }
+}
