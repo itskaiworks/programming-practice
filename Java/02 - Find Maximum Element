@@ -1,0 +1,27 @@
+package maxElement;
+
+public class FindMaximumElement {
+
+	static int maxElement1, max, index;
+	
+	public static void main(String[] args) {
+		
+        max = findMaximumElement (maxElement1);
+		
+		System.out.print("The Maximum Element is: " + max);
+		
+	}
+	
+	public static int findMaximumElement (int maxEelement1) {
+		int element[] = {8, 20, 30, 2, 45, 67, 4, 89, 34, 67};
+		maxElement1 = element[0];
+		for (index = 1; index < element.length; index++) {
+			if (element[index] > maxElement1) {
+				maxElement1 = element[index];
+				
+			}
+		}
+		
+		return maxElement1;
+	}
+}
