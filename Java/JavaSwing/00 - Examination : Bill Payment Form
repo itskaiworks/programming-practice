@@ -1,0 +1,243 @@
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JCheckBox;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import java.awt.Color;
+
+public class BayadBillsPaymentForm extends JFrame {
+
+	static final long serialVersionUID = 1L;
+	
+	//GLOBAL VARIABLES FOR FLEXIBLILITY
+	
+	static String accountName, accountNumber, billingAddress, billerAmount, nameOfBiller, methodForPayment;
+	
+	static JPanel contentPane;
+	static JTextField accNumTf, accNameTf, billAmountTf;
+	static ButtonGroup billNameGroup, payMethodGroup;
+	static JLabel billerName, accNum, accName, billAdr, billAmount, paymentMethod;
+	static JRadioButton meralco, water, internet, credit, cash;
+	static JScrollPane scrollPane;
+	static JTextArea billAdrTxtArea;
+	static JCheckBox termsConditions;
+	static JButton paymentButton;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BayadBillsPaymentForm frame = new BayadBillsPaymentForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public BayadBillsPaymentForm() {
+		//FRAME SETTINGS
+		setTitle("Bayad Bills Form");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(400, 520);
+		setLocationRelativeTo(null);
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(160, 207, 209));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		//PANEL SETTINGS
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		//BILLER NAME OPTION SETTINGS
+		billerName = new JLabel("Biller Name:");
+		billerName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		billerName.setBounds(32, 35, 87, 13);
+		contentPane.add(billerName);
+		
+		meralco = new JRadioButton("Meralco");
+		meralco.setBackground(new Color(160, 207, 209));
+		meralco.setFont(new Font("Tahoma", Font.BOLD, 11));
+		meralco.setBounds(172, 32, 103, 21);
+		contentPane.add(meralco);
+		
+		water = new JRadioButton("Water");
+		water.setBackground(new Color(160, 207, 209));
+		water.setFont(new Font("Tahoma", Font.BOLD, 11));
+		water.setBounds(172, 55, 103, 21);
+		contentPane.add(water);
+		
+		internet = new JRadioButton("Internet");
+		internet.setBackground(new Color(160, 207, 209));
+		internet.setFont(new Font("Tahoma", Font.BOLD, 11));
+		internet.setBounds(172, 78, 103, 21);
+		contentPane.add(internet);
+		
+		billNameGroup = new ButtonGroup(); //ADDED TO MAKE SURE THAT ONE BILLER NAME CAN ONLY BE SELECTED 
+		billNameGroup.add(meralco);
+		billNameGroup.add(water);
+		billNameGroup.add(internet);
+		
+		//ACCOUNT NUMBER SETTINGS
+		accNum = new JLabel("Account Number:");
+		accNum.setFont(new Font("Tahoma", Font.BOLD, 12));
+		accNum.setBounds(32, 132, 120, 13);
+		contentPane.add(accNum);
+		
+		accNumTf = new JTextField();
+		accNumTf.setBounds(172, 126, 167, 27);
+		contentPane.add(accNumTf);
+		accNumTf.setColumns(10);
+		
+		//ACCOUNT NAME SETTINGS
+		accNameTf = new JTextField();
+		accNameTf.setColumns(10);
+		accNameTf.setBounds(172, 168, 167, 27);
+		contentPane.add(accNameTf);
+		
+		accName = new JLabel("Account Name:");
+		accName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		accName.setBounds(32, 174, 120, 13);
+		contentPane.add(accName);
+		
+		//BILLER ADDRESS SETTINGS
+		billAdr = new JLabel("Billing Address");
+		billAdr.setFont(new Font("Tahoma", Font.BOLD, 12));
+		billAdr.setBounds(32, 217, 120, 13);
+		contentPane.add(billAdr);
+		
+		billAdrTxtArea = new JTextArea();
+		billAdrTxtArea.setBounds(172, 212, 167, 65);
+		contentPane.add(billAdrTxtArea);
+		
+		//BILLER AMOUNT SETTINGS
+		billAmount = new JLabel("Billing Amount:");
+		billAmount.setFont(new Font("Tahoma", Font.BOLD, 12));
+		billAmount.setBounds(32, 301, 120, 13);
+		contentPane.add(billAmount);
+		
+		billAmountTf = new JTextField();
+		billAmountTf.setColumns(10);
+		billAmountTf.setBounds(172, 295, 167, 27);
+		contentPane.add(billAmountTf);
+		
+		//PAYMENT METHOD SETTINGS
+		paymentMethod = new JLabel("Payment Method:");
+		paymentMethod.setFont(new Font("Tahoma", Font.BOLD, 12));
+		paymentMethod.setBounds(32, 345, 120, 13);
+		contentPane.add(paymentMethod);
+		
+		credit = new JRadioButton("Credit Card");
+		credit.setBackground(new Color(160, 207, 209));
+		credit.setFont(new Font("Tahoma", Font.BOLD, 11));
+		credit.setBounds(172, 342, 103, 21);
+		contentPane.add(credit);
+		
+		cash = new JRadioButton("Cash");
+		cash.setBackground(new Color(160, 207, 209));
+		cash.setFont(new Font("Tahoma", Font.BOLD, 11));
+		cash.setBounds(172, 373, 103, 21);
+		contentPane.add(cash);
+		
+		payMethodGroup = new ButtonGroup(); //ADDED TO MAKE SURE THAT ONE PAYMENT METHOD CAN ONLY BE SELECTED
+		payMethodGroup.add(credit);
+		payMethodGroup.add(cash);
+		
+		//TERMS AND CONDITION SETTINGS
+		termsConditions = new JCheckBox("I agree to the terms and conditions.");
+		termsConditions.setBackground(new Color(160, 207, 209));
+		termsConditions.setFont(new Font("Tahoma", Font.BOLD, 10));
+		termsConditions.setBounds(32, 417, 243, 13);
+		contentPane.add(termsConditions);
+		
+		//BUTTON SETTINGS
+		paymentButton = new JButton("Submit Payment");
+		paymentButton.setForeground(new Color(255, 255, 255));
+		paymentButton.setBackground(new Color(64, 128, 128));
+		paymentButton.setFont(new Font("Tahoma", Font.BOLD, 10));
+		paymentButton.setBounds(121, 446, 140, 27);
+		contentPane.add(paymentButton);
+		paymentButton.addActionListener (new ActionListener () {
+			public void actionPerformed (ActionEvent ex) {
+				
+				//THIS WILL GET THE USER INPUT AND WILL BE USED FOR ERROR HANDLING AND DISPLAYING THE USER RECORDS
+				accountName = accNameTf.getText();
+				accountNumber = accNumTf.getText();
+				billingAddress = billAdrTxtArea.getText();
+				billerAmount = billAmountTf.getText();
+				
+				//FOR BILLER NAME CHOICES, MAKING SURE THAT CORRECT BILLER NAME WILL BE DISPLAYED
+				if (meralco.isSelected()) {
+					
+					nameOfBiller = "Meralco";
+					
+				} else if (water.isSelected()) {
+					
+					nameOfBiller = "Water";
+					
+				} else if (internet.isSelected()) {
+					
+					nameOfBiller = "Internet";
+					
+				}
+				
+				//FOR PAYMENT METHOD, MAKING SURE THAT CORRECT METHOD WILL BE DISPLAYED
+				if (credit.isSelected()) {
+					
+					methodForPayment = "Credit Card";
+					
+				} else if (cash.isSelected()) {
+					
+					methodForPayment = "Cash";
+					
+				}
+				
+				//ERROR HANDLING IF THE USER LEAVES AN EMPTY FIELDS
+				if (accountName.isEmpty() || accountNumber.isEmpty() || billingAddress.isEmpty() || billerAmount.isEmpty() || !meralco.isSelected() &&
+						!water.isSelected() && !internet.isSelected() || !termsConditions.isSelected()) {
+						
+					   JOptionPane.showMessageDialog(null, "Input fields are required!", "Warning", JOptionPane.ERROR_MESSAGE);
+						
+				} else if (!accountName.matches("[a-zA-Z]+") || !accountNumber.matches("^[0-9]+$") || !billerAmount.matches("^[0-9]+$")) { //ERROR HANDLING IF THE USER ENTER AN INCORRECT INPUTS
+					
+					JOptionPane.showMessageDialog(null, "Invalid input/s!", "Warning", JOptionPane.ERROR_MESSAGE);
+					
+				} else {
+					
+					// JOPTIONPANE FOR DISPLAYING THE ENTERED RECORDS
+					JOptionPane.showMessageDialog(null, "\n Biller Name: " + nameOfBiller +
+							                            "\n Account Number: " + accountNumber +
+							                            "\n Account Name: " + accountName +
+							                            "\n Billing Address: " + billingAddress +
+							                            "\n Bill Amount: " + billerAmount +
+							                            "\n Payment Method: " + methodForPayment, 
+							                            "Bill Receipt", JOptionPane.INFORMATION_MESSAGE);
+					
+				}
+				
+				
+			}
+		}); //END OF ACTION LISTENER
+	} //END OF MAIN METHOD
+}
