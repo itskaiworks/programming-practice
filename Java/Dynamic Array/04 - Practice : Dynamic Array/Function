@@ -1,0 +1,278 @@
+import java.util.Scanner;
+
+public class Function {
+	
+	int capacity = 3;
+	int [] array =  new int [capacity];                 //{7, 2, 9, 4, 2, 7, 8, 5, 9};
+	int [] tempArray;
+	int index, outer, inner, temp, add, count, highestOdd, lowestOdd, highestEven, lowestEven, sumHighest, sumLowest, secondLargest;
+	int size = 0;
+	boolean swapped, foundAny, foundDuplicate, alreadyPrinted, isFirstLargest;
+	
+	Scanner sc = new Scanner (System.in);
+	
+	public void addElement (int [] array) {
+		
+		displayElement(array);
+		
+		System.out.print("\n How many elements you want to add? ");
+        int howMany = sc.nextInt();
+		
+		for (outer = 0; outer < howMany; outer++) {
+			
+			print("\n Enter element " + (outer + 1) + ": ");
+			add = sc.nextInt();
+			
+			if (size == capacity) {
+				
+				capacity = capacity * 2;
+				
+				tempArray = new int[capacity];
+				
+				for (inner = 0; inner < size; inner++) {
+					tempArray[inner] = this.array[inner];
+				}
+				this.array = tempArray;
+			}
+			this.array[size] = add;
+			size++;
+		}
+		displayElement(this.array);
+	}
+	
+	public void displayElement (int [] array) {
+		print("\n Elements: [ ");
+		for (index = 0; index < size; index++) {
+			print(array[index] + " ");
+		}
+		print("]");
+	}
+	
+	public void displayElementCount (int [] array) {
+		count = 0;
+		for (index = 0; index < size; index++) {
+			count++;
+		}
+		print("\n Element Count: " + count);
+	}
+	
+	public void sortElement (int [] array) {
+		print("\n Sorted Element: ");
+		for (index = 0; index < size; index++) {
+			for (outer = 0; outer < size - 1; outer++) {
+				swapped = false;
+				for (inner = 0; inner < size - outer - 1; inner++) {
+					if (array[inner] > array[inner + 1]) {
+						temp = array[inner + 1];
+						array[inner + 1] = array[inner];
+						array[inner] = temp;
+						swapped = true;
+					}
+				}
+				
+				if (swapped) break;
+			}
+		}
+		
+		for (index = 0; index < size; index++) {
+			print(array[index] + " ");
+		}
+	}
+	
+	public void searchElement (int [] array, int search) {
+		for (index = 0; index < size; index++) {
+			if (array[index] == search) {
+				print("\n Element " + array[index] + " found at index " + index);
+				break;
+			}
+		}
+	}
+	
+	public void deleteElement (int [] array, int delete) {
+		for (outer = 0; outer < size; outer++) {
+			if (array[outer] == delete) {
+				for (inner = outer; inner < size - 1; inner++) {
+					array[inner] = array[inner + 1];
+				}
+				size--;
+				break;
+			}
+		}
+		displayElement(array);
+	}
+	
+	public void replaceElement (int [] array, int replace) {
+		for (index = 0; index < size; index++) {
+			if (array[index] == replace) {
+				print("\n Enter replace element: ");
+				int replaceElement = sc.nextInt();
+				array[index] = replaceElement;
+				break;
+			}
+		}
+	}
+	
+	public void highLow (int [] array) {
+		highestOdd = array[0];
+		lowestOdd = array[0];
+		highestEven = array[0];
+		lowestEven = array[0];
+		
+		for (index = 0; index < size; index++) {
+			if (array[index] % 2 != 0) {
+				
+				if (array[index] > highestOdd) {
+					highestOdd = array[index];
+				} 
+				
+				if (array[index] < lowestOdd) {
+					lowestOdd = array[index];
+				}
+				
+			} else if (array[index] % 2 == 0) {
+				if (array[index] > highestEven) {
+					highestEven = array[index];
+				} else if (array[index] < lowestEven) {
+					lowestEven = array[index];
+				}
+			}
+		}
+		
+		print("\n Highest Odd: " + highestOdd
+			+ "\n Lowest Odd: " + lowestOdd
+			+ "\n Highest Even: " + highestEven
+			+ "\n Lowest Even: " + lowestEven);
+	}
+	
+	public void highestSum (int [] array) {
+		sumHighest = highestOdd + highestEven;
+		print("\n Sum of highest odd and even elements: " + sumHighest);
+	}
+	
+	public void lowestSum (int [] array) {
+		sumLowest = lowestOdd + lowestEven;
+		print("\n Sum of lowest  odd and even elements: " + sumLowest);
+	}
+	
+	public void indicesOfElement (int [] array, int indices) {
+		foundAny = false;
+		print("\n Element " + indices + " found at index ");
+		for (index = 0; index < size;index++) {
+			if (array[index] == indices) {
+				if (foundAny) {
+					print(", ");
+				}
+				print(index + "");
+				foundAny = true;
+			}
+		}
+	}
+	
+	public void elementsWithDuplicate (int [] array) {
+		foundAny = false;
+		print ("\n Elements with duplicate: ");
+		for (outer = 0; outer < size; outer++) {
+			foundDuplicate = false;
+			for (inner = outer + 1; inner < size; inner++) {
+				if (array[outer] == array[inner]) {
+					foundDuplicate = true;
+					break;
+				}
+			}
+			alreadyPrinted = false;
+			for (index = 0; index < outer; index++) {
+				if (array[outer] == array[index]) {
+					alreadyPrinted = true;
+					break;
+				}
+			}
+			if (foundDuplicate && !alreadyPrinted) {
+				if (foundAny) {
+					print(", ");
+				}
+				print(" " + array[outer]);
+				foundAny = true;
+			}
+		}
+	}
+	
+	public void elementsWithoutDuplicate (int [] array) {
+		foundAny = false;
+		print ("\n Elements without duplicate: ");
+		for (outer = 0; outer < size; outer++) {
+			foundDuplicate = false;
+			for (inner = outer + 1; inner < size; inner++) {
+				if (array[outer] == array[inner]) {
+					foundDuplicate = true;
+					break;
+				}
+			}
+			alreadyPrinted = false;
+			for (index = 0; index < outer; index++) {
+				if (array[outer] == array[index]) {
+					alreadyPrinted = true;
+					break;
+				}
+			}
+			
+			if (!foundDuplicate && !alreadyPrinted) {
+				if (foundAny) {
+					print (", ");
+				}
+				
+				print (" " + array[outer]);
+			}
+		}
+	}
+	
+	public void mostOccuringElement (int [] array) {
+		count = 0;
+		print("\n Most occuring elements: ");
+		for (outer = 0; outer < size; outer++) {
+			for (inner = 0; inner < size; inner++) {
+				if (array[outer] == array[inner]) {
+					count++;
+				}
+			}
+			print(array[outer] + " ");
+			break;
+		}
+		print("(occurs " + count + " times)");
+	}
+	
+	public void firstNonRepeatingElement (int [] array) {
+		print("\n First non-repeating element: ");
+		for (outer = 0; outer < size; outer++) {
+			foundDuplicate = false;
+			for (inner = 0; inner < size; inner++) {
+				if (outer != inner && array[outer] == array[inner]) {
+					foundDuplicate = true;
+					break;
+				}
+			}
+			if (!foundDuplicate) {
+				print(array[outer] + "");
+				break;
+			}
+		}
+	}
+	
+	public void secondLargestElement (int [] array) {
+		sortElement(array);
+		secondLargest = array[size - 1];
+		for (outer = size - 2; outer >= 0; outer--) {
+			if (array[outer] < secondLargest) {
+				secondLargest = array[outer];
+				break;
+			}
+		}
+		print("\n Second largest element: " + secondLargest);
+	}
+	public static void print (String word) {
+		System.out.print(word);
+	}
+
+	public static void println (String word) {
+		System.out.println(word);
+	}
+}
