@@ -1,0 +1,143 @@
+package finalsPracticeSet1;
+
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.ButtonGroup;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+
+public class PracticeSet1 extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private JComboBox<String> comboFruits;
+	private JComboBox<String> comboVegetables;
+	private JRadioButton rdbFruits;
+	private JRadioButton rdbVegetables;
+	private JLabel lblFruits;
+	private JTextField txtName;
+
+	// Main method to launch the application
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PracticeSet1 frame = new PracticeSet1();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	// Constructor to set up the GUI
+	public PracticeSet1() {
+		setTitle("Assessment Task #1");
+		setSize(400, 421); // Set the window size
+		setLocationRelativeTo(null); // Center the window
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().setLayout(null); // Use absolute layout
+
+		// Label for instruction
+		JLabel lblChoose = new JLabel("Category:");
+		lblChoose.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblChoose.setBounds(30, 30, 79, 25);
+		getContentPane().add(lblChoose);
+
+		// Radio button for Fruits
+		rdbFruits = new JRadioButton("Fruits");
+		rdbFruits.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbFruits.setBounds(128, 30, 100, 25);
+		getContentPane().add(rdbFruits);
+
+		// Radio button for Vegetables
+		rdbVegetables = new JRadioButton("Vegetables");
+		rdbVegetables.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		rdbVegetables.setBounds(230, 30, 120, 25);
+		getContentPane().add(rdbVegetables);
+
+		// Grouping radio buttons so only one can be selected
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdbFruits);
+		group.add(rdbVegetables);
+
+		// Label and combo box for Fruits
+		JLabel lblName = new JLabel("Name:");
+		lblName.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblName.setBounds(30, 83, 100, 20);
+		getContentPane().add(lblName);
+
+		comboFruits = new JComboBox<String>();
+		comboFruits.setBounds(10, 162, 181, 32);
+		getContentPane().add(comboFruits);
+
+		// Label and combo box for Vegetables
+		JLabel lblVegetables = new JLabel("Vegetables:");
+		lblVegetables.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVegetables.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblVegetables.setBounds(239, 132, 100, 20);
+		getContentPane().add(lblVegetables);
+
+		comboVegetables = new JComboBox<String>();
+		comboVegetables.setBounds(201, 162, 175, 32);
+		getContentPane().add(comboVegetables);
+
+		// Button to add item to selected category
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnAdd.setBounds(277, 77, 99, 31);
+		getContentPane().add(btnAdd);
+		
+		lblFruits = new JLabel("Fruits:");
+		lblFruits.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFruits.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblFruits.setBounds(52, 134, 100, 20);
+		getContentPane().add(lblFruits);
+		
+		txtName = new JTextField();
+		txtName.setBounds(106, 80, 161, 24);
+		getContentPane().add(txtName);
+		txtName.setColumns(10);
+
+		// Action when Add button is clicked
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// If Fruits is selected
+				if (rdbFruits.isSelected()) {
+					
+					String input = txtName.getText();
+					// If input is valid, add to fruits combo box
+					if (input != null && !input.trim().isEmpty()) {
+						comboFruits.addItem(input.trim());
+						
+						txtName.setText("");
+					}
+				}
+				// If Vegetables is selected
+				else if (rdbVegetables.isSelected()) {
+					
+					String input = txtName.getText();
+					// If input is valid, add to vegetables combo box
+					if (input != null && !input.trim().isEmpty()) {
+						comboVegetables.addItem(input.trim());
+						
+						txtName.setText("");
+					}
+				}
+				// If no category is selected
+				else {
+					JOptionPane.showMessageDialog(null, "Please select a category first.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+	}
+}
