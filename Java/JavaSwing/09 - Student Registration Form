@@ -1,0 +1,455 @@
+package studentRegistrationForm;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+public class studentRegistrationForm {
+	
+	static String enteredUsername, enteredPassword; //Variables to store user input and credentials
+	
+	    // DUMMY DATA FOR THE PROGRAM
+		static String firstNameInput = "Abraham";
+		static String middleNameInput = "Miranda";
+		static String lastNameInput = "Buquid";
+		static String programChoice = "BSIT";
+		static String ageInput = "19";
+		static String addressInput = "BRGY SALA";
+		static String signUser = "AbrahamBuquid";
+		static String signPass = "bambam1ITA";
+		static String sexChoice = "Male";
+		static String hobbiesChoice = "Sports";
+		
+		static String selectedHobbies = ""; // Added to the program to allow the user select hobbies or extra curricular activities as many as they want.
+
+		public static void main(String[] args) {
+			
+			loginForm(); // This method is called as the main page of the program.
+			
+		}//End of Main Method
+		
+		//Method to create the Sign-Up form. This method will be shown once the user doesn't have an account yet.
+		public static void signUpForm () {
+			JFrame signUpFrame = new JFrame("Student Registration Form");
+			signUpFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			signUpFrame.setBounds(100, 100, 830, 744);
+			signUpFrame.setResizable(false);
+			signUpFrame.setLocationRelativeTo(null);
+			signUpFrame.setVisible(true);
+			
+			//Panel Settings
+			JPanel panel = new JPanel();
+			signUpFrame.add(panel);
+			panel.setBackground(new Color(230, 255, 230));
+			panel.setLayout(null);
+			
+			//Label for registration title
+			JLabel newLabel = new JLabel ("Registration Form");
+			panel.add(newLabel);
+			newLabel.setForeground(new Color(0, 128, 0));
+			newLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			newLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+			newLabel.setBounds(307, 10, 251, 70);
+			
+			//First name settings
+			JLabel firstName = new JLabel("First Name:");
+			panel.add(firstName);
+			firstName.setFont(new Font("Tahoma", Font.BOLD, 16));
+			firstName.setBounds(186, 106, 193, 28);
+			
+			JTextField firstTf = new JTextField(); //First Name Text Field
+			panel.add(firstTf);
+			firstTf.setBounds(328, 109, 303, 28);
+			firstTf.setColumns(10);
+			
+			//Middle name settings
+			JLabel middleName = new JLabel("Middle Name:"); 
+			panel.add(middleName);
+			middleName.setFont(new Font("Tahoma", Font.BOLD, 16));
+			middleName.setBounds(186, 150, 160, 28);
+			
+			JTextField middleTf = new JTextField(); //Middle Name Text Field
+			panel.add(middleTf);
+			middleTf.setColumns(10);
+			middleTf.setBounds(328, 150, 303, 28);
+			
+			//Last name settings
+			JLabel lastName = new JLabel("Last Name:"); 
+			panel.add(lastName);
+			lastName.setFont(new Font("Tahoma", Font.BOLD, 16));
+			lastName.setBounds(186, 188, 160, 28);
+			
+			JTextField lastTf = new JTextField(); //Last Name Text Field
+			panel.add(lastTf);
+			lastTf.setColumns(10);
+			lastTf.setBounds(328, 191, 303, 28);
+			
+			//Sex Settings
+			JLabel sex = new JLabel("Sex:");
+			panel.add(sex);
+			sex.setFont(new Font("Tahoma", Font.BOLD, 16));
+			sex.setBounds(186, 270, 160, 28);
+			
+			//Gender selection using Radio Buttons
+			JRadioButton male = new JRadioButton("Male");
+			panel.add(male);
+			male.setBackground(new Color(230, 255, 230));
+			male.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			male.setBounds(329, 276, 58, 21);
+			
+			JRadioButton female = new JRadioButton("Female");
+			panel.add(female);
+			female.setBackground(new Color(230, 255, 230));
+			female.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			female.setBounds(406, 277, 73, 21);
+			
+			JRadioButton pnts = new JRadioButton("Prefer not to say");
+			panel.add(pnts);
+			pnts.setBackground(new Color(230, 255, 230));
+			pnts.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			pnts.setBounds(502, 277, 152, 21);
+			
+			ButtonGroup button = new ButtonGroup(); // Button Group is added to make sure the the user can only select gender or sex.
+			button.add(male);
+			button.add(female);
+			button.add(pnts); // The "pnts" is for prefer not to say option.
+			
+			//Age Settings
+			JLabel age = new JLabel("Age:");
+			panel.add(age);
+			age.setFont(new Font("Tahoma", Font.BOLD, 16));
+			age.setBounds(186, 229, 160, 28);
+			
+			//Text field for age input
+			JTextField ageTf = new JTextField();
+			panel.add(ageTf);
+			ageTf.setColumns(10);
+			ageTf.setBounds(328, 232, 303, 28);
+			
+			//Program Settings
+			JLabel program = new JLabel("Program:");
+			panel.add(program);
+			program.setFont(new Font("Tahoma", Font.BOLD, 16));
+			program.setBounds(186, 315, 160, 34);
+			
+			//Text field for program input
+			JTextField programTf = new JTextField();
+			panel.add(programTf);
+			programTf.setColumns(10);
+			programTf.setBounds(328, 321, 303, 28);
+			
+			//Extracurricular Activities Settings
+			JLabel hobbies = new JLabel("Hobbies:");
+			panel.add(hobbies);
+			hobbies.setFont(new Font("Tahoma", Font.BOLD, 16));
+			hobbies.setBounds(186, 363, 160, 28);
+			
+			//Hobbies selection using Check Box Buttons
+			JCheckBox sports = new JCheckBox("Sports");
+			panel.add(sports);
+			sports.setBackground(new Color(230, 255, 230));
+			sports.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			sports.setBounds(328, 369, 73, 21);
+			
+			JCheckBox arts = new JCheckBox("Arts");
+			panel.add(arts);
+			arts.setBackground(new Color(230, 255, 230));
+			arts.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			arts.setBounds(406, 370, 58, 21);
+			
+			JCheckBox academic = new JCheckBox("Academic");
+			panel.add(academic);
+			academic.setBackground(new Color(230, 255, 230));
+			academic.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			academic.setBounds(466, 370, 93, 21);
+			
+			JCheckBox others = new JCheckBox("Others");
+			panel.add(others);
+			others.setBackground(new Color(230, 255, 230));
+			others.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			others.setBounds(561, 369, 93, 21);
+			
+			//Address Settings
+			JLabel address = new JLabel("Address:");
+			panel.add(address);
+			address.setFont(new Font("Tahoma", Font.BOLD, 16));
+			address.setBounds(186, 432, 160, 28);
+			
+			//Text field for address input
+			JTextArea textArea = new JTextArea();
+			panel.add(textArea);
+			textArea.setBounds(328, 415, 303, 70);
+			
+			//User Name and Password Settings
+			JLabel username = new JLabel("Username:");
+			panel.add(username);
+			username.setFont(new Font("Tahoma", Font.BOLD, 16));
+			username.setBounds(186, 514, 160, 28);
+			
+			JTextField userTf = new JTextField();
+			panel.add(userTf);
+			userTf.setColumns(10);
+			userTf.setBounds(328, 514, 303, 28);
+			
+			JLabel password = new JLabel("Password:");
+			panel.add(password);
+			password.setFont(new Font("Tahoma", Font.BOLD, 16));
+			password.setBounds(186, 559, 160, 28);
+			
+			JPasswordField passTf = new JPasswordField();
+			panel.add(passTf);
+			passTf.setBounds(328, 559, 303, 28);
+			
+			//Submit Button Settings with Validation
+			JButton submit = new JButton("SUBMIT");
+			panel.add(submit);
+			submit.setForeground(new Color(255, 255, 255));
+			submit.setBackground(new Color(0, 128, 0));
+			submit.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					try {
+						 //Retrieve input from text fields
+						firstNameInput = firstTf.getText().trim();
+						middleNameInput = middleTf.getText().trim();
+						lastNameInput = lastTf.getText().trim();
+						programChoice = programTf.getText().trim();
+						ageInput = ageTf.getText().trim();
+						addressInput = textArea.getText().trim();
+						signUser = userTf.getText().trim();
+						signPass = new String(passTf.getPassword()).trim();
+						
+						//Determine selected gender option
+						
+						if (male.isSelected()) { 
+							sexChoice = male.getText();
+						} else if (female.isSelected()) {
+							sexChoice = female.getText();
+						} else if (pnts.isSelected()) {
+							sexChoice = pnts.getText();
+						}
+						
+						//Determine selected hobbies option
+						
+						if (sports.isSelected()) {
+							selectedHobbies += sports.getText() + " ";
+						} 
+						if (arts.isSelected()) {
+							selectedHobbies += arts.getText() + " ";
+						} 
+						if (academic.isSelected()) {
+							selectedHobbies += academic.getText() + " ";
+						} 
+						if (others.isSelected()) {
+							selectedHobbies += others.getText() + " ";
+						}
+								
+						//Validation if the input fields are empty
+	                    if (firstNameInput.isEmpty() || middleNameInput.isEmpty() || lastNameInput.isEmpty() || programChoice.isEmpty() || ageInput.isEmpty() 
+	                    	|| addressInput.isEmpty() || signUser.isEmpty() || signPass.isEmpty()) {
+							
+							throw new Exception("All fields must be filled!");
+				        
+						//To ensure that exactly one gender option is selected
+						} else if ( !male.isSelected() && !female.isSelected() && !pnts.isSelected()) {
+							
+							throw new Exception("Please select one option for sex!");
+							
+						//To ensure that exactly one hobby option is selected
+						} else if (!sports.isSelected() && !arts.isSelected() && !academic.isSelected() && !others.isSelected()) {
+							
+							throw new Exception("Please select atleast one option for hobbies!");
+						
+						//Validation for name and program input(only letters allowed)
+						} else if (!firstNameInput.matches("[a-zA-Z]+") || !middleNameInput.matches("[a-zA-Z]+") || !lastNameInput.matches("[a-zA-Z]+") || !programChoice.matches("[a-zA-Z]+")) {
+							
+							throw new Exception("Name input must contain letters.");
+							
+						//Validation for age input(only numbers allowed)
+						} else if (!ageInput.matches("^[0-9]+$")) {
+							
+							throw new Exception("Age input must contain numbers");
+				            
+						//Validation for address input(no special characters allowed, only letters, numbers, and spaces)
+						} else if (!addressInput.matches("[a-zA-Z0-9\\s]+")) {
+							
+							throw new Exception("Address input must not contain special characters");
+							
+						} else {
+							//Displays success message dialog if all validation passed
+							JOptionPane.showMessageDialog(signUpFrame, "Successfully Registered", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+							
+						}
+	                    //Proceeds to login form after successful registration
+	                    loginForm();
+						signUpFrame.setVisible(false);
+						
+					} catch (Exception ex) {
+						//Displays error message dialog in case of failure in validation
+						JOptionPane.showMessageDialog(signUpFrame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						
+					}
+					
+					
+				}
+			});
+			submit.setFont(new Font("Tahoma", Font.BOLD, 16));
+			submit.setBounds(186, 617, 445, 50);
+		}
+		
+		public static void loginForm () {
+			//Create a new JFrame for login form
+			JFrame loginFrame = new JFrame("Student Registration Form");
+			loginFrame.setTitle("LogIn Form");
+			loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			loginFrame.setBounds(100, 100, 400, 326);
+			loginFrame.setVisible(true);
+			loginFrame.setLocationRelativeTo(null);
+			
+			//JPanel to hold the login components
+			JPanel loginPnl = new JPanel();
+			loginFrame.add(loginPnl);
+			loginPnl.setBackground(new Color(230, 255, 230));
+			loginPnl .setLayout(null);
+			
+			//Label for the login form title
+			JLabel newLabel_3 = new JLabel("Login Form");
+			loginPnl .add(newLabel_3);
+			newLabel_3.setForeground(new Color(0, 128, 0));
+			newLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+			newLabel_3.setBounds(127, 29, 136, 25);
+			newLabel_3.setFont(new Font("Tahoma", Font.BOLD, 20));
+			
+			//Label for user name input field
+			JLabel loginUser = new JLabel("Username:");
+			loginPnl.add(loginUser);
+			loginUser.setFont(new Font("Tahoma", Font.BOLD, 16));
+			loginUser.setHorizontalAlignment(SwingConstants.LEFT);
+			loginUser.setBounds(30, 92, 97, 13);
+			
+			//Label for password input field
+			JLabel loginPass = new JLabel("Password:");
+			loginPnl.add(loginPass);
+			loginPass.setFont(new Font("Tahoma", Font.BOLD, 16));
+			loginPass.setBounds(30, 144, 108, 13);
+			
+			//Text field for user name input
+			JTextField loginUserTf = new JTextField();
+			loginPnl.add(loginUserTf);
+			loginUserTf.setBounds(137, 85, 210, 31);
+			loginUserTf.setColumns(10);
+			
+			//Password field for password input
+			JPasswordField loginPassF = new JPasswordField();
+			loginPnl.add(loginPassF);
+			loginPassF.setBounds(137, 137, 210, 31);
+			
+			//Label to prompt users that don't have an account to login
+			JLabel newLabel_4 = new JLabel("Don't have an account?");
+			loginPnl.add(newLabel_4);
+			newLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 13));
+			newLabel_4.setBounds(73, 241, 190, 13);
+			
+			//Login Button
+			JButton btnLogin = new JButton("Login");
+			loginPnl.add(btnLogin);
+			btnLogin.setForeground(new Color(255, 255, 255));
+			btnLogin.setBackground(new Color(0, 128, 0));
+			btnLogin.setFont(new Font("Tahoma", Font.BOLD, 14));
+			btnLogin.setBounds(73, 194, 225, 34);
+			btnLogin.addActionListener(new ActionListener() {
+				
+				//Action listener for login button
+			    public void actionPerformed(ActionEvent e) { 
+			        try {
+			        	//Get user input
+			            enteredUsername = loginUserTf.getText().trim();
+			            enteredPassword = new String(loginPassF.getPassword()).trim();
+			            
+			            //Validation if the input fields are empty
+			            if (enteredUsername.isEmpty() || enteredPassword.isEmpty()) {
+			                throw new Exception("All fields must be filled!");
+			                
+			                //Validates user name and password against stored values
+			            } else if (!enteredUsername.equals(signUser) || !enteredPassword.equals(signPass)) {
+			                throw new Exception("Invalid username or password!");
+			            } else {
+			                registeredStudentDetails(); //Proceeds to next form
+			                loginFrame.setVisible(false); //Closes login form
+			            }
+			        } catch (Exception ex) {
+			        	//Displays error message dialog if login fails
+			            JOptionPane.showMessageDialog(loginFrame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			        }
+			    }
+			});
+
+			//Button to redirect to the Sign-Up form
+			JButton signUp = new JButton("Sign Up");
+			loginPnl.add(signUp);
+			signUp.setForeground(new Color(255, 255, 255));
+			signUp.setBackground(new Color(0, 128, 0)); 
+			signUp.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					signUpForm(); //Open Sign-Up form
+					loginFrame.setVisible(false); //Closes login form
+				}
+			});
+			signUp.setBounds(213, 238, 85, 21);
+		}
+		
+		public static void registeredStudentDetails () {
+			
+			//New JFrame to display student details
+			JFrame detailsFrame = new JFrame ();
+			detailsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			detailsFrame.setBounds(100, 100, 450, 450);
+			detailsFrame.setVisible(true);
+			detailsFrame.setLocationRelativeTo(null);
+			
+			//JPanel to hold components
+			JPanel detailsPnl = new JPanel ();
+			detailsFrame.add(detailsPnl);
+			detailsPnl.setBackground(new Color(230, 255, 230));
+			detailsPnl.setLayout(null);
+			
+			//Label for the title
+			JLabel newLabel_5 = new JLabel("Student Details");
+			detailsPnl.add(newLabel_5);
+			newLabel_5.setForeground(new Color(0, 128, 0));
+			newLabel_5.setFont(new Font("Tahoma", Font.BOLD, 20));
+			newLabel_5.setBounds(134, 28, 166, 25);
+			
+			//Displays student's details using JTextArea
+			
+			String dummyData = (signUser == "AbrahamBuquid" && signPass == "bambam1ITA") ? hobbiesChoice : selectedHobbies; // This is added for the program dummy data run properly
+			
+			JTextArea detailsInfo = new JTextArea("\n Full Name: " + lastNameInput + ", " + firstNameInput + " " + middleNameInput + "\n\n" 
+													+ " Age: " + ageInput + "\n\n"
+													+ " Sex: " + sexChoice + "\n\n"
+													+ " Program: " + programChoice + "\n\n"
+													+ " Hobbies: " + dummyData + "\n\n"
+													+ " Address: " + addressInput);
+			detailsPnl.add(detailsInfo);
+			detailsInfo.setEditable(false); //Makes the text area read-only
+			detailsInfo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			detailsInfo.setBounds(38, 77, 360, 283);
+			
+
+		}
+
+	} 
