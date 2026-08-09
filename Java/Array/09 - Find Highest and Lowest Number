@@ -1,0 +1,39 @@
+
+public class twoDhighLow {
+
+	public static void main(String[] args) {
+		
+		int element [][] = {
+				{5, 12, 3},
+				{7, 9, 6},
+				{8, 2, 11}
+		};
+		
+		System.out.println("Elements of the 2D array: ");
+		for (int row = 0; row < element.length; row++) {
+			for (int col = 0; col < element[row].length; col++) {
+				System.out.print(element[row][col] + " "); // Printing out the output statically
+			}
+			System.out.println();
+		}
+		
+		int highest = element[0][0]; //Setting for the collection of highest and lowest number
+		int lowest = element[0][0];
+		
+		for (int row = 0; row < element.length; row++) { //row
+			for (int col = 0; col < element[row].length; col++) { // column
+				if (element[row][col] > highest) { //2D array first before highest
+					highest = element[row][col];
+				}
+				if (element[row][col] < lowest) { // Lowest first before the 2D array
+					lowest = element[row][col];
+				}
+			}
+		}
+		
+		System.out.println();
+		System.out.println("Highest Number: " + highest);
+		System.out.println("Lowest Number: " + lowest);
+	}
+
+}
