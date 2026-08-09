@@ -1,0 +1,125 @@
+package simpleRegistrationForm;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JOptionPane;
+
+public class registrationFormSample {
+    
+    static String userName, userMail, userAddress, userPassword;
+
+    public static void main(String[] args) {
+        
+        // Main Window 
+        JFrame mainWdw = new JFrame("Registration Form");
+        JPanel mainPnl;
+        JLabel greetings = new JLabel("Welcome!");
+        JLabel name, email, password, address;
+        JTextField nameFld, emailFld;
+        JPasswordField passwordFld;
+        JTextArea addressFld;
+        JButton register, cancel;
+        
+        // Main Window Setting
+        mainWdw.setVisible(true);
+        mainWdw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainWdw.setSize(400, 400);
+        mainWdw.setResizable(false);
+        mainWdw.setLocationRelativeTo(null);
+        
+        // Main Panel Settings
+        mainPnl = new JPanel();
+        mainWdw.add(mainPnl);
+        mainPnl.setLayout(null);
+        
+        // Greetings Settings
+        greetings = new JLabel("Welcome!");
+        mainPnl.add(greetings);
+        greetings.setBounds(130, 30, 300, 50);
+        greetings.setFont(new Font ("calibri", Font.BOLD, 26));
+        
+        // Name Settings
+        name = new JLabel("Name:");
+        mainPnl.add(name);
+        name.setBounds(60, 80, 100, 40);
+        name.setFont(new Font ("calibri", Font.BOLD, 16));
+        nameFld = new JTextField();
+        mainPnl.add(nameFld);
+        nameFld.setBounds(160, 90, 150, 20);
+        
+        // Email Settings
+        email = new JLabel("Email: ");
+        mainPnl.add(email);
+        email.setBounds(60, 120, 100, 40);
+        email.setFont(new Font ("calibri", Font.BOLD, 16));
+        emailFld = new JTextField();
+        mainPnl.add(emailFld);
+        emailFld.setBounds(160, 130, 150, 20);
+        
+        // Password Settings
+        password = new JLabel("Password:");
+        mainPnl.add(password);
+        password.setBounds(60, 160, 100, 40);
+        password.setFont(new Font ("calibri", Font.BOLD, 16));
+        passwordFld = new JPasswordField();
+        mainPnl.add(passwordFld);
+        passwordFld.setBounds(160, 170, 150, 20);
+        
+        // Address Settings
+        address = new JLabel("Address:");
+        mainPnl.add(address);
+        address.setBounds(60, 200, 100, 40);
+        address.setFont(new Font ("calibri", Font.BOLD, 16));
+        addressFld = new JTextArea();
+        mainPnl.add(addressFld);
+        addressFld.setBounds(160, 210, 150, 20);
+        
+        // Register Button Settings
+        register = new JButton("Register");
+        mainPnl.add(register);
+        register.setBounds(60, 250, 125, 30);
+        register.addActionListener(new ActionListener () {
+            public void actionPerformed(ActionEvent regForm) {
+                userName = nameFld.getText().trim();
+                userMail = emailFld.getText().trim();
+                userAddress = addressFld.getText().trim();
+                userPassword = new String(passwordFld.getPassword()).trim();
+                
+                try {
+                    if (userName.isEmpty() || userMail.isEmpty() || userAddress.isEmpty() || userPassword.isEmpty()) {
+                        throw new Exception("All fields must be filled!");
+                    }
+                    
+                    // Show user details in an option pane inside try-catch
+                    JOptionPane.showMessageDialog(mainWdw, "Name: " + userName + "\nEmail: " + userMail + "\nAddress: " + userAddress, "User Details", JOptionPane.INFORMATION_MESSAGE);
+                    
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(mainWdw, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        
+        // Cancel Button Settings
+        cancel = new JButton("Cancel");
+        mainPnl.add(cancel);
+        cancel.setBounds(190, 250, 125, 30);
+        cancel.addActionListener(new ActionListener () {
+        	public void actionPerformed (ActionEvent clear) {
+        		nameFld.setText("");
+                emailFld.setText("");
+                passwordFld.setText("");
+                addressFld.setText("");
+        	}
+        });
+        
+    } // End of Main Method
+}
