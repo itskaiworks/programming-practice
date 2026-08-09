@@ -1,0 +1,72 @@
+import java.util.Scanner;
+
+public class BinarySearch {
+	
+	static int size, search;
+	static boolean found;
+	
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner (System.in);
+		
+		System.out.print("Enter Size: ");
+		size = sc.nextInt();
+		
+		int [] arr = new int[size];
+		
+		System.out.println("Enter " + " Numbers: ");
+		for (int index = 0; index < arr.length; index++) {
+			arr[index] = sc.nextInt();
+		}
+		
+		System.out.println("Acsending Order: ");
+		bubbleSort(arr);
+		printArray(arr);
+		
+		System.out.print("Enter Number to Search: ");
+		search = sc.nextInt();
+		binarySearch(arr);
+		
+		if (found == true) {
+			System.out.print("Number found in the array.");
+		}
+		
+	} public static void bubbleSort (int [] arr) {
+		boolean swapped;
+		for (int outer = 0; outer < arr.length - 1; outer++) {
+			swapped = false;
+			for (int inner = 0; inner < arr.length - outer - 1; inner++) {
+				if (arr[inner] > arr[inner + 1]) {
+					int temp = arr[inner + 1];
+					arr[inner + 1] = arr[inner];
+					arr[inner] = temp;
+					swapped = true;
+				}
+			}
+			if (swapped == false) break;
+		}
+	} public static void binarySearch (int [] arr) {
+		int min = 0;
+		int max = size - 1;
+		
+		found = false;
+		
+		while (min <= max) {
+			int mid = (min + max) / 2;
+			if (arr[mid] == search) {
+				found = true;
+				break; 
+			} else if (arr[mid] < search) {
+				min = mid + 1;
+			} else {
+				max = mid - 1;
+			}
+		}
+		
+	} public static void printArray (int [] arr) {
+		for (int num : arr) {
+			System.out.print(num + " ");
+		}
+	}
+
+}
