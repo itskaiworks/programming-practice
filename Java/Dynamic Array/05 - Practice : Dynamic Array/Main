@@ -1,0 +1,47 @@
+import java.util.Scanner;
+	// entry point
+	public class Main {
+		public static void main(String[] args) {
+			
+			Scanner sc = new Scanner (System.in);
+			int capacity, delIndex, element;
+			
+			System.out.print("Enter size of the array: ");
+			capacity = sc.nextInt();
+			
+			//creates dynamic array
+			DynamicArray dynamicArray = new DynamicArray(capacity);
+			System.out.println("\nSuccessfully created the dynamic array!");
+			System.out.println("Current Size: " + dynamicArray.getSize());
+			System.out.println("Current Capacity: " + dynamicArray.getCapacity());
+			
+			// assign values to the array
+			System.out.println("\nAdding elements to the array...");
+			for (int index = 0; index < capacity; index++) {
+				System.out.print("Enter number at " + index + ": ");
+				element = sc.nextInt();
+				dynamicArray.addElement(element);
+			}
+			
+			// displays the array information
+			System.out.println("\nCurrent Size: " + dynamicArray.getSize());
+			System.out.println("Current Capacity: " + dynamicArray.getCapacity());
+			System.out.print("The values of the array are: ");
+			for (int index = 0; index < dynamicArray.getSize(); index++) {
+				System.out.print(" " + dynamicArray.getElement(index));
+			}
+			
+			// removes an element from the array
+			System.out.print("\n\nEnter index to be removed: ");
+			delIndex = sc.nextInt();
+			dynamicArray.removeElement(delIndex);
+			
+			// displays the array information again after removal
+			System.out.println("\nCurrent Size: " + dynamicArray.getSize());
+			System.out.println("Current Capacity: " + dynamicArray.getCapacity());
+			System.out.print("The values of the array are: ");
+			for (int index = 0; index < dynamicArray.getSize(); index++) {
+				System.out.print(" " + dynamicArray.getElement(index));
+			}
+	}
+}
