@@ -1,0 +1,66 @@
+package bingo;
+import java.util.Scanner;
+
+public class bingoPractice {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        final int size = 5;
+        String shake;
+        int player, table, row, col;
+        int lowestValue = 1;
+        int highestValue = 75;
+        int drawnValue;
+        int rand;
+
+        System.out.print("Enter Number of Players: ");
+        player = sc.nextInt();
+        sc.nextLine(); // Consume newline
+
+        int card[][][] = new int[player][size][size];
+
+        // Generate Bingo Cards
+        for (table = 0; table < player; table++) {
+            System.out.println("Player " + (table + 1));
+            for (row = 0; row < size; row++) {
+                for (col = 0; col < size; col++) {
+                    rand = (int)(Math.random() * (highestValue - lowestValue + 1) + lowestValue);
+                    card[table][row][col] = rand; // Store value in the array
+                    System.out.print(rand + " ");
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
+        
+        System.out.println();
+        
+        // Bingo Calls
+        do {
+            drawnValue = (int)(Math.random() * (highestValue - lowestValue + 1) + lowestValue);
+            System.out.println("BINGO Calls: " + drawnValue);
+            
+            System.out.println();
+
+            for (table = 0; table < player; table++) {
+                System.out.println("Player " + (table + 1));
+                for (row = 0; row < size; row++) {
+                    for (col = 0; col < size; col++) {
+                        if (card[table][row][col] == drawnValue) {
+                            card[table][row][col] = 0; // Mark the called number
+                        }
+                        System.out.print(card[table][row][col] + " ");
+                    }
+                    System.out.println();
+                }
+                System.out.println();
+            }
+
+            System.out.println("SHAKE!!!");
+            shake = sc.nextLine();
+            
+        } while (shake.equalsIgnoreCase("shake"));
+
+        sc.close(); // Close scanner
+    }
+}
