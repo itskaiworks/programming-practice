@@ -1,0 +1,278 @@
+package jTableExcercise;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.JTable;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+
+public class SimpleCrudApplicationTable extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private static JPanel contentPane;
+	private static JTextField nameTxtFld, ageTxtFld;
+	private static JLabel lblID, lblName, lblAge, studentIdData, lblRecords, recordsData;
+	private static JButton newBtn, updateBtn, deleteBtn, saveBtn, cancelBtn;
+	private static JTable studentInfoTbl;
+	private static JScrollPane scrollpane;
+	
+	private static String [] columns = {"ID", "NAME", "AGE"};
+	private static DefaultTableModel studentsInfo = new DefaultTableModel();
+	private static int id = 1;
+	private boolean isNew = false, isUpdate = false, isDeleted = false;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SimpleCrudApplicationTable frame = new SimpleCrudApplicationTable();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public SimpleCrudApplicationTable() {
+		setTitle("JTable Simple CRUD Application");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 817, 631);
+		setVisible(true);
+		setLocationRelativeTo(null);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		scrollpane = new JScrollPane();
+		scrollpane.setBounds(50, 197, 683, 227);
+		contentPane.add(scrollpane);
+		
+		studentInfoTbl = new JTable(studentsInfo) {
+			
+			public boolean editCellat(int row, int column, java.util.EventObject e) {
+				return false;
+			}
+		};
+		
+		studentInfoTbl.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		studentInfoTbl.setEnabled(false);
+		studentInfoTbl.addMouseListener(new MouseAdapter () {
+			public void mouseClicked (MouseEvent e) {
+				
+				if (isUpdate == true || isDeleted == true) {
+					
+					int selectedRow = studentInfoTbl.getSelectedRow();
+					
+					studentIdData.setText(studentsInfo.getValueAt(selectedRow, 0).toString());
+					nameTxtFld.setText(studentsInfo.getValueAt(selectedRow, 1).toString());
+					ageTxtFld.setText(studentsInfo.getValueAt(selectedRow, 2).toString());
+				}
+			}
+		});
+		
+		studentsInfo.setColumnIdentifiers(columns);
+		
+		scrollpane.setViewportView(studentInfoTbl);
+		
+		lblID = new JLabel("ID:");
+		lblID.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblID.setBounds(50, 63, 45, 13);
+		contentPane.add(lblID);
+		
+		studentIdData = new JLabel("");
+		studentIdData.setFont(new Font("Tahoma", Font.BOLD, 14));
+		studentIdData.setBounds(148, 63, 45, 13);
+		contentPane.add(studentIdData);
+		
+		lblName = new JLabel("NAME:");
+		lblName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblName.setBounds(50, 106, 120, 13);
+		contentPane.add(lblName);
+		
+		nameTxtFld = new JTextField();
+		nameTxtFld.setBounds(147, 99, 586, 30);
+		contentPane.add(nameTxtFld);
+		nameTxtFld.setColumns(10);
+		
+		lblAge = new JLabel("AGE:");
+		lblAge.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblAge.setBounds(50, 149, 120, 13);
+		contentPane.add(lblAge);
+		
+		ageTxtFld = new JTextField();
+		ageTxtFld.setColumns(10);
+		ageTxtFld.setBounds(147, 143, 293, 30);
+		contentPane.add(ageTxtFld);
+		
+		studentInfoTbl = new JTable();
+		studentInfoTbl.setBounds(50, 197, 683, 227);
+		contentPane.add(studentInfoTbl);
+		
+		lblRecords = new JLabel("RECORDS:");
+		lblRecords.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblRecords.setBounds(648, 434, 120, 13);
+		contentPane.add(lblRecords);
+		
+		recordsData = new JLabel("0");
+		recordsData.setFont(new Font("Tahoma", Font.BOLD, 14));
+		recordsData.setBounds(730, 434, 120, 13);
+		contentPane.add(recordsData);
+		
+		newBtn = new JButton("NEW");
+		newBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				isNew = true;
+				studentIdData.setText(String.valueOf(id));
+				
+			}
+		});
+		newBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		newBtn.setBounds(50, 472, 120, 30);
+		contentPane.add(newBtn);
+		
+		updateBtn = new JButton("UPDATE");
+		updateBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (studentsInfo.getRowCount() >= 1) {
+					
+					isUpdate = true;
+					studentInfoTbl.setEnabled(true);
+					
+				} else {
+					
+					JOptionPane.showMessageDialog(null, "Cannot be added. There is now existing list.", "Error", JOptionPane.ERROR_MESSAGE);
+					
+				}
+			}
+		});
+		updateBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		updateBtn.setBounds(50, 512, 120, 30);
+		contentPane.add(updateBtn);
+		
+		deleteBtn = new JButton("DELETE");
+		deleteBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (studentsInfo.getRowCount() >= 1) {
+					
+					isDeleted = true;
+					studentInfoTbl.setEnabled(true);
+					
+				} else {
+					
+					JOptionPane.showMessageDialog(null, "Cannot be added. There is now existing list.", "Warning", JOptionPane.WARNING_MESSAGE);
+					
+				}
+
+			}
+		});
+		deleteBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		deleteBtn.setBounds(50, 554, 120, 30);
+		contentPane.add(deleteBtn);
+		
+		saveBtn = new JButton("SAVE");
+		saveBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (isNew == true) {
+					
+					Object [] data = new Object [3];
+					
+					data [0] = studentIdData.getText();
+					data [1] = nameTxtFld.getText();
+					data [2] = ageTxtFld.getText();
+					
+					studentsInfo.addRow(data);
+					
+					id++;
+					
+					recordsData.setText( "" + studentsInfo.getRowCount());
+					
+					clearControls();
+					
+					JOptionPane.showMessageDialog(null, "New records save!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+					
+				} else if (isUpdate == true) {
+					
+					int selectedRow = studentInfoTbl.getSelectedRow();
+					
+					studentIdData.setText(studentsInfo.getValueAt(selectedRow, 0).toString());
+					nameTxtFld.setText(studentsInfo.getValueAt(selectedRow, 1).toString());
+					ageTxtFld.setText(studentsInfo.getValueAt(selectedRow, 2).toString());
+					
+					clearControls();
+					
+					JOptionPane.showMessageDialog(null, "Selected records updated!", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+					
+				} else if (isDeleted) {
+					
+					int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to remove selected row?", "Warning", JOptionPane.WARNING_MESSAGE);
+					
+					if (result == JOptionPane.YES_OPTION) {
+						
+						studentsInfo.removeRow(studentInfoTbl.getRowCount());
+						recordsData.setText( "" + studentsInfo.getRowCount());
+						
+					}
+					
+					clearControls();
+				}
+			}
+		});
+		saveBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		saveBtn.setBounds(218, 472, 120, 30);
+		contentPane.add(saveBtn);
+		
+		cancelBtn = new JButton("CANCEL");
+		cancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				nameTxtFld.setText("");
+				ageTxtFld.setText("");
+				
+			}
+		});
+		cancelBtn.setFont(new Font("Tahoma", Font.BOLD, 12));
+		cancelBtn.setBounds(218, 512, 120, 30);
+		contentPane.add(cancelBtn);
+	}
+	
+	public void clearControls () {
+		
+		studentIdData.setText("");
+		nameTxtFld.setText("");
+		ageTxtFld.setText("");
+		
+		isNew = false;
+		isUpdate = false;
+		isDeleted = false;
+		
+		studentInfoTbl.clearSelection();
+		
+		studentInfoTbl.setEnabled(false);
+	}
+}
