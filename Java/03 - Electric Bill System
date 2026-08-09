@@ -1,0 +1,77 @@
+import java.util.Scanner;
+
+public class electricityExpenses {
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        double rate = 6.00;
+        double bill;
+        double consumptionPerkWh;
+        double totalExpenses;
+        double billBeforeDiscount;
+        String repeat;
+        
+        System.out.println("WELCOME!");
+        System.out.println();
+        
+        do {
+            System.out.print("Enter the Number of months to calculate: ");
+            int month = scan.nextInt();
+
+            totalExpenses = 0; // Reset total expenses for each calculation
+            billBeforeDiscount = 0; // Reset the bill before discount
+
+            System.out.println();
+
+            for (int e = 1; e <= month; e++) {
+                System.out.print("Enter the kWh consumption for month " + e + ": ");
+                consumptionPerkWh = scan.nextDouble();
+
+                // Calculate the bill before applying any discount
+                billBeforeDiscount += consumptionPerkWh * rate;
+
+                // Calculate the final bill based on user's monthly consumption per kWh
+                if (consumptionPerkWh <= 100) {
+                    bill = consumptionPerkWh * rate; // No discount
+                    System.out.println("Bill Consumption this Month per kWh is: ₱" + bill);
+                    System.out.println();
+                    
+                } else if (consumptionPerkWh <= 200) {
+                    bill = (100 * rate) + ((consumptionPerkWh - 100) * rate * 0.90); // 10% discount on next 100 kWh
+                    System.out.println("You are Qualified for 10% Discount!");
+                    System.out.println("Bill Consumption this Month per kWh without Discount is: ₱" + consumptionPerkWh * rate);
+                    System.out.println("Bill Consumption this Month per kWh with 10% Discount is: ₱" + bill);
+                    System.out.println();
+                    
+                } else if (consumptionPerkWh <= 300) {
+                    bill = (100 * rate) + (100 * rate * 0.90) + ((consumptionPerkWh - 200) * rate * 0.85); // 15% discount for next 100 kWh
+                    System.out.println("You are Qualified for 15% Discount!");
+                    System.out.println("Bill Consumption this Month per kWh without Discount is: ₱" + consumptionPerkWh * rate);
+                    System.out.println("Bill Consumption this Month per kWh with 15% Discount is: ₱" + bill);
+                    System.out.println();
+                    
+                } else {
+                    bill = (100 * rate) + (100 * rate * 0.90) + (100 * rate * 0.85) + ((consumptionPerkWh - 300) * rate * 0.80); // 20% discount for excess above 300 kWh
+                    System.out.println("You are Qualified for 20% Discount!");
+                    System.out.println("Bill Consumption this Month per kWh without Discount is: ₱" + consumptionPerkWh * rate);
+                    System.out.println("Bill Consumption this Month per kWh with 20% Discount is: ₱" + bill);
+                    System.out.println();
+                }
+                
+                totalExpenses += bill; // Accumulate total expenses
+            }
+  
+            System.out.println("Total electricity expense for " + month + " month(s) before discount is ₱" + billBeforeDiscount);
+            System.out.println("Total electricity expense after discount for " + month + " month(s) is: ₱" + totalExpenses);
+            
+            System.out.println();
+            System.out.print("Do you want to calculate another Household Electricity Expenses? (Yes/No): "); // Prompt user if they want to calculate again
+            scan.nextLine();  // Consume the leftover newline
+            System.out.println();
+            
+            repeat = scan.nextLine();
+        } while (repeat.equalsIgnoreCase("Yes"));
+
+        scan.close();
+    }
+}
