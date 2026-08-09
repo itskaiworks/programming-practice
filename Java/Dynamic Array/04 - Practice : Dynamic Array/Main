@@ -1,0 +1,102 @@
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner (System.in);
+		Function function = new Function();
+		int choice, search, delete, replace, indices;
+		
+		while (true) {
+			print("\n\n============== WELCOME ===============");
+			print("\n============ CHOOSE OPTION =============");
+			print("\n\n 1. Display Elemenet & Count"
+				+ "\n 2. Sort Element"
+				+ "\n 3. Search Element"
+				+ "\n 4. Add Element"
+				+ "\n 5. Delete Element"
+				+ "\n 6. Replace Element"
+				+ "\n 7. Highest & Lowest (Odd & Even)"
+				+ "\n 8. Sum of Highest (Odd & Even)"
+				+ "\n 9. Sum of Lowest (Odd & Even)"
+				+ "\n 10. Indices of Element"
+				+ "\n 11. Element w/ Duplicate"
+				+ "\n 12. Element w/o Duplicate"
+				+ "\n 13. Most Occurring Element"
+				+ "\n 14. First non-repeating Element"
+				+ "\n 15. Find Second Largest Element"
+				+ "\n [ 0 ] Exit Program");
+			print("\n\n Enter Choice: ");
+			choice = sc.nextInt();
+			
+			switch (choice) {
+			case 1:
+				function.displayElement(function.array);
+				function.displayElementCount(function.array);
+				break;
+			case 2:
+				function.sortElement(function.array);
+				break;
+			case 3:
+				print("\n Enter element to search: ");
+				search = sc.nextInt();
+				function.searchElement(function.array, search);
+				break;
+			case 4:
+				function.addElement(function.array);
+				break;
+			case 5:
+				print("\n Enter element to delete: ");
+				delete = sc.nextInt();
+				function.deleteElement(function.array, delete);
+				break;
+			case 6:
+				print("\n Enter element to replace: ");
+				replace = sc.nextInt();
+				function.replaceElement(function.array, replace);
+				break;
+			case 7:
+				function.highLow(function.array);
+				break;
+			case 8:
+				function.highestSum(function.array);
+				break;
+			case 9:
+				function.lowestSum(function.array);
+				break;
+			case 10:
+				print("\n Enter element to find indices: ");
+				indices = sc.nextInt();
+				function.indicesOfElement(function.array, indices);
+				break;
+			case 11:
+				function.elementsWithDuplicate(function.array);
+				break;
+			case 12:
+				function.elementsWithoutDuplicate(function.array);
+				break;
+			case 13:
+				function.mostOccuringElement(function.array);
+				break;
+			case 14:
+				function.firstNonRepeatingElement(function.array);
+				break;
+			case 15:
+				function.secondLargestElement(function.array);
+				break;
+			case 0:
+				break;
+			}
+		}
+	}
+	
+	public static void print (String word) {
+		System.out.print(word);
+	}
+	
+	public static void println (String word) {
+		System.out.println(word);
+	}
+
+}
