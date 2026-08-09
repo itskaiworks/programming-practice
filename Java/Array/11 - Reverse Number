@@ -1,0 +1,37 @@
+package arrayPeactice3;
+
+import java.util.Scanner;
+
+public class reverseArray {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		int loop;
+		
+		int num[] = new int [5];
+		
+		System.out.println("Enter 5 Integer Elements: ");
+		
+		for (loop = 0; loop < num.length; loop++) {
+			num[loop] = sc.nextInt();
+		}
+		
+		System.out.println();
+		
+		System.out.print("The Original Array: ");
+		for (loop = 0; loop < num.length; loop++) {
+			System.out.print(num[loop] + " ");
+		}
+		
+		System.out.println();
+		
+		System.out.print("Reverse Array: ");
+		for (loop = num.length-1; loop >= 0; loop--) {
+			System.out.print(num[loop] + " ");
+		}
+		
+
+	}
+
+}
