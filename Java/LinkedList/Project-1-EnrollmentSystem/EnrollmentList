@@ -1,0 +1,428 @@
+public class EnrollmentList {
+    private OverallNode head;
+    private OverallNode tail;
+
+    // Method for enrolling students
+    public int enrollStudent(Student student, Course course) {
+        if (course.getSlots() <= 0) { // if the course slots is 0 it prompts a message
+            print("\n [!] Cannot enroll. " + course.getCourseCode() + " is already full.");
+            return -1; // Return -1 to indicate enrollment failed
+        }
+
+        OverallNode current = head;
+        while (current != null) { // traverse the list                                               
+            Enrollment enroll = current.getEnrollment();
+            if (enroll != null &&
+                enroll.getStudent().getStudentID() == student.getStudentID() &&
+                isSameString(enroll.getCourse().getCourseCode(), course.getCourseCode())) { // If the student is already enrolled in a specific course
+                print("\n [!] Student is already enrolled in this course.\n");
+                return 0; // Return 0 to indicate duplicate enrollment
+            }
+            current = current.getNext(); // Move to the next node
+        }
+
+        Enrollment newEnrollment = new Enrollment(student, course); // Create new enrollment object
+        student.setStatus("ACTIVE"); // Update student's status
+        course.setSlots(course.getSlots() - 1); // Reduce course slots
+
+        OverallNode newNode = new OverallNode();
+        newNode.setEnrollment(newEnrollment);
+        newNode.setStudent(student);
+        newNode.setCourse(course);
+
+        if (head == null) { // No enrollment yet
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.setNext(newNode);
+            newNode.setPrev(tail);
+            tail = newNode;
+        }
+        return 1; // Return 1 to indicate successful enrollment
+    }
+
+    // Method to update the grades (midterm and final) of a student in a specific course
+    public int updateGrades(int studentID, double newMidterm, double newFinal, String courseCode) {
+        OverallNode current = head;
+        while (current != null) {
+            Enrollment enrolled = current.getEnrollment();
+
+            if (enrolled != null && enrolled.getStudent().getStudentID() == studentID) {
+                if (isSameString(enrolled.getCourse().getCourseCode(), courseCode)) {
+                    double updatedMidterm = (newMidterm >= 0) ? newMidterm : enrolled.getMidtermGrade();
+                    double updatedFinal = (newFinal >= 0) ? newFinal : enrolled.getFinalGrade();
+
+                    enrolled.setMidtermGrade(updatedMidterm);
+                    enrolled.setFinalGrade(updatedFinal);
+
+                    enrolled.computeAverageGrades();
+                    enrolled.generateRemarkBasedOnAverage();
+                    return 1;
+                }
+            }
+            current = current.getNext();
+        }
+        return 0;
+    }
+
+    public boolean deleteEnrollment(int studentID, String course) {
+        OverallNode current = head;
+        while (current != null) {
+            Enrollment enrollment = current.getEnrollment();
+
+            if (enrollment != null &&
+                enrollment.getStudent().getStudentID() == studentID &&
+                isSameString(enrollment.getCourse().getCourseCode(), course)) {
+
+                if (current == head) {
+                    head = current.getNext();
+                    if (head != null) head.setPrev(null);
+                    else tail = null;
+
+                } else if (current == tail) {
+                    tail = current.getPrev();
+                    if (tail != null) tail.setNext(null);
+
+                } else {
+                    current.getPrev().setNext(current.getNext());
+                    current.getNext().setPrev(current.getPrev());
+                }
+
+                print("\n Deleting enrollment record...");
+                return true;
+            }
+            current = current.getNext();
+        }
+        return false;
+    }
+
+    public void generateStudentReport(int studentID) {
+        int totalEnrollments = 0, passedCount = 0, failedCount = 0;
+        double totalAverage = 0;
+        boolean studentFound = false;
+        OverallNode current = head;
+        Student student = null;
+
+        while (current != null) {
+            Enrollment enrollment = current.getEnrollment();
+            if (enrollment != null && enrollment.getStudent().getStudentID() == studentID) {
+                studentFound = true;
+                student = enrollment.getStudent();
+                break;
+            }
+            current = current.getNext();
+        }
+
+        if (!studentFound) {
+            print("\n [!] No enrollment records found for student ID " + studentID + "\n");
+            return;
+        }
+
+        print("\n Generating student record for student number " + studentID + "...");
+        print("\n======================================= ");
+        print("\n             STUDENT REPORT             ");
+        print("\n======================================= ");
+        print("\n Student ID   : S-" + student.getStudentID());
+        print("\n Student Name : " + student.getLastName() + ", " + student.getFirstName());
+        print("\n Year Level   : " + student.getYearLevel());
+        print("\n Program      : " + student.getProgram());
+        print("\n======================================= ");
+        print("\n           ENROLLED COURSES             ");
+        print("\n======================================= ");
+
+        current = head;
+        while (current != null) {
+            Enrollment enrollment = current.getEnrollment();
+            if (enrollment != null && enrollment.getStudent().getStudentID() == studentID) {
+                Course course = enrollment.getCourse();
+                print("\n Course Code   : " + course.getCourseCode());
+                print("\n Course Title  : " + course.getCourseTitle());
+                print("\n Midterm Grade : " + enrollment.getMidtermGrade());
+                print("\n Final Grade   : " + enrollment.getFinalGrade());
+                print("\n Average       : " + enrollment.getAverage());
+                print("\n Equivalent    : " + enrollment.getEquivalent());
+                print("\n Remarks       : " + enrollment.getRemarks());
+                print("\n---------------------------------------");
+
+                totalEnrollments++;
+                totalAverage += enrollment.getAverage();
+
+                if (isSameString("PASSED", enrollment.getRemarks())) passedCount++;
+                else if (isSameString("FAILED", enrollment.getRemarks())) failedCount++;
+            }
+            current = current.getNext();
+        }
+
+        if (totalEnrollments == 0) {
+            print("\n\n [!] No enrollments found for entered student ID.\n");
+        } else {
+            print("\n======================================= ");
+            print("\n                SUMMARY                 ");
+            print("\n======================================= ");
+            print("\n Total Enrollments : " + totalEnrollments);
+            print("\n Passed Courses    : " + passedCount);
+            print("\n Failed Courses    : " + failedCount);
+            print("\n Overall Average   : " + (totalAverage / totalEnrollments));
+            print("\n======================================= \n");
+        }
+    }
+
+    public void viewAllEnrollments() {
+        OverallNode outer = head;
+        print("\n======================================= ");
+        print("\n       LIST OF ENROLLED STUDENTS        ");
+        print("\n======================================= ");
+        int count = 0;
+
+        while (outer != null) {
+            Enrollment outerEnrollment = outer.getEnrollment();
+            if (outerEnrollment != null) {
+                Student student = outerEnrollment.getStudent();
+                boolean isPrinted = false;
+
+                OverallNode checker = head;
+                while (checker != outer) {
+                    Enrollment checkEnroll = checker.getEnrollment();
+                    if (checkEnroll != null &&
+                        checkEnroll.getStudent().getStudentID() == student.getStudentID()) {
+                        isPrinted = true;
+                        break;
+                    }
+                    checker = checker.getNext();
+                }
+
+                if (!isPrinted) {
+                    print("\n\n ENROLLMENT NO. " + (++count));
+                    print("\n----------------------------------------");
+                    print("\n Student ID   : " + student.getStudentID());
+                    print("\n Student Name : " + student.getLastName() + ", " + student.getFirstName());
+                    print("\n Year Level   : " + student.getYearLevel());
+                    print("\n Program      : " + student.getProgram());
+                    print("\n----------------------------------------");
+                    print("\n Status       : " + student.getStatus());
+                    print("\n----------------------------------------");
+                    print("\n Enrolled Courses:");
+
+                    OverallNode inner = head;
+                    while (inner != null) {
+                        Enrollment innerEnrollment = inner.getEnrollment();
+                        if (innerEnrollment != null &&
+                            innerEnrollment.getStudent().getStudentID() == student.getStudentID()) {
+                            print("\n----------------------------------------");
+                            print("\n Course Code  : " + innerEnrollment.getCourse().getCourseCode());
+                            print("\n Course Title : " + innerEnrollment.getCourse().getCourseTitle());
+                            print("\n Units        : " + innerEnrollment.getCourse().getUnits());
+                            print("\n----------------------------------------");
+                        }
+                        inner = inner.getNext();
+                    }
+                }
+            }
+            outer = outer.getNext();
+        }
+    }
+
+    public void listFailedStudents() {
+        if (isEmpty()) {
+            print("\n [!] No enrollment records to check for failed students.\n");
+            return;
+        }
+
+        OverallNode outer = head;
+        boolean anyFailed = false;
+        print("\n=======================================");
+        print("\n       LIST OF FAILED STUDENTS         ");
+        print("\n       > At least One Subject <        ");
+        print("\n=======================================");
+
+        while (outer != null) {
+            Enrollment enrollment1 = outer.getEnrollment();
+            if (enrollment1 != null) {
+                Student student1 = enrollment1.getStudent();
+                int currentID = student1.getStudentID();
+                boolean alreadyShown = false;
+
+                OverallNode check = head;
+                while (check != outer) {
+                    Enrollment prev = check.getEnrollment();
+                    if (prev != null && prev.getStudent().getStudentID() == currentID) {
+                        alreadyShown = true;
+                        break;
+                    }
+                    check = check.getNext();
+                }
+
+                if (!alreadyShown) {
+                    boolean failedOnce = false;
+                    OverallNode search = head;
+                    while (search != null) {
+                        Enrollment enrollmentSearch = search.getEnrollment();
+                        if (enrollmentSearch != null &&
+                            enrollmentSearch.getStudent().getStudentID() == currentID &&
+                            isSameString("FAILED", enrollmentSearch.getRemarks())) {
+                            failedOnce = true;
+                            break;
+                        }
+                        search = search.getNext();
+                    }
+
+                    if (failedOnce) {
+                        anyFailed = true;
+                        print("\n_______________________________________");
+                        print("\n\n STUDENT NO. " + student1.getStudentID() + " | " +
+                              student1.getLastName() + ", " + student1.getFirstName());
+                        print("\n_______________________________________\n");
+
+                        OverallNode inner = head;
+                        while (inner != null) {
+                            Enrollment enrollment2 = inner.getEnrollment();
+                            if (enrollment2 != null &&
+                                enrollment2.getStudent().getStudentID() == currentID &&
+                                isSameString("FAILED", enrollment2.getRemarks())) {
+                                Course course = enrollment2.getCourse();
+                                print("\n  " + course.getCourseCode() + "     : " + course.getCourseTitle());
+                                print("\n  Average : " + enrollment2.getAverage());
+                                print("\n---------------------------------------");
+                            }
+                            inner = inner.getNext();
+                        }
+                    }
+                }
+            }
+            outer = outer.getNext();
+        }
+
+        if (!anyFailed) {
+            print("\n\n [!] No students failed in any subject.\n");
+        }
+    }
+
+    public void averageGradePerStudent(EnrollmentList enrollments) {
+        if (isEmpty()) {
+            print("\n [!] No enrollments available to calculate averages.\n");
+            return;
+        }
+
+        OverallNode outer = enrollments.head;
+        print("\n\n=======================================");
+        print("\n      AVERAGE GRADE PER STUDENT         ");
+        print("\n      > Course & Overall Mean <         ");
+        print("\n======================================= ");
+
+        while (outer != null) {
+            Enrollment enrollment1 = outer.getEnrollment();
+            if (enrollment1 != null) {
+                Student student1 = enrollment1.getStudent();
+                int currentID = student1.getStudentID();
+                boolean alreadyShown = false;
+
+                OverallNode check = enrollments.head;
+                while (check != outer) {
+                    Enrollment prev = check.getEnrollment();
+                    if (prev != null && prev.getStudent().getStudentID() == currentID) {
+                        alreadyShown = true;
+                        break;
+                    }
+                    check = check.getNext();
+                }
+
+                if (!alreadyShown) {
+                    print("\n_______________________________________");
+                    print("\n\n STUDENT NO. " + student1.getStudentID() + " | " +
+                          student1.getLastName() + ", " + student1.getFirstName());
+                    print("\n_______________________________________\n");
+
+                    double totalAverage = 0;
+                    int totalCourses = 0;
+
+                    OverallNode inner = enrollments.head;
+                    while (inner != null) {
+                        Enrollment enrollment2 = inner.getEnrollment();
+                        if (enrollment2 != null &&
+                            enrollment2.getStudent().getStudentID() == currentID) {
+                            enrollment2.computeAverageGrades();
+                            Course course = enrollment2.getCourse();
+                            print("\n  " + course.getCourseCode() + "     : " + course.getCourseTitle());
+                            print("\n  Average : " + enrollment2.getAverage());
+                            print("\n---------------------------------------");
+                            totalAverage += enrollment2.getAverage();
+                            totalCourses++;
+                        }
+                        inner = inner.getNext();
+                    }
+
+                    if (totalCourses > 0) {
+                        double overallAverage = totalAverage / totalCourses;
+                        print("\n Overall Average : " + overallAverage);
+                        print("\n=======================================");
+                    }
+                }
+            }
+            outer = outer.getNext();
+        }
+    }
+
+    public boolean whatCoursesStudentIsEnrolled(int studentID) {
+        OverallNode current = head;
+        boolean found = false;
+        print("\n---------------------------------------");
+        print("\n        Course Enrolled Record:        ");
+        print("\n---------------------------------------");
+
+        while (current != null) {
+            Enrollment enrolled = current.getEnrollment();
+            if (enrolled != null && enrolled.getStudent().getStudentID() == studentID) {
+                print(enrolled.getCourse().getEnrolledCourseDetails());
+                found = true;
+            }
+            current = current.getNext();
+        }
+
+        if (!found) {
+            print("\n [!] No enrollment records found for entered student ID.\n");
+        }
+        return found;
+    }
+
+    public boolean isSameString(String checkString1, String checkString2) {
+        if (checkString1 == null || checkString2 == null) return false;
+
+        int stringLength1 = 0;
+        int stringLength2 = 0;
+
+        try {
+            while (true) {
+                checkString1.charAt(stringLength1);
+                stringLength1++;
+            }
+        } catch (StringIndexOutOfBoundsException e) {}
+
+        try {
+            while (true) {
+                checkString2.charAt(stringLength2);
+                stringLength2++;
+            }
+        } catch (StringIndexOutOfBoundsException e) {}
+
+        if (stringLength1 != stringLength2) return false;
+
+        for (int index = 0; index < stringLength1; index++) {
+            char character1 = checkString1.charAt(index);
+            char character2 = checkString2.charAt(index);
+
+            if (character1 >= 'a' && character1 <= 'z') character1 -= 32;
+            if (character2 >= 'a' && character2 <= 'z') character2 -= 32;
+
+            if (character1 != character2) return false;
+        }
+        return true;
+    }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    public static void print(String word) {
+        System.out.print(word);
+    }
+}
