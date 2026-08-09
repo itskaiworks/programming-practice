@@ -1,0 +1,58 @@
+import java.util.Scanner;
+
+public class SelectionSort {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Enter Size: ");
+        int size = sc.nextInt();
+        
+        int [] arr = new int[size];
+        
+        System.out.println("Enter " + size + " Numbers: ");
+        for (int index = 0; index < arr.length; index++) {
+        	arr[index] = sc.nextInt();
+        }
+        
+        System.out.print("Before Sorting: ");
+        printArray(arr);
+        
+        System.out.println();
+        
+        sortSelection(arr);
+        
+        System.out.print("After Sorting: ");
+        printArray(arr);
+       
+    } public static void sortSelection (int arr[]) {
+    	for (int outer = 0; outer < arr.length; outer++) {
+    		int lowest = outer;
+    		for (int inner = outer + 1; inner < arr.length; inner++) {
+    			if (arr[inner] < arr[lowest]) {
+    				lowest = inner;
+    			}
+    		}
+    		int temp = arr[lowest];
+    		arr[lowest] = arr[outer];
+    		arr[outer] = temp;
+    	}
+    } public static void printArray (int arr[]) {
+    	for (int num : arr) {
+    		System.out.print(num + " ");
+    	}
+    }
+    
+    public static void sort (int arr[]) {
+    	for (int outer = 0; outer < arr.length; outer++) {
+    		int low = outer;
+    		for (int inner = outer - 1; inner < arr.length; inner++) {
+    			if (arr[inner] < arr[low]) {
+    				low = inner;
+    			}
+    		}
+    		int temps = arr[low];
+    		arr[low] = arr[outer];
+    		arr[outer] = temps;
+    	}
+    }
+}
