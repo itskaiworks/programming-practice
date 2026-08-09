@@ -1,0 +1,164 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+
+public class form {
+
+	public static void main(String[] args) {
+		
+		JFrame frame = new JFrame("Enrollment Form");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setSize(576, 656);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		
+		JPanel panel = new JPanel();
+		frame.add(panel);
+		panel.setLayout(null);
+		
+		JTextArea textArea = new JTextArea();
+		panel.add(textArea);
+		textArea.setBounds(30, 10, 382, 90);
+		
+		JLabel label1 = new JLabel("User Entered in Text Area:");
+		panel.add(label1);
+		label1.setBounds(30, 118, 382, 21);
+		
+		JButton txBtn = new JButton("txBtn");
+		panel.add(txBtn);
+		txBtn.setBounds(442, 47, 85, 21);
+		txBtn.addActionListener(new ActionListener() {
+			public void actionPerformed (ActionEvent ex) {
+				
+				String txtInput = textArea.getText();
+				textArea.setText("");
+				label1.setText("User Entered in Text Area: " + txtInput);
+				
+			}
+		});
+		
+		JPasswordField passwordField = new JPasswordField();
+		panel.add(passwordField);
+		passwordField.setBounds(30, 185, 382, 33);
+		
+		JLabel label2 = new JLabel("Entered Password: (Hidden)");
+		panel.add(label2);
+		label2.setBounds(30, 238, 382, 21);
+		
+		JButton showBtn = new JButton("show");
+		panel.add(showBtn);
+		showBtn.setBounds(442, 191, 85, 21);
+		showBtn.addActionListener( new ActionListener () {
+			
+			boolean isPasswordVisible = false;
+			
+			public void actionPerformed (ActionEvent ex) {
+				
+				String password = new String (passwordField.getPassword()).trim();
+				
+				if (isPasswordVisible == true) {
+					
+					passwordField.setEchoChar((char)0);
+					showBtn.setText("hide");
+					label2.setText("Entered Password: " + password);
+					
+				} else if (isPasswordVisible == false) {
+					
+					passwordField.setEchoChar('*');
+					showBtn.setText("show");
+					label2.setText("Entered Password: (Hidden)");
+					
+				}
+				
+				isPasswordVisible = !isPasswordVisible;
+			}
+		});
+		
+		JLabel label3 = new JLabel("User Input:");
+		panel.add(label3);
+		label3.setBounds(30, 312, 382, 21);
+		
+		JButton inputBtn = new JButton("Name Input: ");
+		panel.add(inputBtn);
+		inputBtn.setBounds(30, 269, 382, 33);
+		inputBtn.addActionListener (new ActionListener () {
+			public void actionPerformed (ActionEvent ex) {
+				
+				String name = JOptionPane.showInputDialog(frame, "Enter Your Name: ", "User Full Name", JOptionPane.INFORMATION_MESSAGE);
+				label3.setText("Name Input: " + name);
+				
+			}
+		});
+		
+//		JLabel label4 = new JLabel("Greetings Message: ");
+//		panel.add(label4);
+//		label4.setBounds(30, 386, 382, 21);
+		
+		JButton messBtn = new JButton("Message");
+		panel.add(messBtn);
+		messBtn.setBounds(30, 343, 382, 33);
+		messBtn.addActionListener (new ActionListener () {
+			public void actionPerformed (ActionEvent ex) {
+				
+				JOptionPane.showMessageDialog(frame, "Hi, Welcome!", "Greetings Message", JOptionPane.INFORMATION_MESSAGE);
+				
+			}
+		});
+		
+		JLabel label5 = new JLabel("User Input:");
+		panel.add(label5);
+		label5.setBounds(30, 483, 382, 21);
+		
+		JButton cfBtn = new JButton("Confirm");
+		panel.add(cfBtn);
+		cfBtn.setBounds(30, 432, 382, 33);
+		cfBtn.addActionListener ( new ActionListener () {
+			public void actionPerformed (ActionEvent ex) {
+				
+				int choice = JOptionPane.showConfirmDialog(frame, "Confirm?", "Confirm Dialog", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+				
+				if (choice == JOptionPane.YES_OPTION) {
+					
+					label5.setText("User Input: " + "YES");
+					
+				} else if (choice == JOptionPane.NO_OPTION) {
+					
+					label5.setText("User Input: " + "NO");
+					
+				} else if (choice == JOptionPane.CANCEL_OPTION) {
+					
+					label5.setText("User Input: " + "CANCEL");
+					
+				}
+			}
+		});
+		
+		JLabel label6 = new JLabel("User Input:");
+		panel.add(label6);
+		label6.setBounds(30, 579, 382, 21);
+		
+		JButton opBtn = new JButton("Option");
+		panel.add(opBtn);
+		opBtn.setBounds(30, 530, 382, 33);
+		opBtn.addActionListener( new ActionListener () {
+			public void actionPerformed (ActionEvent ex) {
+				
+				String option [] = {"Laptop", "Cellphone", "Tablet"};
+				int choice1 = JOptionPane.showOptionDialog(frame, "Choose Device: ", null, 0, 0, null, option, null);
+				label6.setText("User Choice: " + option[choice1]);
+				
+			}
+		});
+		
+
+	}
+
+}
