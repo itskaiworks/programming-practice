@@ -1,0 +1,216 @@
+package coffeeShopOrderingManagementSystem;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+
+public class transactionLog extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTable table;
+    private DefaultTableModel tableModel;
+    private JScrollPane scrollPane;
+    private JMenuBar menuBar;
+    private JMenu mnMenu;
+    private JMenuItem mntmOrder, mntmTransaction, mntmClose;
+    private JLabel lblTransaction, lblTransactionLog, lblLogCount;
+    private JButton btnBack, btnDelete, btnDeleteAll;
+
+    private String customersName, coffee, coffeeQtty, pastries, pastriesQtty, addOns;
+    private int coffeePrice, pastriesPrice, addOnsPrice, total;
+
+    // Singleton instance for this frame
+    private static transactionLog instance;
+
+    // Table model used for displaying transactions
+    public static DefaultTableModel tableTransaction = new DefaultTableModel(
+        new Object[][] {},
+        new String[] { "Customer's Name", "Category", "Order", "Quantity", "Price" }
+    );
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    transactionLog frame = new transactionLog();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public transactionLog() {
+        // Set window title and size
+        setTitle("Transaction Log");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1090, 770);
+        setLocationRelativeTo(null); // Center on screen
+        setVisible(true);
+
+        // Setup content pane
+        contentPane = new JPanel();
+        contentPane.setBackground(new Color(255, 238, 247));
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        // Setup menu bar and items
+        menuBar = new JMenuBar();
+        menuBar.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        setJMenuBar(menuBar);
+
+        mnMenu = new JMenu("Menu");
+        menuBar.add(mnMenu);
+
+        // "Set Order" menu item opens order form
+        mntmOrder = new JMenuItem("Set Order");
+        mnMenu.add(mntmOrder);
+        mntmOrder.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SetOrder orderWindow = new SetOrder();
+                orderWindow.setVisible(true);
+                dispose();
+            }
+        });
+
+        // "Transaction Log" menu item disables itself
+        mntmTransaction = new JMenuItem("Transaction Log");
+        mnMenu.add(mntmTransaction);
+        mntmTransaction.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mntmTransaction.setEnabled(false);
+            }
+        });
+
+        // Separator and Close item
+        mnMenu.addSeparator();
+
+        // Close application
+        mntmClose = new JMenuItem("Close");
+        mnMenu.add(mntmClose);
+        mntmClose.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        // Setup scrollable table
+        scrollPane = new JScrollPane();
+        scrollPane.setBounds(46, 128, 987, 492);
+        contentPane.add(scrollPane);
+
+        JTable tableTransactionLog = new JTable(tableTransaction);
+        scrollPane.setViewportView(tableTransactionLog);
+
+        // Title label
+        lblTransaction = new JLabel("Transaction Log");
+        lblTransaction.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTransaction.setFont(new Font("Cooper Black", Font.BOLD, 40));
+        lblTransaction.setBounds(46, 45, 970, 71);
+        contentPane.add(lblTransaction);
+
+        // Label to show total transaction count (not used yet)
+        lblLogCount = new JLabel("");
+        lblLogCount.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblLogCount.setBounds(204, 647, 203, 13);
+        contentPane.add(lblLogCount);
+
+        // "BACK" button to return to CoffeeShop
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CoffeeShop shop = new CoffeeShop();
+                shop.setVisible(true);
+                dispose();
+            }
+        });
+        btnBack.setFont(new Font("Tahoma", Font.BOLD, 11));
+        btnBack.setBounds(645, 652, 118, 28);
+        btnBack.setBackground(new Color(255, 238, 247));
+        contentPane.add(btnBack);
+
+        // "DELETE" button for selected transaction
+        btnDelete = new JButton("DELETE");
+        btnDelete.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                tableTransaction = (DefaultTableModel) tableTransactionLog.getModel();
+                int selectedRow = tableTransactionLog.getSelectedRow();
+
+                if (selectedRow != -1) {
+                    // Remove selected row
+                    tableTransaction.removeRow(selectedRow);
+                } else {
+                    // Warn user if no selection
+                    JOptionPane.showMessageDialog(null, "Please select a row to delete.", "No Row Selected", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
+        btnDelete.setBounds(780, 652, 118, 28);
+        btnDelete.setBackground(new Color(255, 238, 247));
+        contentPane.add(btnDelete);
+
+        // "DELETE ALL" button for clearing entire table
+        btnDeleteAll = new JButton(" DELETE ALL");
+        btnDeleteAll.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                tableTransaction = (DefaultTableModel) tableTransactionLog.getModel();
+                int rowCount = tableTransaction.getRowCount();
+
+                if (rowCount > 0) {
+                    // Ask user for confirmation
+                    int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete all transactions?", "Confirm Delete All", JOptionPane.YES_NO_OPTION);
+                    if (response == JOptionPane.YES_OPTION) {
+                        // Clear all rows
+                        tableTransaction.setRowCount(0);
+                    }
+                } else {
+                    // Inform user if table is already empty
+                    JOptionPane.showMessageDialog(null, "No transactions to delete.", "Empty Table", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
+        btnDeleteAll.setFont(new Font("Tahoma", Font.BOLD, 11));
+        btnDeleteAll.setBackground(new Color(255, 238, 247));
+        btnDeleteAll.setBounds(915, 652, 118, 28);
+        contentPane.add(btnDeleteAll);
+
+        // DUMMY DATA for testing display
+        tableTransaction.addRow(new Object[]{"Mikaela", "Coffee", "Equality Drink", 2, "98 PHP"});
+        tableTransaction.addRow(new Object[]{"Pauleen", "Pastries", "Sinamon Twerk", 1, "69 PHP"});
+        tableTransaction.addRow(new Object[]{"Elaine", "Coffee", "Lumot Latte", 1, "49 PHP"});
+    }
+
+    // Method to add transaction from other parts of the app
+    public static void addTransaction(String name, String category, String order, int quantity, int price) {
+        tableTransaction.addRow(new Object[]{name, category, order, quantity, price + " PHP"});
+    }
+}
