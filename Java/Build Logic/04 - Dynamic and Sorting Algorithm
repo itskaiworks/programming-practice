@@ -1,0 +1,185 @@
+import java.util.Scanner;
+
+public class DynamicAndSortingProgram {
+	
+	static int capacity = 5, size = 0;
+	static int orgArr[] = new int[capacity];
+	static int newArr [];
+	static int element;
+
+	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		while (true) {
+			print("\n====Dynamic Array & Sorting Algorithm Program====");
+			print("\n\n1. Add Element");
+			print("\n2. View Element");
+			print("\n3. Sort Element");
+			print("\n4. Search Element");
+			print("\n5. Exit");
+			print("\n\nEnter Choice: ");
+			int choice = sc.nextInt();
+			
+			switch (choice) {
+			case 1:
+				//Check capacity of the system before proceeding
+				println("Enter element: ");
+				for (int outer = 0; outer < 5; outer++) {
+					print("[" + (outer + 1)+ "]: ");
+					element = sc.nextInt();
+					
+					if (size == capacity) {
+						capacity = capacity * 2;
+						
+						newArr = new int [capacity];
+						
+						for (int inner = 0; inner < size; inner++) {
+							
+							newArr[inner] = orgArr[inner];
+							
+						}
+						orgArr = newArr;
+					}
+					orgArr[size] = element;
+					size++;
+				}
+				break;
+			case 2:
+				println("Element entered: ");
+				for (int index = 0; index < size; index++) {
+					print( "[" + orgArr[index] + "]");
+				}
+				println("");
+				break;
+			case 3:
+				println(" ");
+				print("\nChoose sorting algorithm:");
+				print("\n1. Buuble");
+				print("\n2. Selection");
+				print("\n3. Insertion");
+				print("\nEnter sorting algorithm choice: ");
+				int sortChoice = sc.nextInt();
+				
+				if (sortChoice == 1) {
+					boolean swapped;
+					
+					for (int outer = 0; outer < size - 1; outer++) {
+						swapped = false;
+						for (int inner = 0; inner < size - outer - 1; inner++) {
+							if (orgArr[inner] > orgArr[inner + 1]) {
+								int temp = orgArr [inner + 1];
+								orgArr[inner + 1] = orgArr[inner];
+								orgArr[inner] = temp;
+								swapped = true;
+							}
+						}
+						if (!swapped) break;
+					}
+					 print("Element using bubble sort: ");
+					for (int num : orgArr) {
+						print("[" + num + "]");
+					}
+				} else if (sortChoice == 2) {
+					for (int outer = 0; outer < size; outer++) {
+						int lowest = outer;
+						for (int inner = outer + 1; inner < size; inner++) {
+							if (orgArr[inner] < orgArr[lowest]) {
+								lowest = inner;
+							}
+						}
+						int temps = orgArr[lowest];
+						orgArr[lowest] = orgArr[outer];
+						orgArr[outer] = temps;
+					}
+					 print("Element using selection sort: ");
+						for (int num : orgArr) {
+							print("[" + num + "]");
+						}
+				} else if (sortChoice == 3) {
+					for (int outer = 0; outer < size; outer++) {
+						int key = orgArr[outer];
+						int inner = outer - 1;
+						
+						while (inner >= 0 && orgArr[inner] > key) {
+							orgArr[inner + 1] = orgArr[inner];
+								inner--;				
+						}
+						orgArr[inner + 1] = key;
+					}
+					
+					print("Element using insertion sort: ");
+					for (int num : orgArr) {
+						print("[" + num + "]");
+				}
+					
+				}
+				break;
+			case 4:
+				print("Choose searching algorithm");
+				print("\n1. Binary");
+				print("\n2. Linear");
+				print("\nEnter seaching alorithm choice: ");
+				int searchChoice = sc.nextInt();
+				
+				if (searchChoice == 1) {
+					print("\nEnter number to search: ");
+					int search = sc.nextInt();
+					
+					int min = 0;
+					int max = size - 1;
+					
+					boolean found = false;
+					
+					while (min <= max) {
+						int mid = (min + max) / 2;
+						if (orgArr[mid] == search) {
+							found = true;
+							break;
+						} else if (orgArr[mid] < search) {
+							min = mid + 1;
+						} else {
+							max = mid - 1;
+						}
+					}
+					
+					if (found == true) {
+						print("Element found in array.");
+					} else {
+						print("Element does not exist in the array.");
+					}
+					
+				} else if (searchChoice == 2) {
+					
+					print("\nEnter number to search: ");
+					int search = sc.nextInt();
+					
+					boolean found = false;
+					
+					for (int index = 0; index < size; index++) {
+						if (orgArr[index] == search) {
+							found = true;
+							print("Element found in array.");
+							break;
+						}
+					}
+					
+					if (found == true) {
+						print("Element found in array.");
+					} else {
+						print("Element does not exist in the array.");
+					}
+				}
+				break;
+			case 5:
+				break;
+			}
+		}
+	}
+	public static void print (String word) {
+		System.out.print(word);
+	}
+	public static void println (String word) {
+		System.out.println(word);
+	}
+}
