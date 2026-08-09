@@ -1,0 +1,129 @@
+package coffeeShopOrderingManagementSystem;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JTextField;
+import java.awt.Color;
+import javax.swing.JButton;
+import javax.swing.JPasswordField;
+
+// Class for the Login Form GUI, extending JFrame
+public class LogInForm extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+
+	// GUI components
+	public JPanel contentPane;
+	public JTextField txfUser;
+	public JPasswordField passField;
+	public JLabel lblLogInTitle, lblUser, lblPassword;
+	public JButton btnLogIn;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					// Create and show the login form
+					LogInForm frame = new LogInForm();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace(); // Print any exception that occurs
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public LogInForm() {
+		// Set frame properties
+		setTitle("Log In");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 385, 290);
+		setLocationRelativeTo(null); // Center the frame on screen
+
+		// Initialize content pane
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 238, 247));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null); // Use absolute positioning
+
+		// Username label
+		lblUser = new JLabel("Username:");
+		lblUser.setBackground(new Color(0, 153, 51));
+		lblUser.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblUser.setBounds(21, 116, 79, 13);
+		contentPane.add(lblUser);
+
+		// Password label
+		lblPassword = new JLabel("Password:");
+		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblPassword.setBounds(21, 159, 79, 13);
+		contentPane.add(lblPassword);
+
+		// Username text field
+		txfUser = new JTextField();
+		txfUser.setBounds(110, 112, 222, 26);
+		contentPane.add(txfUser);
+		txfUser.setColumns(10);
+
+		// Login form title label
+		lblLogInTitle = new JLabel("Cafe's Log In Form");
+		lblLogInTitle.setFont(new Font("Cooper Black", Font.BOLD, 18));
+		lblLogInTitle.setBounds(93, 30, 250, 50);
+		contentPane.add(lblLogInTitle);
+
+		// Password field
+		passField = new JPasswordField();
+		passField.setBounds(110, 155, 222, 26);
+		contentPane.add(passField);
+
+		// Login button
+		btnLogIn = new JButton("Login");
+
+		// Action listener for login button
+		btnLogIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Hardcoded credentials
+				String user = "admin";
+				String pass = "admin";
+
+				// Get input values
+				String username = txfUser.getText();
+				String password = new String(passField.getPassword());
+
+				// Check credentials
+				if(username.equals(user) && password.equals(pass)) {
+					JOptionPane.showMessageDialog(null, "Logged in successfully!");
+					transactionLog tLog = new transactionLog(); // Open transaction log window
+					tLog.setVisible(true);
+					dispose(); // Close login form
+				}else if(username.isEmpty() || password.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "The field must be filled!", "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Wrong username or password input!!", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		btnLogIn.setBackground(new Color(255, 238, 247));
+		btnLogIn.setBounds(133, 205, 111, 26);
+		contentPane.add(btnLogIn);
+	}
+}
