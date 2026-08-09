@@ -1,0 +1,107 @@
+package calendar2;
+import java.util.Scanner;
+
+public class calendar2Practice {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int year, month, day, startDay, daysInMonth, i, j, col;
+        int monthsPerRow = 3;
+
+        // Month Names
+        String[] months = {
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        };
+
+        // Days in Each Month
+        int[] days = {
+            31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+        };
+
+        // User Input
+        System.out.print("Enter year: ");
+        year = sc.nextInt();
+
+        // Leap Year Check
+        if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+            days[1] = 29;
+        }
+
+        // Zeller's Congruence Algorithm to find first day of the year
+        int q = 1, m = 13, K = (year - 1) % 100, J = (year - 1) / 100;
+        startDay = (q + ((13 * (m + 1)) / 5) + K + (K / 4) + (J / 4) - (2 * J)) % 7;
+        startDay = (startDay + 6) % 7; // Adjust for Sunday as start
+
+        // Display the Yearly Calendar
+        System.out.println("\n========== " + year + " ==========\n");
+
+        for (i = 0; i < 12; i += monthsPerRow) {
+            // Print Month Titles
+            for (col = 0; col < monthsPerRow; col++) {
+                if (i + col < 12) {
+                    System.out.printf("     %-10s ", months[i + col]);
+                }
+            }
+            System.out.println();
+
+            // Print Weekdays
+            for (col = 0; col < monthsPerRow; col++) {
+                if (i + col < 12) {
+                    System.out.print("Sun Mon Tue Wed Thu Fri Sat   ");
+                }
+            }
+            System.out.println();
+
+            // Find max days in the row
+            int maxDays = 0;
+            for (col = 0; col < monthsPerRow; col++) {
+                if (i + col < 12) {
+                    if (days[i + col] > maxDays) {
+                        maxDays = days[i + col];
+                    }
+                }
+            }
+
+            // Print Calendar Grid
+            for (day = 0; day < maxDays + 7; day++) {
+                for (col = 0; col < monthsPerRow; col++) {
+                    if (i + col < 12) {
+                        int currentMonth = i + col;
+                        int currentDays = days[currentMonth];
+
+                        if (day == 0) {
+                            // Print Leading Spaces for Each Month
+                            for (j = 0; j < startDay; j++) {
+                                System.out.print("    ");
+                            }
+                        }
+
+                        // Print Day Numbers
+                        if (day > 0 && day <= currentDays) {
+                            System.out.printf("%3d ", day);
+                        } else {
+                            System.out.print("    ");
+                        }
+
+                        // Adjust New Line Position
+                        if ((day + startDay) % 7 == 0) {
+                            System.out.print("   ");
+                        }
+                    }
+                }
+                System.out.println();
+            }
+
+            // Move to the Next Month
+            for (col = 0; col < monthsPerRow; col++) {
+                if (i + col < 12) {
+                    startDay = (startDay + days[i + col]) % 7;
+                }
+            }
+            System.out.println();
+        }
+
+        sc.close();
+    }
+}
