@@ -1,0 +1,58 @@
+let txtName = document.getElementById("txtName");
+let txtCourse = document.getElementById("txtCourse");
+let txtPrelim = document.getElementById("txtPrelim");
+let txtMidterm = document.getElementById("txtMidterm");
+let txtFinal = document.getElementById("txtFinal");
+let pResult = document.getElementById("pResult");
+
+function addStudentBtn() {
+	let printInfo = ""
+
+	const student = {
+		name : txtName.value,
+		course : txtCourse.value,
+		prelim : +txtPrelim.value,
+		midterm : +txtMidterm.value,
+		final : +txtFinal.value,
+
+		//Method to calculate prelim grade
+		prelimGrade () {
+			return this.prelim * 0.30;
+		},
+
+		//Method to calculate midterm grade
+		midtermGrade () {
+			return this.midterm * 0.30;
+		},
+
+		//Method to calculate final grade
+		finalGrade () {
+			return this.final * 0.40;
+		},
+
+		//Method to calculate final weighted grade
+		finalWeightedGrade () {
+			return this.prelimGrade() + this.midtermGrade() +
+			       this.finalGrade();
+		},
+
+		//Method to check student status
+		checkStatus () {
+			if (this.finalWeightedGrade() >= 75 && this.finalWeightedGrade() <= 100) {
+				return "PASSED";
+			} else {
+				return "FAILED";
+			}
+		}
+	};
+
+	printInfo += "<span>" + student.name + "</span> | ";
+	printInfo += "<span>" + student.course + "</span> | ";
+	printInfo += "<span>" + student.prelimGrade() + "</span> | ";
+	printInfo += "<span>" + student.midtermGrade() + "</span> | ";
+	printInfo += "<span>" + student.finalGrade() + "</span> | ";
+	printInfo += "<span>" + student.finalWeightedGrade() + "</span> | ";
+	printInfo += "<span>" + student.checkStatus() + "</span> | ";
+
+	pResult.innerHTML = printInfo;
+}
