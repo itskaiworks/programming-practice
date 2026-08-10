@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Code Analyzer</title>
+
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Title -->
+        <h1>Access Code Analyzer</h1>
+        <p class="subtitle">Analyze and validate access codes using basic string operations.</p>
+
+        <!-- Input Section -->
+        <div class="section">
+            <h2>Input Section</h2>
+
+            <label for="accessCode">
+                Enter Code (6 to 12 digits only):
+            </label>
+
+            <input type="text" id="txtAccessCode" maxlength="12" placeholder="Enter access code">
+        </div>
+
+        <!-- Operations Section -->
+        <div class="section">
+            <h2>Available Functions</h2>
+
+            <div class="buttons">
+                <button onclick="checkLengthBtn()">Check Code Length</button>
+                <button onclick="analyzeEvenOddBtn()">Analyze Even and Odd Digit(s)</button>
+                <button onclick="digitFrequencyBtn()">Show Digit(s) Frequency Report</button>
+                <button onclick="mostRepeatedBtn()">Find Most Repeated Digit(s)</button>
+                <button onclick="reverseCodeBtn()">Reverse Access Code</button>
+                <button onclick="patternCheckBtn()">Check Security Pattern</button>
+                <button onclick="searchDigitBtn()">Search Specific Digit</button>
+                <button onclick="clearAllBtn()">Clear Input Field and Display Area</button>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="section">
+            <h2>Output</h2>
+            <p id="pOutput"></p>
+        </div>
+
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
