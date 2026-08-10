@@ -1,0 +1,61 @@
+let txtUnitsConsumed = document.getElementById("txtUnitsConsumed");
+let txtTimeConsumed = document.getElementById("txtTimeConsumed");
+let txtAppliancesType = document.getElementById("txtAppliancesType");
+let txtBillingMonth = document.getElementById("txtBillingMonth");
+let pOutput = document.getElementById("pOutput");
+
+function processBtn () {
+	let unitsConsumed = +txtUnitsConsumed.value;
+	let timeConsumed = +txtTimeConsumed.value;
+	let appliances = txtAppliancesType.value;
+	let month = txtBillingMonth.value;
+
+	pOutput.innerHTML = `-------- ELECTRIC BILL -------- <br>
+	                     Units Consumed  : ${unitsConsumed} kWh <br>
+                         Time            : ${timeConsumed} hour(s) <br>
+                         Appliances Type : ${appliances} <br>
+	                     Adjustment      : ${appliancesAdjustments(appliances, unitsConsumed, timeConsumed)} <br>
+                         Month           : ${month} <br>
+	                     Adjustment      : ${monthAdjustments(month, unitsConsumed, timeConsumed)} <br>
+                         Total Bill      : ${billingComputation(unitsConsumed, timeConsumed, appliances, month)} <br>`;
+}
+
+function billingComputation(unitsConsumed, timeConsumed, appliances, month) {
+	let units = unitsConsumed * timeConsumed / 1000;
+	let unitCost = 0;
+
+	for (let index = 1; index <= units; index++) {
+		if (index <= 100) {
+			unitCost += 5;
+		} else {
+			unitCost += 9;
+		}
+	}
+
+	unitCost += appliancesAdjustments(appliances, units, unitCost);
+	unitCost += monthAdjustments(month, unitCost);
+
+	return unitCost;
+}
+
+function appliancesAdjustments(appliances, units, unitCost) {
+	let adjustment = 0;
+
+	if (appliances === "Energy-saving") {
+		adjustment = -unitCost * 0.5;
+	} else if (appliances === "Commercial") {
+		adjustment = unitCost * 0.20;
+	}
+
+	return adjustment;
+}
+
+function monthAdjustments(month, unitCost) {
+	let adjustment = 0;
+
+	if (month === "Peak month") {
+		adjustment = unitCost * 0.10;
+	}
+
+	return adjustment;
+}
