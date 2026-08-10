@@ -1,0 +1,150 @@
+//GLOBAL DECLRATION
+
+let bookArray = []; //Array to store books added
+let bookIdCounter = 5001;
+
+//Null to make sure that the html loads first before running the functions
+let txtBookTitle = null, txtAuthorName = null, rdoFiction = null, rdoNonFiction = null, 
+    numBookCopies = null, txtYearPublished = null, numFileSize = null, rdoPdf = null, 
+    rdoEpub = null, divRecordOutput = null;
+
+window.onload = function () {
+	txtBookTitle = document.getElementById("txtBookTitle");
+	txtAuthorName = document.getElementById("txtAuthorName");
+	rdoFiction = document.getElementById("rdoFiction");
+	rdoNonFiction = document.getElementById("rdoNonFiction");
+	numBookCopies = document.getElementById("numBookCopies");
+	txtYearPublished = document.getElementById("txtYearPublished");
+	numFileSize = document.getElementById("numFileSize");
+	rdoPdf = document.getElementById("rdoPdf");
+	rdoEpub = document.getElementById("rdoEpub");
+	divRecordOutput = document.getElementById("divRecordOutput");
+}
+
+//Parent Class
+class Book {
+
+	#minimumCopies = 5;
+	#yearPublishedLimit = 2010;
+
+	constructor (id, title, author, genre, copies, publishedYear, status) {
+		this.id = bookIdCounter++;
+		this.title = title;
+		this.author = author;
+		this.genre = genre;
+		this.copies = this.validateCopies(copies);
+		this.publishedYear = this.validateYearPublication(publishedYear);
+		this.status = this.checkAvailabilityStatus();
+	}
+
+	//Method to check book copies validation
+	validateCopies(copies) {
+		if (copies < this.#minimumCopies) {
+			alert("Minimum copy of book to add is 5. Try again.");
+			return 0;
+		} else {
+			return copies;
+		}
+	}
+
+	//Method to check book published year validation
+	validateYearPublication(publishedYear) {
+		if (publishedYear > this.#yearPublishedLimit) {
+			alert("Year of book publication limit to add is year 2010. Try again.");
+			return 0;
+		} else {
+			return publishedYear;
+		}
+	}
+
+	//Method to check availability status
+	checkAvailabilityStatus() {
+		if (this.copies > 0) {
+			return "Available";
+		} else {
+			return "Unavailable";
+		}
+	}
+}
+
+//Child Class / Sub-Class
+class DigitalBook extends Book{
+
+	#fileSizeLimit = 25;
+
+	constructor (id, title, author, genre, copies, publishedYear, status, fileSize, format) {
+		super(id, title, author, genre, copies, publishedYear, status);
+		this.fileSize = this.validateBookFileSize(fileSize);
+		this.format = format;
+	}
+
+	//Method to validate file size
+	validateBookFileSize (fileSize) {
+		if (fileSize > this.#fileSizeLimit) {
+			alert("File size limit is 25MB only. Try again.");
+			return 0;
+		} else {
+			return fileSize;
+		}
+	}
+}
+
+//Functions
+function addBookBtn() {
+	let title = txtBookTitle.value;
+	let author = txtAuthorName.value;
+	let genre = rdoFiction.checked ? rdoFiction.value : rdoNonFiction.value;
+	let copies = +numBookCopies.value;
+	let publishedYear = +txtYearPublished.value;
+	let fileSize = +numFileSize;
+	let format = rdoPdf.checked ? rdoPdf.value : rdoEpub.value;
+
+	if (fileSize > 0) {
+		let newBook = new DigitalBook(title, author, genre, copies, publishedYear, fileSize, format);
+		bookArray.push(newBook);
+	} else {
+		let newBook = new Book(title, author, genre, copies, publishedYear);
+		bookArray.push(newBook);
+	}
+
+	displayBookRecords();
+
+}
+
+function updateBookBtn() {
+
+}
+
+function clearFieldsBtn() {
+
+}
+
+function displayBookRecords() {
+	let display = "";
+
+	display += "<br><hr>";
+	display += "<span>Book ID </span> | ";
+	display += "<span>Title </span> | ";
+	display += "<span>Author </span> | ";
+	display += "<span>Copies </span> | ";
+	display += "<span>Published Year </span> | ";
+	display += "<span>File Size </span> | ";
+	display += "<span>Format </span> | ";
+	display += "<span>Status </span> | ";
+
+	for (let index = 0; index < bookArray.length; index++) {
+		let book = bookArray[index];
+
+		display += "<br><hr>";
+		display += "<span>" + book.id + "</span> | ";
+		display += "<span>" + book.title + "</span> | ";
+		display += "<span>" + book.author + "</span> | ";
+		display += "<span>" + book.copies + "</span> | ";
+		display += "<span>" + book.publishedYear+ "</span> | ";
+		display += "<span>" + (book.fileSize || "-") + "</span> | ";
+		display += "<span>" + (book.format || "-") + "</span> | ";
+		display += "<span>" + book.status + "</span> | ";
+	}
+
+	divRecordOutput.innerHTML = display;
+}
