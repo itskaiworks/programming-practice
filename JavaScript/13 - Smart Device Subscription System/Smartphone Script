@@ -1,0 +1,19 @@
+class Smartphone extends Device () {
+
+	#loadLimit = 200;
+
+	storage,
+	load
+
+	constructor (brand, model, status, storage, load) {
+		super(brand, model, status);
+		this.storage = storage;
+		this.load = load;
+	}
+
+	//Methods
+	#checkLoadAMount(load) {}
+	addLoad(load) {}
+	super.turnOn() {}
+
+}
