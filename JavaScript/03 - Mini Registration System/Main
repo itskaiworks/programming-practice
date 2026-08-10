@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Practice 10 - Mini Registration System</title>
+</head>
+<body>
+
+  <h1>Mini Registration System</h1>
+  <p>Fill out the form below to register.</p>
+
+  <form id="registrationForm">
+
+    <!-- Full Name -->
+    <label for="fullName">Full Name:</label><br>
+    <input type="text" id="fullName" placeholder="Enter full name"><br><br>
+
+    <!-- Age -->
+    <label for="age">Age:</label><br>
+    <input type="number" id="age" placeholder="Enter age"><br><br>
+
+    <!-- Course -->
+    <label for="course">Course:</label><br>
+    <input type="text" id="course" placeholder="Enter course"><br><br>
+
+    <!-- Gender (Radio Buttons) -->
+    <p>Gender:</p>
+    <input type="radio" name="gender" id="male" value="Male">
+    <label for="male">Male</label><br>
+
+    <input type="radio" name="gender" id="female" value="Female">
+    <label for="female">Female</label><br><br>
+
+    <!-- Year Level (Select) -->
+    <label for="yearLevel">Year Level:</label><br>
+    <select id="yearLevel">
+      <option value="">-- Select Year Level --</option>
+      <option value="1">1st Year</option>
+      <option value="2">2nd Year</option>
+      <option value="3">3rd Year</option>
+      <option value="4">4th Year</option>
+    </select><br><br>
+
+    <!-- Terms and Conditions (Checkbox) -->
+    <input type="checkbox" id="agree">
+    <label for="agree">I agree to the terms and conditions</label><br><br>
+
+    <!-- Buttons -->
+    <button type="button" id="registerBtn">Register</button>
+    <button type="reset">Clear</button>
+
+  </form>
+  </div>
+<script src="script.js"></script>
+</body>
+</html>
