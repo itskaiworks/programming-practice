@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Equipment Reservation Validation System</title>
+</head>
+	<body>
+		<div id="form-control">
+			<h1>EQUIPMENT RESERVATION VALIDATION SYSTEM</h1>
+
+			<label for="txtRequester">Requester's Name:</label>
+			<input type="text" id="txtRequester">
+			<br><br>
+
+			<label>Device Categories:</label>
+			<select id="selCategory" onchange="showCategory()">
+				<option value="">--------- Select ---------</option>
+				<option value="Computers">Computers</option>
+				<option value="Networking Devices">Networking Devices</option>
+				<option value="Multimedia Equipment">Multimedia Equipment</option>
+			</select>
+			<br><br>
+
+			<!-- COMPUTER DEVICES -->
+			<div id="computersDiv" style="display: none">
+				<label>Computer Devices:</label>
+				<input type="checkbox" id="chkComputer1" value="Laptop">
+				<label>Laptop</label>
+				<input type="checkbox" id="chkComputer2" value="Desktop">
+				<label>Desktop</label>
+				<input type="checkbox" id="chkComputer3" value="Tablet">
+				<label>Tablet</label>
+				<br><br>
+			</div>
+
+			<!-- NETWORKING DEVICES -->
+			<div id="networkingDiv" style="display: none">
+				<label>Networking Devices:</label>
+				<input type="checkbox" id="chkNetworking1" value="Router">
+				<label>Router</label>
+				<input type="checkbox" id="chkNetworking2" value="Switch">
+				<label>Switch</label>
+				<input type="checkbox" id="chkNetworking3" value="Access Point">
+				<label>Access Point</label>
+				<br><br>
+			</div>
+
+			<!-- MULTIMEDIA DEVICES -->
+			<div id="multimediaDiv" style="display: none">
+				<label>Multimedia Equipments:</label>
+				<input type="checkbox" id="chkMultimedia1" value="Projector">
+				<label>Projector</label>
+				<input type="checkbox" id="chkMultimedia2" value="Camera">
+				<label>Camera</label>
+				<input type="checkbox" id="chkMultimedia3" value="Microphone">
+				<label>Microphone</label>
+				<br><br>
+			</div>
+
+			<input type="checkbox" id="chkPriority">
+			<label>Priority Reservation</label>
+			<br><br>
+
+			<button id="reserveBtn">Reserve Device</button>
+			<br><hr>
+		</div>
+		
+		<p id="pResult"></p>
+		
+		<script src="script.js"></script>
+	</body>
+</html>
