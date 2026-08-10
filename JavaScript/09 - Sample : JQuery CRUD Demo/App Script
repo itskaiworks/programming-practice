@@ -1,0 +1,242 @@
+/*GLOBAL VARIABLES*/
+
+// array that stores all Student objects
+let students = [];
+
+// stores index of record being edited
+let editIndex = -1;
+
+
+/* =====================================================
+   $(document).ready()
+
+   jQuery waits until the HTML DOM is fully loaded
+   before executing any jQuery code.
+
+   Prevents errors like:
+   "element not found"
+===================================================== */
+$(document).ready(function () {
+
+    /* =================================================
+       SAVE BUTTON CLICK EVENT
+       $("#btnSave")  → jQuery selector by ID
+       .click()       → attaches click event listener
+    ================================================= */
+    $("#btnSave").click(function () {
+
+        // get data from form inputs
+        let student = getFormData();
+
+        // add object into array
+        students.push(student);
+
+        // rebuild table display
+        renderTable();
+
+        // clear inputs
+        clearForm();
+    });
+
+
+
+    /* =================================================
+       UPDATE BUTTON EVENT
+    ================================================= */
+    $("#btnUpdate").click(function () {
+
+        // ensure user selected a record first
+        if (editIndex >= 0) {
+
+            // replace object at selected index
+            students[editIndex] = getFormData();
+
+            renderTable();
+            clearForm();
+        }
+    });
+
+
+
+    /* =================================================
+       CLEAR BUTTON EVENT
+    ================================================= */
+    $("#btnClear").click(function () {
+
+        clearForm();
+    });
+
+
+
+    /* =================================================
+       EVENT DELEGATION (VERY IMPORTANT)
+
+       Table buttons are created dynamically.
+       Normal .click() WILL NOT WORK.
+
+       $(document).on(event, selector, handler)
+       allows future elements to be detected.
+    ================================================= */
+    $(document).on("click", ".editBtn", function () {
+
+        // $(this) → button that was clicked
+        // .data("id") → read custom data-id attribute
+        editIndex = $(this).data("id");
+
+        // retrieve selected object
+        let student = students[editIndex];
+
+
+        /* =============================
+           Populate FORM using jQuery
+        ============================== */
+
+        // set text input value
+        $("#txtName").val(student.name);
+
+        // select radio button matching gender
+        $("input[name='gender'][value='" + student.gender + "']")
+            .prop("checked", true);
+
+        // uncheck all checkboxes first
+        $(".skills").prop("checked", false);
+
+        // loop stored skills array
+        $.each(student.skills, function (i, skill) {
+
+            // check matching checkbox
+            $(".skills[value='" + skill + "']")
+                .prop("checked", true);
+        });
+
+        // set dropdown selected value
+        $("#yearLevel").val(student.year);
+    });
+
+
+
+    /* =================================================
+       DELETE BUTTON EVENT
+    ================================================= */
+    $(document).on("click", ".deleteBtn", function () {
+
+        // get index from clicked button
+        let index = $(this).data("id");
+
+        // remove object from array
+        students.splice(index, 1);
+
+        // refresh table UI
+        renderTable();
+    });
+
+});
+
+
+
+/* =====================================================
+   FUNCTION: GET FORM DATA USING JQUERY
+===================================================== */
+function getFormData() {
+
+    /* $("#txtName")
+       jQuery selector by ID
+       .val() → gets input value
+    */
+    let name = $("#txtName").val();
+
+
+    /* Select checked radio button */
+    let gender =
+        $("input[name='gender']:checked").val();
+
+
+    /* Collect checked checkboxes */
+    let skills = [];
+
+    /* $(".skills:checked")
+       selects ONLY checked checkboxes
+    */
+    $(".skills:checked").each(function () {
+
+        /* $(this)
+           refers to current checkbox element
+        */
+        skills.push($(this).val());
+    });
+
+
+    /* Get dropdown selected value */
+    let year = $("#yearLevel").val();
+
+
+    // create and return Student object
+    return new Student(name, gender, skills, year);
+}
+
+
+
+/* =====================================================
+   FUNCTION: RENDER TABLE USING JQUERY
+===================================================== */
+function renderTable() {
+
+    /* .html("")
+       clears existing table rows
+    */
+    $("#tblStudents").html("");
+
+    /* $.each()
+       jQuery loop for arrays
+    */
+    $.each(students, function (index, student) {
+
+        // template literal for table row
+        let row = `
+        <tr>
+            <td>${student.name}</td>
+            <td>${student.gender}</td>
+            <td>${student.skills.join(", ")}</td>
+            <td>${student.year}</td>
+            <td>
+                <button class="editBtn" data-id="${index}">
+                    Edit
+                </button>
+
+                <button class="deleteBtn" data-id="${index}">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        `;
+
+        /* .append()
+           inserts HTML inside table body
+        */
+        $("#tblStudents").append(row);
+    });
+}
+
+
+
+/* =====================================================
+   FUNCTION: CLEAR FORM USING JQUERY
+===================================================== */
+function clearForm() {
+
+    // clear text input
+    $("#txtName").val("");
+
+    // uncheck radio buttons
+    $("input[name='gender']")
+        .prop("checked", false);
+
+    // uncheck checkboxes
+    $(".skills")
+        .prop("checked", false);
+
+    // reset dropdown
+    $("#yearLevel").val("");
+
+    editIndex = -1;
+}
