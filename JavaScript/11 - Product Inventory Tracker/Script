@@ -1,0 +1,111 @@
+// OBJECT METHODS & CONSTRUCTOR FUNCTION & BASIC CLASSES
+
+// GLOBAL DECLARATION
+let txtCustomer = document.getElementById("txtCustomer");
+let rdoCellphone = document.getElementById("rdoCellphone");
+let rdoTablet = document.getElementById("rdoTablet");
+let rdoLaptop = document.getElementById("rdoLaptop");
+let numQuantity = document.getElementById("numQuantity");
+let divRecord = document.getElementById("divRecord");
+
+// ARRAY OF OBJECTS
+let inventoryRecord = [];
+
+// PRODUCT STOCKS & AUTOMATED PRODUCT ID
+let productIdCounter = 1001;
+
+// PRODUCTS OBJECT
+const productStock = {
+	Cellphone: { stock: 10, price: 10000 },
+	Tablet: { stock: 8, price: 20000 },
+	Laptop: { stock: 5, price: 40000 }
+};
+
+// PRODUCT CLASS
+class Record {
+	constructor(customerName, product, quantity) {
+		this.productId = productIdCounter++;
+		this.customerName = customerName;
+		this.product = product;
+		this.quantity = quantity;
+		this.productPrice = this.calculateProductPrice(); 
+		this.stockSatus = this.checkProductStockStatus();
+	}
+
+	calculateProductPrice() {
+		if (productStock[this.product].stock >= this.quantity) {
+			productStock[this.product].stock -= this.quantity;
+			return this.quantity * productStock[this.product].price;
+		} else {
+			alert(`Not enough ${this.product} stock!`);
+			return 0;
+		}
+	}
+
+	checkProductStockStatus() {
+		return productStock[this.product].stock > 0 ? "In Stock" : "Out Of Stock";
+	}
+}
+
+// ADD BUYER FUNCTION
+function addBuyerBtn() {
+	if (!checkFields()) return; // stop if validation fails
+
+	let customerName = txtCustomer.value;
+	let productQuantity = +numQuantity.value;
+	let productCategory = rdoCellphone.checked ? rdoCellphone.value :
+		rdoTablet.checked ? rdoTablet.value : rdoLaptop.value;
+
+	const newRecord = new Record(customerName, productCategory, productQuantity);
+
+	if (newRecord.productPrice > 0) { // only add if stock is enough
+		inventoryRecord.push(newRecord);
+	}
+
+	clearField();
+	displayRecord();
+}
+
+// CLEAR INPUT FIELDS
+function clearField() {
+	txtCustomer.value = "";
+	rdoCellphone.checked;
+	numQuantity.value = "";
+}
+
+// DISPLAY RECORDS
+function displayRecord() {
+	let display = "";
+
+	for (let index = 0; index < inventoryRecord.length; index++) {
+		let disRecord = inventoryRecord[index];
+
+		display += "<span>" + disRecord.productId + "</span> | ";
+		display += "<span>" + disRecord.customerName + "</span> | ";
+		display += "<span>" + disRecord.product + "</span> | ";
+		display += "<span>" + disRecord.quantity + "</span> | ";
+		display += "<span>" + disRecord.productPrice + "</span> | ";
+		display += "<span>" + disRecord.stockSatus + "</span> | ";
+		display += "<br><hr>";
+	}
+
+	divRecord.innerHTML = display; // fixed: use the correct div
+}
+
+// CHECK IF FIELDS ARE FILLED
+function checkFields() {
+	if (txtCustomer.value === "" && numQuantity.value === "") {
+		alert("Please fill the customer name and quantity field.");
+		txtCustomer.focus();
+		return false;
+	} else if (txtCustomer.value === "") {
+		alert("Please fill the customer name field.");
+		txtCustomer.focus();
+		return false;
+	} else if (numQuantity.value === "") {
+		alert("Please fill the quantity field.");
+		numQuantity.focus();
+		return false;
+	}
+	return true;
+}
