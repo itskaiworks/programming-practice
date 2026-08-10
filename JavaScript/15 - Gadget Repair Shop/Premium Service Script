@@ -1,0 +1,13 @@
+class PremiumService extends RegularService {
+
+	specialTreatment;
+
+	constructor (name, device, service, request, specialTreatment) {
+		super(name, device, service, request);
+		this.specialTreatment = specialTreatment;
+	}
+
+	getIncreaseForSpecialTreatment () {}
+	//Override
+	ccalculateTotalPrice() {}
+}
