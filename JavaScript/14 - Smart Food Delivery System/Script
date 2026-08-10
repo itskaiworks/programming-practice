@@ -1,0 +1,137 @@
+//GLOBAL DECLARATION
+
+let orderArray = [];
+
+let customerNameInput =  null;
+let foodOrderInput =  null;
+let orderQttyInput = null;
+let foodPriceInput = null;
+let deliveryFeeCheck = null;
+
+let editOrderIndex = -1;
+
+window.onload = function () {
+	customerNameInput = document.getElementById("customerName");
+	foodOrderInput = document.getElementById("foodOrder");
+	orderQttyInput = document.getElementById("orderQtty");
+	foodPriceInput = document.getElementById("foodPrice");
+	deliveryFeeCheck = document.getElementById("deliveryFee");
+};
+
+//Main Functions
+function saveBtn() {
+	if (editOrderIndex !== -1) {
+		alert("Cannot proceed to add new order, there's ongoing update.");
+		return;
+	}
+
+	if (customerNameInput.value === "" || foodOrderInput.value === "" ||
+		orderQttyInput.value === ""    || foodPriceInput.value === "" ) {
+		alert("Please fill in all the fields to proceed!");
+	    return;
+	}
+
+	if (!deliveryFeeCheck.checked) {
+		const newOrder = new Order(customerNameInput.value, foodOrderInput.value, orderQttyInput.value, foodPriceInput.value);
+		orderArray.push(newOrder);
+	} else if (deliveryFeeCheck.checked){
+		const newExpressOrder = new ExpressOrder(customerNameInput.value, foodOrderInput.value, orderQttyInput.value, foodPriceInput.value);
+	    orderArray.push(newExpressOrder);
+	}
+	
+	clearBtn();
+
+	displayOrders();
+
+	alert("Order added successfully!");
+
+}
+
+function editOrder(index) {
+	let order = orderArray[index];
+
+	customerNameInput.value = order.customerName;
+	foodOrderInput.value = order.foodOrder;
+	orderQttyInput.value = order.orderQtty;
+	foodPriceInput.value = order.price;
+
+	editOrderIndex = index;
+}
+
+function updateBtn() {
+
+	if (editOrderIndex === -1) {
+		alert("Please select order to edit first!");
+		return;
+	}
+
+	if (customerNameInput.value === "" || foodOrderInput.value === "" ||
+		orderQttyInput.value === ""    || foodPriceInput.value === "" ) {
+		alert("Please fill in all the fields to proceed!");
+	    return;
+	}
+
+	orderArray[editOrderIndex].customerName = customerNameInput.value;
+	orderArray[editOrderIndex].foodOrder = foodOrderInput.value;
+	orderArray[editOrderIndex].orderQtty = orderQttyInput.value;
+	orderArray[editOrderIndex].price = foodPriceInput.value;
+	orderArray[editOrderIndex].totalValue = orderArray[editOrderIndex].calculateTotalOrderValue();
+
+	editOrderIndex = -1;
+
+	clearBtn();
+
+	displayOrders();
+
+	alert("Order updated successfully!");
+}
+
+function deleteOrder(index) {
+	let order = orderArray[index];
+
+	let confirmDelete = confirm("Are you sure you want to delete " + order.customerName + "'s order?");
+
+	if (confirmDelete) {
+		orderArray.splice(index, 1);
+
+		clearBtn();
+
+		displayOrders()
+
+		alert("Order record deleted successfully!");
+	}
+}
+
+function clearBtn() {
+	customerNameInput.value = null;
+	foodOrderInput.value = null;
+	orderQttyInput.value = null;
+	foodPriceInput.value = null;
+}
+
+
+//Other Functions
+function displayOrders() {
+	orderTableBody.innerHTML = "";
+
+	let tableRows = "";
+
+	for (let index = 0; index < orderArray.length; index++) {
+		let orders = orderArray[index];
+
+		tableRows += "<tr>";
+		    tableRows += "<td>" + orders.orderId + "</td>";
+		    tableRows += "<td>" + orders.customerName + "</td>";
+		    tableRows += "<td>" + orders.foodOrder + "</td>";
+		    tableRows += "<td>" + orders.orderQtty + "</td>";
+		    tableRows += "<td>" + orders.price + "</td>";
+		    tableRows += "<td>" + orders.totalValue + "</td>";
+		    tableRows += "<td>";
+		    	tableRows += "<button class='edit-btn' onclick='editOrder(" + index + ")'> Edit </button>";
+		    	tableRows += "<button class='delete-btn' onclick='deleteOrder(" + index + ")'> Delete </button>";
+		    tableRows +="</td>";
+		tableRows += "</tr>"
+	}
+
+	orderTableBody.innerHTML = tableRows;
+}
