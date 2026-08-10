@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GCASH Transaction System</title>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .positive {
+      color: green;
+      font-weight: bold;
+    }
+
+    .negative {
+      color: red;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>GCASH Transaction Management</h2>
+
+<!-- FORM -->
+<select id="selType">
+  <option value="">Select Type</option>
+  <option value="CASH IN">CASH IN</option>
+  <option value="CASH OUT">CASH OUT</option>
+</select>
+
+<input type="number" id="txtAmount" placeholder="Amount">
+<input type="text" id="txtDescription" placeholder="Description">
+
+<button id="btnAdd">Add Transaction</button>
+<button id="btnReset">Reset</button>
+
+<br><br>
+
+<!-- FILTER -->
+<select id="selFilter">
+  <option value="all">All</option>
+  <option value="cashIn">CASH IN</option>
+  <option value="cashOut">CASH OUT</option>
+</select>
+
+<!-- TABLE -->
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Type</th>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="tblTransaction"></tbody>
+</table>
+
+<!-- SUMMARY -->
+<h3>Summary</h3>
+<p id="pTotalIn"></p>
+<p id="pTotalOut"></p>
+<p id="pBalance"></p>
+
+<script src="script.js"></script>
+
+</body>
+</html>
