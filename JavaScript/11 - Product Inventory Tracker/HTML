@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Product Inventory Tracker</title>
+</head>
+	<body>
+		<h1>Product Inventory Tracker</h1>
+
+		<label>Customer Name:</label>
+		<input type="text" id="txtCustomer">
+		<br><br>
+
+		<label>Category:</label>
+		<input type="radio" name="productChoice" value="Cellphone" id="rdoCellphone" checked> Cellphone (10K)
+		<input type="radio" name="productChoice" value="Tablet" id="rdoTablet"> Tablet (20K)
+		<input type="radio" name="productChoice" value="Laptop" id="rdoLaptop"> Laptop (40K)
+		<br><br>
+
+		<label>Quantity:</label>
+		<input type="number" id="numQuantity">
+		<br><br>
+
+		<button onclick="addBuyerBtn()">Add Buyer</button>
+		<br><hr>
+
+		<h3>INVENTORY RECORD:</h3>
+		<div id="divRecord">Record will be displayed here...</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
