@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-edit {
+            background: #ff9800;
+        }
+        .btn-delete {
+            background: #f44336;
+        }
+    </style>
+</head>
+	<body>
+
+	    <!-- Page Title -->
+	    <h1>🎓 Student Management System</h1>
+
+	    <!-- Input Form Container -->
+	    <div class="form-container">
+	        <h2>Student Information</h2>
+	        <input type="text" id="studentId" placeholder="Student ID">
+	        <input type="text" id="studentName" placeholder="Student Name">
+	        <input type="number" id="studentAge" placeholder="Age">
+	        <input type="text" id="studentCourse" placeholder="Course">
+	        <button onclick="createStudent()">Add Student</button>
+	        <button onclick="updateStudent()">Update Student</button>
+	        <button onclick="clearInputs()">Clear Fields</button>
+	    </div>
+
+	    <!-- Table to display all students -->
+	    <table>
+	        <thead>
+	            <tr>
+	                <th>ID</th>
+	                <th>Name</th>
+	                <th>Age</th>
+	                <th>Course</th>
+	                <th>Actions</th>
+	            </tr>
+	        </thead>
+	        <tbody id="studentTableBody">
+	            <!-- Student rows will appear here dynamically -->
+	        </tbody>
+	    </table>
+
+	    <script src="script.js"></script>
+	</body>
+</html>
