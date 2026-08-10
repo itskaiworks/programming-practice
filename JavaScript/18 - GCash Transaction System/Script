@@ -1,0 +1,122 @@
+$(document).ready(function () {
+  // CLASS TRANSACTION
+  class Transaction {
+    constructor(id, type, amount, description) {
+      this.id = id;
+      this.type = type;
+      this.amount = amount;
+      this.description = description;
+    }
+  }
+
+  let transactions = [];
+  let currentId = 1;
+
+  $("#btnReset").click(function () {
+    resetInputs();
+  });
+
+  // ADD TRANSACTION 
+  $("#btnAdd").click(function () {
+
+    let type = $("#selType").val();
+    let amount = parseFloat($("#txtAmount").val());
+    let description = $("#txtDescription").val();
+
+    // VALIDATION
+    if (type === "" || isNaN(amount) || amount <= 0 || description === "") {
+      alert("Please fill all fields correctly!");
+      return;
+    }
+
+    let transaction = new Transaction(currentId++, type, amount, description);
+    transactions.push(transaction);
+
+    displayTransactions();
+  });
+
+  // DISPLAY TABLE 
+  function displayTransactions() {
+
+    $("#tblTransaction").empty();
+
+    let selectedFilter = $("#selFilter").val();
+
+    $.each(transactions, function (index, transaction) {
+
+      if (selectedFilter !== "all") {
+        if (selectedFilter === "cashIn" && transaction.type !== "CASH IN") return;
+        if (selectedFilter === "cashOut" && transaction.type !== "CASH OUT") return;
+      }
+
+      let row = $("<tr>");
+
+      row.append($("<td>").text(transaction.id));
+      row.append($("<td>").text(transaction.type));
+      row.append($("<td>").text(transaction.amount));
+      row.append($("<td>").text(transaction.description));
+
+      let removeBtn = $("<button>").text("Remove");
+
+      removeBtn.click(function () {
+        transactions = transactions.filter(t => t.id !== transaction.id);
+        displayTransactions();
+      });
+
+      row.append($("<td>").append(removeBtn));
+
+      $("#tblTransaction").append(row);
+    });
+
+    updateSummary();
+    resetInputs();
+  }
+
+  // UPDATE SUMMARY 
+  function updateSummary() {
+
+    let totalIn = 0;
+    let totalOut = 0;
+
+    $.each(transactions, function (index, transaction) {
+      if (transaction.type === "CASH IN") {
+        totalIn += transaction.amount;
+      } else {
+        totalOut += transaction.amount;
+      }
+    });
+
+    let selectedFilter = $("#selFilter").val();
+
+    $("#pTotalIn").text("");
+    $("#pTotalOut").text("");
+
+    if (selectedFilter === "all" || selectedFilter === "cashIn") {
+      $("#pTotalIn").text("Total CASH IN: " + totalIn);
+    }
+
+    if (selectedFilter === "all" || selectedFilter === "cashOut") {
+      $("#pTotalOut").text("Total CASH OUT: " + totalOut);
+    }
+
+    let balance = totalIn - totalOut;
+
+    $("#pBalance")
+      .text("Balance: " + balance)
+      .removeClass("positive negative")
+      .addClass(balance >= 0 ? "positive" : "negative");
+  }
+
+  // FILTER CHANGE 
+  $("#selFilter").change(function () {
+    displayTransactions();
+  });
+  
+  // RESET INPUT FIELDS
+  function resetInputs() {
+    $("#selType").val("");
+    $("#txtAmount").val("");
+    $("#txtDescription").val("");
+  }
+
+});
