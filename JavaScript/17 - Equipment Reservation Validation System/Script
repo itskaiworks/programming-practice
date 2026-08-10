@@ -1,0 +1,196 @@
+//GLOBAL DECLARATION
+
+const input = {}; // Object that stores references to all input elements
+
+window.onload = function () {
+	input.form = document.querySelector("#form-control");
+	input.requester = document.querySelector("#txtRequester");
+    input.category = document.querySelector("#selCategory");
+    input.priority = document.querySelector("#chkPriority");
+    input.reserveDevice = document.querySelector("#reserveBtn");
+    input.result = document.querySelector("#pResult");
+
+    // CATEGORY DIV'S
+    [input.computers, input.networking, input.multimedia] = 
+        document.querySelectorAll("#computersDiv, #networkingDiv, #multimediaDiv");
+
+    // COMPUTER DEVICES
+    [input.computer1, input.computer2, input.computer3] = 
+        document.querySelectorAll("#chkComputer1, #chkComputer2, #chkComputer3");
+
+    // NETWORKING DEVICES
+    [input.networking1, input.networking2, input.networking3] = 
+        document.querySelectorAll("#chkNetworking1, #chkNetworking2, #chkNetworking3");
+
+    // MULTIMEDIA EQUIPMENTS
+    [input.multimedia1, input.multimedia2, input.multimedia3] = 
+        document.querySelectorAll("#chkMultimedia1, #chkMultimedia2, #chkMultimedia3");
+
+    //Adding Event Listener
+    input.reserveDevice.addEventListener("click", reserveComputerFunction);
+}
+
+//MAIN FUNCTION 
+function reserveComputerFunction () {
+	let message = document.createElement("p"); //Create new elements every time there's an error
+	message.style.color = "red";
+
+	//Checks if the requester name is empty
+	if (input.requester.value === "") {
+        message.textContent = "Requester name must be filled!";
+        input.result.appendChild(message); //Error message to be displayed
+        input.requester.style.border = "2px solid red";
+        return;
+    }
+
+    //Checks if the user did not select any category
+    if (input.category.selectedIndex === 0) {
+        message.textContent = "Please select device category!";
+        input.result.appendChild(message);
+        input.category.style.backgroundColor = "lightpink";
+        return;
+    }
+
+    //Checks if the user did not select at least one device
+    if (!(input.computer1.checked   || input.computer2.checked   || input.computer3.checked   ||
+          input.networking1.checked || input.networking2.checked || input.networking3.checked ||
+          input.multimedia1.checked || input.multimedia2.checked || input.multimedia3.checked )) 
+    {
+        message.textContent = "Please select at least 1 device to reserve!";
+        input.result.appendChild(message);
+        return;
+    }
+
+    //Checks if the priority checkbox is not selected
+    if (!input.priority.checked) {
+        message.textContent = "Please select priority reservation box!";
+        input.result.appendChild(message);
+        return;
+    }
+
+    displayResult();
+
+    disabledControl();
+}
+
+function displayResult () {
+    input.result.textContent = ""; // clear previous result
+
+    let confirmation = document.createElement("p"); //Display confirmation message
+    confirmation.style.fontWeight = "bold";
+    confirmation.textContent = "RESERVATION SUCCESSFUL!";
+    input.result.appendChild(confirmation);
+
+    let requesterName = document.createElement("p"); //Display requester's name in text color blue
+    requesterName.style.color = "blue";
+    requesterName.textContent = "Requester Name: " + input.requester.value;
+    input.result.appendChild(requesterName);
+
+    let category = document.createElement("p"); //Display the category pick in font style italic
+    category.style.fontStyle = "italic";
+    category.textContent = "Category: " + input.category.value;
+    input.result.appendChild(category);
+
+    let deviceName = document.createElement("p");
+    deviceName.textContent = "Reserved Devices:";
+    input.result.appendChild(deviceName);
+    
+    //Display the reserved devices based on the user choice
+    if (input.category.selectedIndex === 1) { 
+
+    	// Array that stores the computer device options
+        const computerDevices = [input.computer1, input.computer2, input.computer3]; 
+        let list = document.createElement("ul");
+
+        //Loop through the object computerDevices to check whether the user choose one or more device
+        for (let index in computerDevices) {
+            if (computerDevices[index].checked) {
+                let device = document.createElement("li"); //Always create element for every device choice
+                device.textContent = computerDevices[index].value;
+                device.style.backgroundColor = "green";
+                device.style.marginTop = "5px";
+                list.appendChild(device); //Allow all user's choice to be displayed in the result paragraph
+                input.result.appendChild(list);
+            }
+        }
+    } 
+
+    //Same goes with the computer device category
+    if (input.category.selectedIndex === 2) {
+
+        const networkingDevices = [input.networking1, input.networking2, input.networking3];
+        let list = document.createElement("ul");
+
+        for (let index in networkingDevices) {
+            if (networkingDevices[index].checked) {
+                let device = document.createElement("li");
+                device.textContent = networkingDevices[index].value;
+                device.style.backgroundColor = "green";
+                device.style.marginTop = "5px";
+                list.appendChild(device);
+                input.result.appendChild(list);
+            }
+        }
+    } 
+
+    //Same goes with the computer device category
+    if (input.category.selectedIndex === 3) {
+
+        const multimediaEquipments = [input.multimedia1, input.multimedia2, input.multimedia3];
+        let list = document.createElement("ul");
+
+        for (let index in multimediaEquipments) {
+            if (multimediaEquipments[index].checked) {
+                let device = document.createElement("li");
+                device.textContent = multimediaEquipments[index].value;
+                device.style.backgroundColor= "green";
+                device.style.marginTop = "5px";
+                list.appendChild(device);
+                input.result.appendChild(list);
+            }
+        }
+    }
+}
+
+function disabledControl () {
+	input.form.style.backgroundColor = "lightgray"; //Change the form background color
+
+	let allControls = [ //Array that stores elements to be disabled
+        input.requester,
+        input.category,
+        input.priority,
+        input.reserveDevice,
+        input.result,
+        input.reserveDevice, 
+
+        input.computer1, input.computer2, input.computer3,
+        input.networking1, input.networking2, input.networking3,
+        input.multimedia1, input.multimedia2, input.multimedia3
+    ];
+
+    //Loop through all elements to be disabled after the user click the reserve device button
+    for (let index in allControls) {
+    	allControls[index].disabled = true;
+    }
+}
+
+//CATEGORY ONCHANGE
+function showCategory() {
+	input.computers.style.display="none";
+	input.networking.style.display="none";
+	input.multimedia.style.display="none";
+
+	if (input.category.selectedIndex === 1) {
+
+		input.computers.style.display="block";
+
+	} else if (input.category.selectedIndex === 2) {
+
+		input.networking.style.display="block";
+
+	} else if (input.category.selectedIndex === 3) {
+
+		input.multimedia.style.display="block";
+
+	} 
+}
