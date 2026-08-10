@@ -1,0 +1,104 @@
+/* For Header */
+body {
+    background-color: #fef5e7;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #333;
+}
+
+.container {
+    width: 500px;
+    margin: 40px auto;
+    background-color: #fefdf8;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #ffe0b2;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+h1 {
+    text-align: center;
+    color: #ff8c00;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 30px;
+}
+
+/* For Section */
+.section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ffe0b2;
+    margin-bottom: 25px;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.05);
+}
+
+h2 {
+    color: #fb8c00;
+    font-size: 16px;
+    margin-bottom: 14px;
+    border-left: 4px solid #ffb74d;
+    padding-left: 10px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* For Input Field */
+input[type="text"] { 
+    width: 95%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ffcc80;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #ff9800;
+    background-color: #fff3e0;
+}
+
+/* For Buttons */
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+button {
+    background-color: #ff9800;
+    color: white;
+    padding: 11px;
+    font-size: 14px;
+    border: none;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background-color: #fb8c00;
+    transform: scale(1.02);
+}
+
+/* For Output In Paragraph Tag */
+#pOutput {
+    background-color: #fff8f0;
+    border: 1px dashed #ffb74d;
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 70px;
+    font-size: 14px;
+}
