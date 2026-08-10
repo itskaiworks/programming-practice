@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Logic Thinking</title>
+	<style>
+		body {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1>BASIC LOGIC CONDITIONS</h1>
+	<input type="text" name="text" id="userInput">
+	<input type="text" name="text" id="userInput2">
+	<input type="text" name="text" id="userInput3">
+	<br><br>
+	<button id="positiveOrNegativeBtn">positive / negative / zero</button>
+	<button id="evenOrOddBtn">even / odd</button>
+	<button id="ageBtn">check age</button>
+	<button id="leapYearBtn">is number leap year or not</button>
+	<button id="compareBtn">whose larger</button>
+	<button id="triangleBtn">can number form triangle</button>
+
+	<h1>OUTPUT: </h1>
+	<p id="result"></p>
+
+	<br><hr><br>
+
+	<h1>LOOP & COUNTING LOGIC</h1>
+	<input type="text" name="text" id="loopInput">
+	
+	<br><br>
+	<button id="countBtn">count length</button>
+	<button id="oddEvenCountBtn">count odd & even</button>
+	<button id="reverseBtn">reverse elements</button>
+	<button id="sumBtn">sum of all digits</button>
+	<button id="howManyAppearsBtn">how many times the number appears</button>
+	<button id="displayBtn">display num from 1 to N</button>
+	
+	<h1>OUTPUT:</h1>
+	<p id="result2"></p>
+	
+	<script src="script.js"></script>
+</body>
+</html>
