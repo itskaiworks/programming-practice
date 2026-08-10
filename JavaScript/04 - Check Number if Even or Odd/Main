@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Javascript Practice Set</title>
+</head>
+<body>
+	<h3>CHECK IF NUMBER IS EVEN OR ODD</h3>
+	<input type="text" name="evenOdd" id="evenOdd">
+	<button id="checkNum">Check</button>
+
+	<h3>CHECK GRADE</h3>
+	<input type="text" name="grade" id="grade">
+	<button id="checkGrade">Check</button>
+
+	<script src="script.js"></script>
+</body>
+</html>
