@@ -1,0 +1,23 @@
+class Device {
+
+	#serialNumber = 1001;
+	_status = "OFF";
+	
+	brand,
+	model
+
+	constructor (brand, model, status) {
+		this.brand = brand;
+		this.model = model;
+
+	}
+
+	//Getters & Setters
+	getSerialNumber() {}
+	setSerialNumber() {}
+
+	//Methods
+	turnOn() {}
+	turnOff() {}
+	#generateSerial() {}
+}
