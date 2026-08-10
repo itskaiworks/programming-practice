@@ -1,0 +1,146 @@
+        // ========================================
+        // STUDENT CLASS DEFINITION
+        // ========================================
+        class Student {
+            constructor(id, name, age, course) {
+                this.id = id;       // Student ID
+                this.name = name;   // Student Name
+                this.age = age;     // Student Age
+                this.course = course; // Student Course
+            }
+        }
+
+        // ========================================
+        // GLOBAL VARIABLES
+        // ========================================
+        let studentsArray = [];
+        let studentIdInput = null;
+        let studentNameInput = null;
+        let studentAgeInput = null;
+        let studentCourseInput = null;
+        let studentTableBody = null;
+        let editingIndex = -1;
+
+        // ========================================
+        // INITIALIZE REFERENCES WHEN PAGE LOADS
+        // ========================================
+        window.onload = function() {
+            studentIdInput = document.getElementById('studentId');
+            studentNameInput = document.getElementById('studentName');
+            studentAgeInput = document.getElementById('studentAge');
+            studentCourseInput = document.getElementById('studentCourse');
+            studentTableBody = document.getElementById('studentTableBody');
+        };
+
+        // ========================================
+        // CREATE - Add New Student
+        // ========================================
+        function createStudent() {
+            let id = studentIdInput.value;
+            let name = studentNameInput.value;
+            let age = studentAgeInput.value;
+            let course = studentCourseInput.value;
+
+            if (id === '' || name === '' || age === '' || course === '') {
+                alert('Please fill in all fields!');
+                return;
+            }
+
+            let newStudent = new Student(id, name, age, course);
+            studentsArray.push(newStudent);
+
+            clearInputs();
+            displayStudents();
+
+            alert('Student added successfully! 🎉');
+        }
+
+        // ========================================
+        // READ - Display All Students
+        // ========================================
+        function displayStudents() {
+            studentTableBody.innerHTML = '';
+            let tableRows = '';
+
+            for (let i = 0; i < studentsArray.length; i++) {
+                let student = studentsArray[i];
+
+                tableRows += '<tr>';
+                tableRows += '<td>' + student.id + '</td>';
+                tableRows += '<td>' + student.name + '</td>';
+                tableRows += '<td>' + student.age + '</td>';
+                tableRows += '<td>' + student.course + '</td>';
+                tableRows += '<td>';
+                tableRows += '<button class="btn-edit" onclick="editStudent(' + i + ')">Edit</button> ';
+                tableRows += '<button class="btn-delete" onclick="deleteStudent(' + i + ')">Delete</button>';
+                tableRows += '</td>';
+                tableRows += '</tr>';
+            }
+
+            studentTableBody.innerHTML = tableRows;
+        }
+
+        // ========================================
+        // UPDATE - Edit Student (Load Data)
+        // ========================================
+        function editStudent(index) {
+            let student = studentsArray[index];
+
+            studentIdInput.value = student.id;
+            studentNameInput.value = student.name;
+            studentAgeInput.value = student.age;
+            studentCourseInput.value = student.course;
+
+            editingIndex = index;
+        }
+
+        // ========================================
+        // UPDATE - Save Changes
+        // ========================================
+        function updateStudent() {
+            if (editingIndex === -1) {
+                alert('Please select a student to edit first!');
+                return;
+            }
+
+            let id = studentIdInput.value;
+            let name = studentNameInput.value;
+            let age = studentAgeInput.value;
+            let course = studentCourseInput.value;
+
+            studentsArray[editingIndex].id = id;
+            studentsArray[editingIndex].name = name;
+            studentsArray[editingIndex].age = age;
+            studentsArray[editingIndex].course = course;
+
+            editingIndex = -1;
+            clearInputs();
+            displayStudents();
+
+            alert('Student updated successfully! ✅');
+        }
+
+        // ========================================
+        // DELETE - Remove Student
+        // ========================================
+        function deleteStudent(index) {
+            let student = studentsArray[index];
+            let confirmDelete = confirm(`Are you sure you want to delete ${student.name}?`);
+
+            if (confirmDelete) {
+                studentsArray.splice(index, 1);
+                displayStudents();
+                alert('Student deleted successfully! 🗑️');
+            }
+        }
+
+        // ========================================
+        // HELPER FUNCTION - Clear Inputs
+        // ========================================
+        function clearInputs() {
+            studentIdInput.value = '';
+            studentNameInput.value = '';
+            studentAgeInput.value = '';
+            studentCourseInput.value = '';
+            editingIndex = -1;
+        }
