@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Smart Device Subscription Manager</title>
+</head>
+	<body>
+		<h1>Smart Device Subscription Manager</h1>
+		<div id="parent-container">
+			<form>
+				<label>Enter Phone:</label>
+				<input type="text" id="txtPhone">
+				<br><br>
+
+				<label>Choose Model:</label>
+				<input type="radio" name="storage" id="rdoAndroid" value="Android" checked> Android
+				<input type="radio" name="storage" id="rdoIos" value="iOS"> iOS
+				<br><br>
+
+				<label>Select Storage:</label>
+				<select id="selStorage">
+					<option value="G4GB">64GB</option>
+					<option value="120GB">128GB</option>
+					<option value="512GB">512GB</option>
+				</select>
+				<br><br>
+
+				<input type="checkbox" id="chkApproval">
+				<label>Allow device data collection for security and performance</label>
+				<br><br>
+
+				<button id="subscriptionBtn">Subscribe</button>
+			</form>
+		</div>
+
+		<script src="Device.js"></script>
+		<script src="Smartphone.js"></script>
+		<script>
+
+
+		</script>
+	</body>
+</html>
