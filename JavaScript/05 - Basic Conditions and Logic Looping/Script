@@ -1,0 +1,113 @@
+//BASIC LOGIC CONDITIONS
+
+document.getElementById("positiveOrNegativeBtn").onclick = function () { //Determine if a number is positive, negative, or zero
+	let input = document.getElementById("userInput").value;
+	document.getElementById("result").innerHTML = (input == 0  ? "Number is: ZERO" :
+			                                       input  <  0 ? "Number is: NEGATIVE" : "Number is: POSITIVE");
+};
+
+document.getElementById("evenOrOddBtn").onclick = function () { //Check if a number is even or odd
+	let input = document.getElementById("userInput").value;
+	document.getElementById("result").innerHTML = (input % 2 == 0 ? "Number is: EVEN" : "Number is: ODD");
+}; 
+
+document.getElementById("ageBtn").onclick = function () { //Determine age category (child, teen, adult, senior)
+	let input = document.getElementById("userInput").value;
+	document.getElementById("result").innerHTML = (input < 13 ? "Age is considered: CHILD" :
+			                                       input < 20 ? "Age is considered: TEEN"  :
+			                                       input < 60 ? "Age is considered: ADULT" : "Age is considered: SENIOR");
+}; 
+
+document.getElementById("leapYearBtn").onclick = function () { //Check if a year is a leap year
+	let input = document.getElementById("userInput").value;
+	document.getElementById("result").innerHTML = (input % 400 === 0 || (input % 4 === 0 && input % 100 !== 0) ? 
+			                                       `Year ${input} is a: LEAP YEAR` : `Year ${input} is: NOT A LEAP YEAR`);
+}; 
+
+document.getElementById("compareBtn").onclick = function () { //Compare two numbers and identify the larger one
+	let input1 = document.getElementById("userInput").value;
+	let input2 = document.getElementById("userInput2").value;
+	document.getElementById("result").innerHTML = (input1 > input2 ? 
+	                                               `Number ${input1} is larger.` : `Number ${input2} is larger.`);
+}; 
+
+document.getElementById("triangleBtn").onclick = function () {
+	let input1 = document.getElementById("userInput").value;
+	let input2 = document.getElementById("userInput2").value;
+	let input3 = document.getElementById("userInput3").value;
+	document.getElementById("result").innerHTML = ((input1 + input2) > input3 ?
+			                                        "Entered number CAN form triangle." : "Entered number CANNOT form triangle.");
+}; 
+
+
+//LOOP & COUNTNG LOGIC
+
+function countLength (loopInput) { //Count how many characters are in a text input (without .length)
+	let count = 0;
+	let index = 0;
+
+	while (loopInput[index] !== undefined) {
+		count++;
+		index++;
+	}
+	return count;
+}
+
+document.getElementById("countBtn").onclick = function () {
+	let input = document.getElementById("loopInput").value;
+	let totalCount = countLength(input);
+	document.getElementById("result2").innerHTML = `Total length of character entered: ${totalCount}`;
+};
+
+document.getElementById("oddEvenCountBtn").onclick = function () { //Count even and odd digits in a number
+	let input = document.getElementById("loopInput").value;
+	let even = 0;
+	let odd = 0;
+	for (let index = 0; index < input.length; index++) {
+		if (input[index] % 2 == 0) {
+			even++;
+		} else {
+			odd++;
+		}
+	}
+	document.getElementById("result2").innerHTML = `Even numbers: ${even}` + " " + `Odd numbers: ${odd}`;
+};
+
+document.getElementById("reverseBtn").onclick = function () { //Reverse a number or word
+	let input = document.getElementById("loopInput").value;
+	document.getElementById("result2").innerHTML = "Reverse element: ";
+	for (let index = input.length-1; index >= 0; index--) {
+		document.getElementById("result2").innerHTML += input[index];
+	}
+};
+
+document.getElementById("sumBtn").onclick = function () { //Sum all digits of a number
+	let input = document.getElementById("loopInput").value;
+	let sum = 0;
+	for (let index = 0; index < input.length; index++) {
+		 sum += +input[index];
+	}
+	document.getElementById("result2").innerHTML = `The sum of all numbers are: ${sum}`;
+};
+
+document.getElementById("howManyAppearsBtn").onclick = function () { //Count how many times a specific character appears
+	let input = document.getElementById("loopInput").value;
+	let count = 0;
+	let target = "2";
+	for (let index = 0; index < input.length; index++) {
+		if (input[index] === target) {
+			count++;
+		}
+	}
+	document.getElementById("result2").innerHTML = `Number ${target} appears ${count} times.`;
+};
+
+document.getElementById("displayBtn").onclick = function () {
+	let targetN = document.getElementById("loopInput").value;
+	let maxNumber = +targetN; 
+	document.getElementById("result2").innerHTML = `Number from 1 to ${maxNumber}: `;
+
+	for (let index = 1; index <= maxNumber; index++) {
+		document.getElementById("result2").innerHTML += index + " ";
+	}
+};
