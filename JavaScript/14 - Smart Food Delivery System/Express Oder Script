@@ -1,0 +1,15 @@
+class ExpressOrder extends Order {
+
+	deliveryFee;
+
+	constructor(customerName, foodOrder, orderQtty, price) {
+		super(customerName, foodOrder, orderQtty, price);
+		this.deliveryFee = 35;
+		super.totalValue = this.calculateTotalOrderValue();
+	}
+
+	calculateTotalOrderValue () {
+		return super.calculateTotalOrderValue() + +this.deliveryFee;
+	}
+
+}
