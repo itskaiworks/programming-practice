@@ -1,0 +1,34 @@
+class RegularService {
+	static #repairIdCounter = 1001;
+
+	//Fields
+	repairId;
+	name;
+	device;
+	devicePrice;
+	service;
+	servicePrice;
+	request;
+	requestPrice;
+	totalPrice;
+
+	constructor (name, device, service, request) {
+		this.repairId = RegularService.#repairIdCounter++;
+		this.name = name;
+		this.device = device;
+		this.devicePrice = this.getDevicePrice();
+		this.service = service;
+		this.servicePrice = this.getServicePrice();
+		this.request = request;
+		this.requestPrice = this.getRequestPrice();
+		this.totalPrice = this.calculateTotaolPrice();
+	}
+
+	getDevicePrice () {}
+
+	getServicePrice() {}
+
+	getRequestPrice() {}
+
+	calculateTotalPrice() {}
+}
