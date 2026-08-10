@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Electric Bill Computation System</title>
+</head>
+	<body>
+		<div class="container">
+			<div>
+				<h1>Electric Bill Computation System</h1>
+			</div>
+
+			<div>
+				<label>Enter Units Consumed:</label>
+				<input type="text" id="txtUnitsConsumed">
+				<br><br>
+				<label>Enter Time Consumed:</label>
+				<input type="text" id="txtTimeConsumed">
+				<br><br>
+				<label>Enter Appliances Type:</label>
+				<input type="text" id="txtAppliancesType">
+				<br><br>
+				<label>Enter Billing Month:</label>
+				<input type="text" id="txtBillingMonth">
+				<br><br>
+				<button onclick="processBtn()">Process</button>
+			</div>
+
+			<div>
+				<h3>Output:</h3>
+				<p id="pOutput">Results will be displayed here...</p>
+			</div>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
