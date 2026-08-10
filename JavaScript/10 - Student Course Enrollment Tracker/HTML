@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Student Course Enrollment Tracker</title>
+</head>
+	<body>
+		<h1>Student Course Enrollment Tracker</h1>
+
+		<label>Student Name:</label>
+		<input type="text" id="txtName">
+		<br><br>
+
+		<label>Course Enrolled:</label>
+		<input type="text" id="txtCourse">
+		<br><br>
+
+		<label>Prelim Grade:</label>
+		<input type="text" id="txtPrelim">
+		<br><br>
+
+		<label>Midterm Grade:</label>
+		<input type="text" id="txtMidterm">
+		<br><br>
+
+		<label>Final Grade:</label>
+		<input type="text" id="txtFinal">
+		<br><br>
+
+		<button onclick="addStudentBtn()">Add Student</button>
+		<br><hr>
+
+		<h3>Result:</h3>
+		<div id="pResult">Student details will be displayed here...</div>
+		<br><br>
+
+		<script src="script.js"></script>
+	</body>
+</html>
