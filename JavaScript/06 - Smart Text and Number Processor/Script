@@ -1,0 +1,60 @@
+let txtNumber = document.getElementById("txtNumber");
+let txtLargeNum = document.getElementById("txtLargeNum");
+let txtMainText = document.getElementById("txtMainText");
+let txtKeyword = document.getElementById("txtKeyword");
+let selFormatting = document.getElementById("selFormatting");
+let rdoRound = document.getElementById("rdoRound");
+let rdoCeil = document.getElementById("rdoCeil");
+let rdoFloor = document.getElementById("rdoFloor");
+let chkUpperCase = document.getElementById("chkUpperCase");
+let chkLowerCase = document.getElementById("chkLowerCase");
+let chkTrim = document.getElementById("chkTrim");
+let pOutput = document.getElementById("pOutput");
+
+function processBtn() {
+    let num = +txtNumber.value;
+    let largeNum = BigInt(txtLargeNum.value || 0);
+    let text = txtMainText.value;
+    let keyword = txtKeyword.value;
+
+    let output = "---------- NUMBER ----------<br>";
+    output += "Binary       : " + num.toString(2) + "<br>";
+    output += "Formatted    : " + formatNum(num) + "<br>";
+    output += "Rounded      : " + applyRound(num) + "<br>";
+    output += "Is NaN       : " + (isNaN(num) ? "Yes" : "No") + "<br>";
+    output += "Is Finite    : " + (isFinite(num) ? "Yes" : "No") + "<br>";
+    output += "BigInt Value : " + largeNum + "<br>";
+    output += "BigInt x2    : " + (largeNum * 2n) + "<br>";
+
+    output += "<br>---------- STRING ----------<br>";
+    output += "Original     : " + text + "<br>";
+    output += "Length       : " + text.length + "<br>";
+    output += "Slice        : " + text.slice(0, 5) + "<br>";
+    output += "Substring    : " + text.substring(0, 5) + "<br>";
+
+    if(keyword) output += "Replace '" + keyword + "' : " + text.replace(keyword, "Oink Oink") + "<br>";
+
+    output += "<br>Transformations         : " + transformText(text) + "<br>";
+    output += "<br>Method Chaining Example : " + txtMainText.value.trim().toLowerCase().replace(" ", "-") + "<br>";
+
+    pOutput.innerHTML = output;
+}
+
+function formatNum(num) {
+    if(selFormatting.selectedIndex === 0) return num.toFixed(0);
+    if(selFormatting.selectedIndex === 2) return num.toFixed(3);
+    return num.toFixed(2);
+}
+
+function applyRound(num) {
+    if(rdoRound.checked) return Math.round(num);
+    if(rdoCeil.checked) return Math.ceil(num);
+    return Math.floor(num);
+}
+
+function transformText(text) {
+    if(chkUpperCase.checked) text = text.toUpperCase();
+    if(chkLowerCase.checked) text = text.toLowerCase();
+    if(chkTrim.checked) text = text.trim();
+    return text;
+}
