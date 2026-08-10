@@ -1,0 +1,16 @@
+/*
+STUDENT CLASS
+Represents ONE student object
+*/
+
+class Student {
+
+    // constructor executes when object is created
+    constructor(name, gender, skills, year) {
+
+        this.name = name;
+        this.gender = gender;
+        this.skills = skills;
+        this.year = year;
+    }
+}
