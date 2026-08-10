@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Attendance Management Mini System</title>
+</head>
+	<body>
+		<h1>ATTENDANCE MANAGEMENT</h1>
+		<label>STUDENT ID:</label>
+		<input type="text" id="studentId">
+		<br><br>
+		<label>STUDENT NAME:</label>
+		<input type="text" id="studentName">
+		<br><br>
+		<label>YEAR LEVEL:</label>
+		<input type="radio" name="yearLevel" value="1st Year" id="rdoFirstYear" checked>1st Year
+		<input type="radio" name="yearLevel" value="2nd Year" id="rdoSecondYear">2nd Year
+		<input type="radio" name="yearLevel" value="3rd Year" id="rdoThirdYear">3rd Year
+		<input type="radio" name="yearLevel" value="4th Year" id="rdoFourthYear">4th Year
+		<br><br>
+		<label>COURSE & SECTION:</label>
+		<select id="selCourseAndSection">
+			<option value="bsitA">BSIT-A</option>
+			<option value="bsitB">BSIT-B</option>
+			<option value="bsitC">BSIT-C</option>
+			<option value="bsitD">BSIT-D</option>
+		</select>
+		<br><br>
+		<label>ATTENDANCE: </label>
+		<input type="checkbox" id="isPresent">
+		<label>Present</label>
+		<br><br>
+		<button onclick="recordBtn()">RECORD ATTENDANCE</button>
+		<button onclick="clearBtn()">CLEAR ATTENDACE</button>
+		<br><hr>
+		<h3>RECORDED ATTENDANCE:</h3>
+		<p>Student record will be appeared here...</p>
+
+		<script src="script.js"></script>
+	</body>
+</html>
