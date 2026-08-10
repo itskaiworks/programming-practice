@@ -1,0 +1,220 @@
+// Global Declarations
+let txtMonthlyBill = document.getElementById("txtMonthlyBill");
+let rdoElectricity = document.getElementById("rdoElectricity");
+let rdoWater = document.getElementById("rdoWater");
+let chkLatePayment = document.getElementById("chkLatePayment");
+let chkMaintenance = document.getElementById("chkMaintenance");
+let selCustomer = document.getElementById("selCustomer");
+let pBillReport = document.getElementById("pBillReport");
+
+let monthlyBillRecord = []; // Store months
+let monthlyBillUnits = [];  // Store each month's total units
+
+// Main Function
+function processBillBtn() {
+    let bill = txtMonthlyBill.value;
+
+    if (!inputValidation()) { // Call the function properly
+        return;
+    }
+
+    // Clear previous data
+    monthlyBillRecord = [];
+    monthlyBillUnits = [];
+
+    // Add to arrays
+    addToMonthlyBillArr(bill);
+    addToMonthlyBillUnitsArr(bill);
+
+    pBillReport.innerHTML = `------ MONTHLY BILL DETAILS ----- <br>
+                   Monthly Bill: ${monthlyBillRecord.join(", ")} <br>
+                   Monthly Units: ${monthlyBillUnits.join(", ")} <br>
+                   Total Units: ${computeTotalUnits()} <br>
+                   Average Unit: ${computeAverageUnit()} <br>
+                   Highest Unit: ${findHighestUnitUsage()} <br>
+                   Lowest Unit: ${findLowestUnitUsage()} <br>
+                   ---------------------------------- <br>
+                   Base Rate: ${computeBaseBillRate()} PHP <br>
+                   Discount: ${computeDiscount()} PHP <br>
+                   Charge: ${computeAdditionalCharges()} PHP <br>
+                   Adjustment: ${computeCustomerAdjustment()} PHP <br>
+                   Total Bill: ${computeTotalBill()} PHP <br>
+                   ----------------------------------- <br>
+                   USER INPUT INFORMATION: <br>
+                   Total Length: ${bill.length} <br>
+                   Total Digits: ${getTotalDigits(bill)} <br>
+                   Total Letters: ${getTotalLetters(bill)}`;
+}
+
+// Array Handling Functions
+function addToMonthlyBillArr(bill) { 
+    let splitBill = bill.split(" ");
+    for (let index = 0; index < splitBill.length; index++) {
+        monthlyBillRecord.push(splitBill[index]);
+    }
+}
+
+function addToMonthlyBillUnitsArr(bill) { 
+    let currentBill = "";
+
+    for (let index = 0; index < bill.length; index++) {
+        if (bill[index] >= "0" && bill[index] <= "9") {
+            currentBill += bill[index];
+        } else {
+            if (currentBill !== "") {
+                monthlyBillUnits.push(+currentBill); // Convert to number
+                currentBill = "";
+            }
+        }
+    }
+
+    if (currentBill !== "") {
+        monthlyBillUnits.push(+currentBill); // Convert to number
+    }
+}
+
+// Input Analysis Functions
+function getTotalDigits(bill) {
+    let totalDigits = 0;
+
+    for (let outerIndex = 0; outerIndex <= 9; outerIndex++) {
+        let digit = outerIndex + "";
+
+        for (let innerIndex = 0; innerIndex < bill.length; innerIndex++) {
+            if (bill[innerIndex] === digit) {
+                totalDigits++;
+            }
+        }
+    }
+
+    return totalDigits;
+}
+
+function getTotalLetters(bill) {
+    let splitBill = bill.split(" ").join("");
+    let totalLetters = 0;
+
+    for (let index = 0; index < splitBill.length; index++) {
+        if (splitBill[index] < "0" || splitBill[index] > "9") {
+            totalLetters++;
+        }
+    }
+
+    return totalLetters;
+}
+
+// Unit Computation Functions
+function computeTotalUnits() { // 
+    let totalUnits = 0;
+    for (let index = 0; index < monthlyBillUnits.length; index++) {
+        totalUnits += monthlyBillUnits[index]; // Already a number since na convert na siya when transfering sa another array
+    }
+    return totalUnits;
+}
+
+function computeAverageUnit() {
+    if (monthlyBillUnits.length === 0) return 0;
+    return computeTotalUnits() / monthlyBillUnits.length;
+}
+
+function findHighestUnitUsage() {
+    if (monthlyBillUnits.length === 0) return 0;
+    let highestUnit = monthlyBillUnits[0]; // Start with first element
+
+    for (let index = 1; index < monthlyBillUnits.length; index++) {
+        if (monthlyBillUnits[index] > highestUnit) {
+            highestUnit = monthlyBillUnits[index]; 
+        }
+    }
+    return highestUnit;
+}
+
+function findLowestUnitUsage() {
+    if (monthlyBillUnits.length === 0) return 0;
+    let lowestUnit = monthlyBillUnits[0]; // Start with first element
+
+    for (let index = 1; index < monthlyBillUnits.length; index++) {
+        if (monthlyBillUnits[index] < lowestUnit) { 
+            lowestUnit = monthlyBillUnits[index]; 
+        }
+    }
+    return lowestUnit;
+}
+
+// Billing Computation Functions
+function computeBaseBillRate() {
+    let baseRate = 0;
+
+    if (rdoElectricity.checked) {
+        for (let outerIndex = 0; outerIndex < monthlyBillUnits.length; outerIndex++) {
+            for (let innerIndex = +monthlyBillUnits[outerIndex]; innerIndex > 0; innerIndex--) {
+                baseRate += 8;
+            }
+        }
+    } else {
+        for (let outerIndex = 0; outerIndex < monthlyBillUnits.length; outerIndex++) {
+            for (let innerIndex = +monthlyBillUnits[outerIndex]; innerIndex > 0; innerIndex--) {
+                baseRate += 5;
+            }
+        }
+    }
+
+    return baseRate;
+}
+
+function computeDiscount() {
+    let discount = 0;
+    if (selCustomer.selectedIndex == 1) {
+        discount = computeBaseBillRate() * 0.10; 
+    }
+    return discount;
+}
+
+function computeAdditionalCharges() { 
+    let charges = 0;
+
+    if (chkLatePayment.checked && chkMaintenance.checked) {
+        charges = 80; // Dapat una yung may && to work properly
+    } else if (chkLatePayment.checked) {
+        charges = 50;
+    } else if (chkMaintenance.checked) {
+        charges = 30;
+    }
+
+    return charges;
+}
+
+function computeCustomerAdjustment() {
+    let adjustment = 0;
+
+    if (selCustomer.selectedIndex == 1) {
+        adjustment = 0;
+    } else if (selCustomer.selectedIndex == 2) {
+        adjustment = computeBaseBillRate() * 0.20; 
+    } else if (selCustomer.selectedIndex == 3) {
+        adjustment = computeBaseBillRate() * 0.40; 
+    }
+
+    return adjustment;
+}
+
+function computeTotalBill() {
+    return computeBaseBillRate() + computeAdditionalCharges() + computeCustomerAdjustment() - computeDiscount();
+}
+
+// Validation Function
+function inputValidation() {
+    // Check if the textbox is empty
+    if (txtMonthlyBill.value === "") {
+        alert("Textbox is empty. Please input bill to proceed.");
+        return false; // 
+    }
+
+    // Check if there is a valid selected option in customer type
+    if (selCustomer.selectedIndex === 0) {
+        alert("Please select an option for customer type.");
+        return false; // 
+    }
+
+    return true; 
+}
