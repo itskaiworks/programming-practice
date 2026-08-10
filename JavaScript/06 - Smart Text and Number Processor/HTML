@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINI PROJECT Smart Text & Number Processor</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>Smart Text & Number Processor</h1>
+
+        <!-- ===== Number Inputs ===== -->
+        <div class="section">
+            <h3>Number Inputs</h3>
+
+            <label>Enter (Decimal Allowed):</label>
+            <input type="text" id="txtNumber">
+
+            <label>Enter (Large Whole Number):</label>
+            <input type="text" id="txtLargeNum">
+        </div>
+
+        <!-- ===== String Inputs ===== -->
+        <div class="section">
+            <h3>String Inputs</h3>
+
+            <label>Main Text:</label>
+            <input type="text" id="txtMainText">
+
+            <label>Keyword Text:</label>
+            <input type="text" id="txtKeyword">
+        </div>
+
+        <!-- ===== Control Inputs ===== -->
+        <div class="section">
+            <h3>Control Inputs</h3>
+
+            <label>Select Formatting</label>
+            <select id="selFormatting">
+                <option>Zero Decimal</option>
+                <option>Two Decimal</option>
+                <option>Three Decimal</option>
+            </select>
+
+            <div class="radio-group">
+                <label>Rounding Method</label>
+                <label><input type="radio" name="rounding" id="rdoRound" checked> Round</label>
+                <label><input type="radio" name="rounding" id="rdoCeil"> Ceil</label>
+                <label><input type="radio" name="rounding" id="rdoFloor"> Floor</label>
+            </div>
+
+            <div class="checkbox-group">
+                <label>Text Transformation</label>
+                <label><input type="checkbox" id="chkUpperCase"> Uppercase</label>
+                <label><input type="checkbox" id="chkLowerCase"> Lowercase</label>
+                <label><input type="checkbox" id="chkTrim"> Trim</label>
+            </div>
+        </div>
+
+        <div class="section">
+        	 <h3>Program Output:</h3>
+        	 <p id="pOutput"></p>
+        </div>
+
+        <button onclick="processBtn()">Process</button>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
