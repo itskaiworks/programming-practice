@@ -1,0 +1,104 @@
+//GLOBAL DECLARATION from user input / choice
+let input = document.getElementById("input");
+let rdoEvenOdd = document.getElementById("rdoEvenOdd");
+let rdoPrimeComposite = document.getElementById("rdoPrimeComposite");
+let rdoPositiveNegative = document.getElementById("rdoPositiveNegative");
+let selOperation = document.getElementById("selOperation");
+let byFive = document.getElementById("byFive");
+let byThree = document.getElementById("byThree");
+let withinOneHundred = document.getElementById("withinOneHundred");
+let pResult = document.getElementById("pResult");
+
+//GLOBAL DECLARATION for storage of each function
+let isEven = 0, isOdd = 0, isPrime = 0, isComposite = 0, valueCalculated = 0;
+let evenNumber = "", oddNumber = "", primeNumber = "", compositeNumber = "";
+
+function calculateBtn() {
+	//Chcek if empty
+	if (input.value == "") {
+		alert("You didn'y input any number. Please try again.");
+		return;
+	}
+
+	//Function application
+	if (rdoEvenOdd.checked) {
+		checkEvenOdd(input.value);
+	} else if (rdoPrimeComposite.checked) {
+		checkPrimeComposite(input.value);
+	} else {
+		checkPositiveNegative(input.value);
+	}
+}
+
+//---------- METHODS FOR DIFFERENT FUNCTIONS ----------
+function checkEvenOdd (input) {
+	for (let index = 0; index < input.length; index++) {
+		if(+input[index] >= 0 && +input[index] <= 9) {
+			if (+input[index] % 2 === 0) {
+				evenNumber += input[index];
+				isEven++;
+			} else {
+				oddNumber += input[index];
+				isOdd++;
+			}
+		}
+	}
+
+	pResult.innerHTML = `Entered Number : ${input} <br>
+                         Even Number    : ${evenNumber} -- Total: ${isEven} <br>
+                         Odd Number     : ${oddNumber}  --- Total: ${isOdd} <br>
+                         Operation ${selOperation.value} : ${valueCalculated}`;
+}
+
+function checkPrimeComposite (input) {
+	for (let index = 0; index < input.length; index++) {
+		if (+input[index] >= 0 && +input[index] <= 9) {
+
+			let divisor = 0;
+
+			for (let inner = 1; inner <= input[index]; inner++) {
+				if (+input[index] % inner === 0) {
+					divisor++;
+				}
+			}
+
+			if (divisor === 2) {
+				primeNumber += input[index];
+				isPrime++;
+			} else if (+input[index] > 1) {
+				compositeNumber += input[index];
+				isComposite++;
+			}
+		}
+	}
+
+	pResult.innerHTML = `Entered Number : ${input} <br>
+                         Prime Number    : ${primeNumber} -- Total: ${isPrime} <br>
+                         Composite Number     : ${compositeNumber}  --- Total: ${isComposite} <br>
+                         Operation ${selOperation.value} : ${valueCalculated}`;
+
+function checkPositiveNegative(input) {
+	for (let index = 0; index < input.length; index++) {
+		alert(+input[index] === 0 ? input[index] + " is Zero"     :
+			  +input[index] > 0   ? input[index] + " is Positive" : input[index] + " is Negative");
+	}
+}
+
+function operationApplied () {
+	if (selOperation.selectedIndex == 0) {
+		valueCalculated = +input * 2 * 2;
+	} else if (selOperation.selectedIndex == 1) {
+		valueCalculated = +input * 3 * 3;
+	} else if (selOperation.selectedIndex == 2) {
+		valueCalculated = +input - 0;
+	} else {
+		let factorial = 1;
+		for (let index = 1; index < +input; index++) {
+			factorial *= index;
+		}
+
+		valueCalculated = factorial;
+	}
+  }
+  return valueCalculated;
+}
