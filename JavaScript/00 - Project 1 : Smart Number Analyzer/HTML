@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Smart Number Analyzer</title>
+</head>
+	<body>
+		<h1>SMART NUMBER ANALYZER:</h1>
+		<label>ENTER INPUT:</label>
+		<input type="text" id="input">
+		<button onclick="calculateBtn()">CALCULATE</button>
+		<button onclick="resetBtn()">RESET</button>
+		<br><br>
+		<label>CHOOSE ANALYSIS:</label>
+		<input type="radio" name="analysis" id="rdoEvenOdd" value="checkOddEven" checked> Odd / Even
+		<input type="radio" name="analysis" id="rdoPrimeComposite" value="checkPrimeComposite"> Prime / Composite
+		<input type="radio" name="analysis" id="rdoPositiveNegative" value="checkPositiveNegative"> Positive / Negative / Zero
+		<br><br>
+		<label>OPERATION APPLIED:</label>
+		<select id="selOperation">
+			<option value="square">Square</option>
+			<option value="cube">Cube</option>
+			<option value="absolute">Absolute Value</option>
+			<option value="factorial">Factorial</option>
+		</select>
+		<br><br>
+		<label>LOGICAL CHECKS:</label>
+		<input type="checkbox" id="byFive">
+		<label>Divisible By 5</label>
+		<input type="checkbox" id="byThree">
+		<label>Divisible By 3</label>
+		<input type="checkbox" id="withinOneHundred">
+		<label>Within Range 1 to 100</label>
+		<br><hr>
+		<h3>DISPLAY OUTPUT</h3>
+		<p id="pResult">Result will be displayed here...</p>
+
+		<script src="script.js"></script>
+	</body>
+</html>
