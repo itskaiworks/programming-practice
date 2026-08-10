@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery CRUD Demo</title>
+
+    <!-- =====================================================
+         jQuery Library
+         Must be loaded BEFORE app.js because
+         app.js uses jQuery functions ($)
+    ===================================================== -->
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      
+    <!-- Class definition -->
+    <script src="Student.js"></script>
+
+    <!-- Application logic -->
+    <script src="app.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 700px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>Student Registration (jQuery CRUD)</h2>
+
+    <label>Name:</label><br>
+    <input type="text" id="txtName"><br>
+
+    <label>Gender:</label><br>
+    <input type="radio" name="gender" value="Male"> Male
+    <input type="radio" name="gender" value="Female"> Female
+    <br><br>
+
+    <label>Skills:</label><br>
+    <input type="checkbox" class="skills" value="HTML"> HTML
+    <input type="checkbox" class="skills" value="CSS"> CSS
+    <input type="checkbox" class="skills" value="JavaScript"> JavaScript
+    <br><br>
+
+    <label>Year Level:</label><br>
+    <select id="yearLevel">
+        <option value="">Select</option>
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option>3rd Year</option>
+        <option>4th Year</option>
+    </select>
+
+    <br><br>
+
+    <button id="btnSave">Save</button>
+    <button id="btnUpdate">Update</button>
+    <button id="btnClear">Clear</button>
+
+    <hr>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Skills</th>
+                <th>Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="tblStudents"></tbody>
+
+    </table>
+
+</body>
+</html>
