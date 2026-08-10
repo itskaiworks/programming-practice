@@ -1,0 +1,58 @@
+//GLOBAL DECLARATION
+
+let repairArray = [];
+
+let nameInput = null; //Basic input and choice
+
+//Device type choice
+let mobile = null;
+let laptop = null;
+let tablet = null;
+
+let serviceType = null; //Service type choice
+
+let editingIndex = -1;
+
+window.onload = function () {
+	nameInput = document.getElementById("txtCustomerName")
+	mobile = document.getElementById("rdoMobile");
+	laptop = document.getElementById("rdoLaptop");
+	tablet = document.getElementById("rdoTablet");
+	serviceType = document.getElementById("selService");
+};
+
+//Main functions
+function saveRepair() {}
+
+function editRecord(index) {} //Later
+
+function updateRepair() {}
+
+function deleteRecord(index) {} //Later
+
+function cancelRepair() {}
+
+//Other functions
+function displayRecord() {}
+
+//Service type functions
+function showServiceType () {
+
+	document.getElementById("phoneMaintenance").style.display = "none";
+	document.getElementById("hardwareRepair").style.display = "none";
+	document.getElementById("softwareService").style.display = "none";
+
+	if (serviceType.selectedIndex === 1) {
+
+		document.getElementById("phoneMaintenance").style.display = "block";
+	
+	} else if (serviceType.selectedIndex === 2) {
+
+		document.getElementById("hardwareRepair").style.display = "block";
+
+	} else if (serviceType.selectedIndex === 3) {
+
+		document.getElementById("softwareService").style.display = "block";
+
+	}
+}
