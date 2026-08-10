@@ -1,0 +1,25 @@
+class Order {
+
+	static #orderIdCounter = 101;
+
+	//Fields
+	orderId;
+	customerName;
+	foodOrder;
+	orderQtty;
+	price;
+	totalValue;
+
+	constructor (customerName, foodOrder, orderQtty, price) {
+		this.orderId = Order.#orderIdCounter++;
+		this.customerName = customerName;
+		this.foodOrder = foodOrder;
+		this.orderQtty = orderQtty;
+		this.price = price;
+		this.totalValue = this.calculateTotalOrderValue();
+	}
+
+	calculateTotalOrderValue () {
+		return this.price * +this.orderQtty;
+	}
+}
