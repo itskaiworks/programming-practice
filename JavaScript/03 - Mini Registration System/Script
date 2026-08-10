@@ -1,0 +1,41 @@
+function regBtn() { //Most of the time ata need toh to make sure na makukuha ng system yung input ng user? Parang methods pag java
+    document.getElementById("registerBtn").addEventListener("click", function () { //Ito naman is the best for buttons
+        let response = confirm("Are you sure you want to submit your registration?");
+        let fullName = document.getElementById("fullName").value; //Not sure if all the time need yung value, pero ata
+        console.log("NAME: " + fullName);
+        let age = document.getElementById("age").value;
+        console.log("AGE: " + age);
+        let course = document.getElementById("course").value;
+        console.log("COURSE: " + course);
+        let genderSelected = document.querySelector("input[name='gender']:checked").value; //Ito ata is madalas ginagamit to radio button? Class daw sabi ni gpt
+        console.log("SEX: " + genderSelected);
+        let yearLevel = document.getElementById("yearLevel").value;
+        console.log("YEAR: " + yearLevel);
+        let agree = document.getElementById("agree").checked;
+
+        if (!response) {
+        	return;
+        } else {
+        	// Check if empty
+	        if (fullName === "" || age === "" || course === "" || yearLevel === "" || !genderSelected) { //Here, unexpected na "" lang yung ginagamit even sa dropmenu and num
+	            alert("Please fill out all information.");
+	        } 
+
+	        let num = Number(age); //Ito very important kasi string daw nasisave talaga so we need to convert muna to num para ma read
+	        if (!Number.isInteger(num)) {
+	        	alert("Age must be a number.");
+	        } else if (age < 18) {
+	        	alert("Age must be 18 and above.");
+	        }
+
+            if (!agree) {
+                alert("Please check terms and conditions.");
+            }
+            
+
+        }
+    });
+}
+
+// Call the function so the event listener is added
+regBtn();
