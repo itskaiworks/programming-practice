@@ -1,0 +1,169 @@
+//GLOBAL DECLARATION
+
+let reserveArray = [];
+
+const input = {};
+
+window.onload = function () {
+    input.form = document.querySelector("#form-control");
+	input.student = document.querySelector("#txtStudent");
+    input.category = document.querySelector("#selCategory");
+
+    // FICTION BOOKS
+    [input.fiction1, input.fiction2, input.fiction3] = 
+        document.querySelectorAll("#chkFiction1, #chkFiction2, #chkFiction3");
+
+    // SCIENCE BOOKS
+    [input.science1, input.science2, input.science3] = 
+        document.querySelectorAll("#chkScience1, #chkScience2, #chkScience3");
+
+    // TECHNOLOGY BOOKS
+    [input.tech1, input.tech2, input.tech3] = 
+        document.querySelectorAll("#chkTech1, #chkTech2, #chkTech3");
+
+    input.priority = document.querySelector("#chkPriority");
+    input.reserveBook = document.querySelector("#reserveBtn");
+    input.result = document.querySelector("#pResult");
+
+    // CATEGORY DIVS
+    [input.fiction, input.science, input.technology] = 
+        document.querySelectorAll("#fictionDiv, #scienceDiv, #technologyDiv");
+
+    //Adding Event listener
+    input.reserveBook.addEventListener("click", reserveBookFunction);
+}
+
+//MAIN FUNCTION 
+function reserveBookFunction () {
+	let message = document.createElement("p");
+	message.style.color = "red";
+
+	if (input.student.value === "") {
+        message.textContent = "Student name must be filled!";
+        input.result.appendChild(message);
+        input.student.style.border = "2px solid red";
+        return;
+    }
+
+    if (input.category.selectedIndex === 0) {
+        message.textContent = "Please select book category!";
+        input.result.appendChild(message);
+        input.category.style.backgroundColor = "lightpink";
+        return;
+    }
+
+    if (!(
+        input.fiction1.checked || input.fiction2.checked || input.fiction3.checked ||
+        input.science1.checked || input.science2.checked || input.science3.checked ||
+        input.tech1.checked    || input.tech2.checked    || input.tech3.checked
+    )) {
+        message.textContent = "Please select at least 1 book to reserve!";
+        input.result.appendChild(message);
+        return;
+    }
+
+    if (!input.priority.checked) {
+        message.textContent = "Please select priority reservation box!";
+        input.result.appendChild(message);
+        return;
+    }
+
+    displayResult();
+
+    disableControls();
+}
+
+function displayResult () {
+    // clear previous result
+    input.result.textContent = "";
+
+    let confirmation = document.createElement("p");
+    let studentName = document.createElement("p");
+    let category = document.createElement("p");
+    let booksTitle = document.createElement("p");
+
+    // styles
+    confirmation.style.fontWeight = "bold";
+    studentName.style.color = "blue";
+    category.style.fontStyle = "italic";
+
+    // text
+    confirmation.textContent = "Reservation Successful";
+    studentName.textContent = "Student Name: " + input.student.value;
+    category.textContent = "Category: " + input.category.value;
+    booksTitle.textContent = "Reserved Books:";
+
+    // append
+    input.result.appendChild(confirmation);
+    input.result.appendChild(studentName);
+    input.result.appendChild(category);
+    input.result.appendChild(booksTitle);
+
+    if (input.category.selectedIndex === 1) {
+
+        const fictionBooks = [input.fiction1, input.fiction2, input.fiction3];
+
+        for (let index in fictionBooks) {
+            if (fictionBooks[index].checked) {
+                let book = document.createElement("p");
+                book.textContent = fictionBooks[index].value;
+                book.style.color = "green";
+                input.result.appendChild(book);
+            }
+        }
+    } 
+
+    if (input.category.selectedIndex === 2) {
+
+        const scienceBooks = [input.science1, input.science2, input.science3];
+
+        for (let index in scienceBooks) {
+            if (scienceBooks[index].checked) {
+                let book = document.createElement("p");
+                book.textContent = scienceBooks[index].value;
+                book.style.color = "green";
+                input.result.appendChild(book);
+            }
+        }
+    } 
+
+    if (input.category.selectedIndex === 3) {
+
+        const techBooks = [input.tech1, input.tech2, input.tech3];
+
+        for (let index in techBooks) {
+            if (techBooks[index].checked) {
+                let book = document.createElement("p");
+                book.textContent = techBooks[index].value;
+                book.style.color = "green";
+                input.result.appendChild(book);
+            }
+        }
+    }
+}
+
+function disableControls () {
+    input.form.style.backgroundColor = "lightgray";
+    input.form.disabled = true;
+}
+
+//CATEGORY ONCHANGE
+function showCategory() {
+	input.fiction.style.display="none";
+	input.science.style.display="none";
+	input.technology.style.display="none";
+
+	if (input.category.selectedIndex === 1) {
+
+		input.fiction.style.display="block";
+
+	} else if (input.category.selectedIndex === 2) {
+
+		input.science.style.display="block";
+
+	} else if (input.category.selectedIndex === 3) {
+
+		input.technology.style.display="block";
+
+	} 
+}
