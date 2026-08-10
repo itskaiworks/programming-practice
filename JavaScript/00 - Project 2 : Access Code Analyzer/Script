@@ -1,0 +1,306 @@
+// GLOBAL DECLARATION
+let txtAccessCode = document.getElementById("txtAccessCode");
+let pOutput = document.getElementById("pOutput");
+
+
+// MAIN FEATURE FUNCTIONS THROUGH ONCLICK BUTTONS
+function checkLengthBtn() {
+    let accessCode = txtAccessCode.value;
+
+    if (!isValidCode(accessCode)) {
+        return;
+    }
+
+    let codeLength = accessCode.length;
+    pOutput.innerHTML = "Total number of characters: " + codeLength;
+}
+
+
+function analyzeEvenOddBtn() {
+    let accessCode = txtAccessCode.value;
+
+    if (!isValidCode(accessCode)) {
+        return;
+    }
+
+    let evenCount = 0;
+    let oddCount = 0;
+
+    for (let index = 0; index < accessCode.length; index++) {
+        let currentDigit = accessCode.charAt(index);
+
+        if (currentDigit === '0' || currentDigit === '2' || currentDigit === '4' ||
+            currentDigit === '6' || currentDigit === '8') {
+            evenCount++;
+        } else {
+            oddCount++;
+        }
+    }
+
+    pOutput.innerHTML =
+        "Total number of even: " + evenCount + "<br>" +
+        "Total number of odd: " + oddCount;
+}
+
+
+// Function to count how many times each digit appears in the access code
+function digitFrequencyBtn() {
+    // Get the value from the text input field 
+    let accessCode = txtAccessCode.value;
+
+    // Check if the input is valid using a separate validation function
+    // If not valid, stop the function
+    if (!isValidCode(accessCode)) {
+        return;
+    }
+
+    // Initialize an empty string to store the output text
+    let outputText = "";
+
+    // Loop through digits 0 to 9 to count occurrences of each
+    for (let digitValue = 0; digitValue <= 9; digitValue++) {
+        // Initialize count for the current digit
+        let digitCount = 0;
+        // Convert the digit number to a string so we can compare with characters in accessCode
+        let digitChar = digitValue + "";
+
+        // Loop through each character in the access code
+        for (let index = 0; index < accessCode.length; index++) {
+            // If the current character matches the digit we're counting, increment the count
+            if (accessCode.charAt(index) === digitChar) {
+                digitCount++;
+            }
+        }
+
+        // If the digit appears at least once, add a line to the output text
+        if (digitCount > 0) {
+            outputText += "Number " + digitChar + 
+                          " repeats " + digitCount + " time(s)<br>";
+        }
+    }
+
+    // Display the result in the output paragraph element
+    pOutput.innerHTML = outputText;
+}
+
+
+// Function to find the digit that repeats the most in the access code
+function mostRepeatedBtn() {
+    // Get the value from the text input field
+    let accessCode = txtAccessCode.value;
+
+    // Check if the input is valid
+    if (!isValidCode(accessCode)) {
+        return;
+    }
+
+    // Initialize variables to track the highest count and corresponding digit
+    let highestCount = 0;   // Stores the count of the most repeated digit
+    let highestDigit = "";  // Stores the digit itself
+    let tie = false;        // Flag to detect if there's a tie for most repeated digit
+
+    // Loop through digits 0 to 9
+    for (let digitValue = 0; digitValue <= 9; digitValue++) {
+        // Convert the digit number to a string
+        let digitChar = digitValue + "";
+        // Initialize count for this digit
+        let digitCount = 0;
+
+        // Loop through each character in the access code
+        for (let index = 0; index < accessCode.length; index++) {
+            // Increment count if the character matches the current digit
+            if (accessCode[index] === digitChar) {
+                digitCount++;
+            }
+        }
+
+        // If this digit appears more times than the previous highest
+        if (digitCount > highestCount) {
+            highestCount = digitCount;   // Update highest count
+            highestDigit = digitChar;    // Update the most repeated digit
+            tie = false;                 // Reset tie flag
+        } 
+        // If this digit ties with the current highest count and occurs more than once
+        else if (digitCount === highestCount && digitCount > 1) {
+            tie = true;                  // Set tie flag
+        }
+    }
+
+    // If no digit is repeated more than once or there is a tie
+    if (highestCount <= 1 || tie) {
+        pOutput.innerHTML = "It does not have most repeated code.";
+        return;
+    }
+
+    // If a single digit is the most repeated, display it and how many times it occurs
+    pOutput.innerHTML = "Most repeated code is " + highestDigit +
+                        ", which repeats " + highestCount + " time(s).";
+} 
+
+// ACCESS CODE MANIPULATION
+function reverseCodeBtn() {
+    let accessCode = txtAccessCode.value;
+
+    if (!isValidCode(accessCode)) {
+        return;
+    }
+
+    let reversedCode = "";
+
+    for (let index = accessCode.length - 1; index >= 0; index--) {
+        reversedCode += accessCode.charAt(index);
+    }
+
+    pOutput.innerHTML = "Reverse access code: " + reversedCode;
+}
+
+
+function patternCheckBtn() {
+    let accessCode = txtAccessCode.value;
+
+    if (!isValidCode(accessCode)) {
+        return;
+    }
+
+    let repeatCount = 1;
+    let hasInvalidPattern = false;
+
+    for (let index = 1; index < accessCode.length; index++) {
+        if (accessCode.charAt(index) === accessCode.charAt(index - 1)) {
+            repeatCount++;
+
+            if (repeatCount > 3) {
+                hasInvalidPattern = true;
+                break;
+            }
+        } else {
+            repeatCount = 1;
+        }
+    }
+
+    if (hasInvalidPattern) {
+        pOutput.innerHTML = "Invalid Pattern Detected";
+    } else {
+        pOutput.innerHTML = "Valid Pattern";
+    }
+}
+
+
+// SEARCH FEATURE
+function searchDigitBtn() {
+    let accessCode = txtAccessCode.value;
+
+    if (!isValidCode(accessCode)) {
+        return;
+    }
+
+    let occurrenceCount = 0;
+    let firstIndexFound = -1;
+
+    let searchDigit = prompt("Enter a digit to search (0-9):");
+
+    if (searchDigit.length !== 1 || searchDigit < '0' || searchDigit > '9') {
+        pOutput.innerHTML = "Please enter a single digit (0-9).";
+        return;
+    }
+
+    for (let index = 0; index < accessCode.length; index++) {
+        if (accessCode.charAt(index) === searchDigit) {
+            occurrenceCount++;
+
+            if (firstIndexFound === -1) {
+                firstIndexFound = index;
+            }
+        }
+    }
+
+    if (occurrenceCount > 0) {
+        pOutput.innerHTML =
+            "Found: Yes" +
+            "<br>Total Occurrences: " + occurrenceCount +
+            "<br>First Position: " + firstIndexFound;
+    } else {
+        pOutput.innerHTML =
+            "Found: No" +
+            "<br>Digit " + searchDigit + " does not exist in the access code.";
+    }
+}
+
+
+// CLEAR / RESET
+function clearAllBtn() {
+    txtAccessCode.value = "";
+    txtAccessCode.focus();
+    pOutput.innerHTML = "";
+}
+
+function resetInput() {
+    txtAccessCode.value = "";
+    txtAccessCode.focus();
+    pOutput.innerHTML = "";
+}
+
+
+
+// USER INPUTS VALIDATION
+function isValidCode(accessCode) {
+
+    if (accessCode === "") {
+        alert("Textfield is empty. Please input code to proceed.");
+        resetInput();
+        return false;
+    }
+
+    // Check length where the condition is that the user should input code length from 6 to 12
+    if (accessCode.length < 6 || accessCode.length > 12) {
+        alert("Input code must be between 6 and 12 characters.");
+        resetInput();
+        return false;
+    }
+
+    let evenCount = 0;
+    let oddCount = 0;
+    let repeatCount = 1;
+
+    for (let index = 0; index < accessCode.length; index++) {
+        let currentDigit = accessCode.charAt(index);
+
+        // This check if the user input is digit, returns an alert when it is string
+        if (currentDigit < '0' || currentDigit > '9') {
+            alert("Invalid input. Please enter code 0-9 only.");
+            resetInput();
+            return false;
+        }
+
+        // Even / Odd count
+        if (currentDigit === '0' || currentDigit === '2' || currentDigit === '4' ||
+            currentDigit === '6' || currentDigit === '8') {
+            evenCount++;
+        } else {
+            oddCount++;
+        }
+
+        // Checks repeated digits in a row where it should not contain more than 3 repeated digit
+        if (index > 0) {
+            if (currentDigit === accessCode.charAt(index - 1)) {
+                repeatCount++;
+                if (repeatCount > 3) {
+                    alert("Invalid! Input should not contain more than 3 repeated digits in a row.");
+                    resetInput();
+                    return false;
+                }
+            } else {
+                repeatCount = 1;
+            }
+        }
+    }
+
+    // Checks the user input where the condition is the code should have at least 1 even and 1 odd
+    if (evenCount < 1 || oddCount < 1) {
+        alert("Access code must contain at least 1 even and 1 odd digit.");
+        resetInput();
+        return false;
+    }
+
+    return true;
+}
