@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Small Food Delivery Business</title>
+
+	<style>
+		table {
+    		border-collapse: collapse;
+		}
+
+		th, td {
+		    padding: 5px;
+		    border: 1px solid black;
+		}
+
+		th {
+		    background-color: lightpink;
+		}
+
+		td {
+		    text-align: center;
+		}
+	</style>
+</head>
+	<body>
+		<h1>Small Food Delivery Business</h1>
+		<div>
+			<h4>Order Information:</h4>
+			<input type="text" id="customerName" placeholder="Customer Name">
+			<br><br>
+
+			<input type="text" id="foodOrder" placeholder="Food Order">
+			<br><br>
+
+			<input type="text" id="orderQtty" placeholder="Quantity">
+			<br><br>
+
+			<input type="text" id="foodPrice" placeholder="Price">
+			<br><br>
+
+			<input type="checkbox" id="deliveryFee">
+			<label>Express Order</label>
+			<br><br>
+
+			<button onclick="saveBtn()">Save Order</button>
+			<button onclick="updateBtn()">Update Order</button>
+			<button onclick="clearBtn()">Clear Order</button>
+			<br><hr>
+		</div>
+
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Customer Name</th>
+						<th>Ordered Food</th>
+						<th>Quantity</th>
+						<th>Price</th>
+						<th>Total Value</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+
+				<tbody id="orderTableBody">
+					
+				</tbody>
+			</table>
+		</div>
+
+		<script src="Order.js"></script>
+		<script src="ExpressOrder.js"></script>
+		<script src="Script.js"></script>
+	</body>
+</html>
