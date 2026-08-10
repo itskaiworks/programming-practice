@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Multi-Month Utility Billing Analyzer</title>
+</head>
+	<body>
+		<h1>Multi-Month Utility Billing Analyzer</h1>
+		<h3>Reminder:</h3>
+		<ul>
+			<li>Input Format: MonthBill (No dash, no space before the second bill)</li>
+			<li>Separated by SPACE</li>
+		</ul>
+		<label>Enter Monthly Bill:</label>
+		<input type="text" id="txtMonthlyBill">
+		<br><br>
+
+		<label>Service Type:</label>
+		<input type="radio" name="service" value="Electricity" id="rdoElectricity" checked> Electricity
+		<input type="radio" name="service" value="Water" id="rdoWater"> Water
+		<br><br>
+
+		<label>Charges:</label>
+		<input type="checkbox" value="latePayment" id="chkLatePayment"> Late Payment Fee
+		<input type="checkbox" value="maintenance" id="chkMaintenance"> Maintenance Fee
+		<br><br>
+
+		<label>Customer Type:</label>
+		<select id="selCustomer">
+			<option>Select an option</option>
+			<option>Residential</option>
+			<option>Commercial</option>
+			<option>Industrial</option>
+		</select>
+		<br><br>
+
+		<button onclick="processBillBtn()">Process</button>
+		<br><hr>
+
+		<h3>Bill Report:</h3>
+		<p id="pBillReport">Receipt will be displayed here</p>
+		
+		<script src="script.js"></script>
+	</body>
+</html>
