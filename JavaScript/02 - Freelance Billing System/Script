@@ -1,0 +1,97 @@
+// Get references to HTML elements
+let txtHoursWorked = document.getElementById("txtHoursWorked"); // Textbox for inputting hours worked
+let rdoStandard = document.getElementById("rdoStandard");       // Radio button for standard work type
+let rdoRush = document.getElementById("rdoRush");               // Radio button for rush work type
+let selDevLevel = document.getElementById("selDevLevel");       // Dropdown for developer level
+let chkStatus = document.getElementById("chkStatus");           // Checkbox for tax status
+let pResult = document.getElementById("pResult");               // Paragraph element to display results
+
+// Arrays to store hours and payouts
+let hourly = []; // Stores individual hours entered
+let payOut = []; // Stores calculated salary for each entry
+
+// Function executed when the proceed button is clicked
+function proceedBtn() {
+	let hours = txtHoursWorked.value; // Get the input hours
+
+	addTohourly(hours); // Process the input and store in hourly array
+	payOut.push(calculateSalary());
+
+	// Display payout details
+	pResult.innerHTML = `----- PAYOUT DETAILS ----- <br>
+                         Hour Worked: ${hourly.join(",")} <br>
+                         Hourly Rate: ${determineHourlyRate()} <br>
+                         Gross Pay: ${calculateGrossPay()} <br>
+                         Bonus Pay: ${rushBonus()} <br>
+                         Tax Deduction: ${taxDeduction()}<br>
+                         Total Salary: ${calculateSalary()} <br>
+                         -------------------------- <br>
+                         Payout: ${payOut.join(" -> ")}`;
+}
+
+// Function to extract numeric hours from input string and add to hourly array
+function addTohourly(hours) {
+	let currentHour = "";
+
+	for (let index = 0; index < hours.length; index++) {
+		if (hours[index] >= "0" && hours[index] <= "9") {
+			currentHour += hours[index]; // Build number character by character
+		} else {
+			if (currentHour !== "") {
+				hourly.push(+currentHour); // Convert string to number and store
+				currentHour = "";
+			}
+		}
+	}
+
+	if (currentHour !== "") {
+		hourly.push(+currentHour); // Add last number if exists
+	}
+}
+
+// Function to determine hourly rate based on developer level
+function determineHourlyRate () {
+	let hourlyRate = 0;
+	if (selDevLevel.selectedIndex === 0) { // Junior
+		hourlyRate = 150;
+	} else if (selDevLevel.selectedIndex === 1) { // Mid-level
+		hourlyRate = 300;
+	} else if (selDevLevel.selectedIndex === 2) { // Senior
+		hourlyRate = 500;
+	}
+	return hourlyRate;
+}
+
+// Function to calculate gross pay based on hours worked
+function calculateGrossPay () {
+	let grossPay = 0;
+	for (let outerIndex = 0; outerIndex < hourly.length; outerIndex++) {
+		for (let innerIndex = hourly[outerIndex]; innerIndex > 0; innerIndex--) {
+			grossPay += determineHourlyRate(); // Multiply hours by rate
+		}
+	}
+	return grossPay;
+}
+
+// Function to calculate rush bonus if rush is selected
+function rushBonus () {
+	let bonus = 0;
+	if (rdoRush.checked) {
+		bonus = calculateGrossPay() * 0.20; // 20% bonus
+	}
+	return bonus;
+}
+
+// Function to calculate tax deduction if checkbox is checked
+function taxDeduction () {
+	let deduction = 0;
+	if (chkStatus.checked) {
+		deduction = calculateGrossPay() * 0.12; // 12% deduction
+	}
+	return deduction;
+}
+
+// Function to calculate total salary
+function calculateSalary () {
+	return calculateGrossPay() + rushBonus() - taxDeduction();
+}
