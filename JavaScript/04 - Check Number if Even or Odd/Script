@@ -1,0 +1,46 @@
+function checkNum () {
+	document.getElementById("checkNum").onclick = function () {
+		let num = document.getElementById("evenOdd").value;
+		if (num % 2 === 0) {
+			alert(`Your input number ${num} is even`);
+		} else {
+			alert(`Your input number ${num} is odd`);
+		}
+    };
+};
+
+checkNum();
+
+function checkGrade() {
+  document.getElementById("checkGrade").onclick = function () {
+
+    let grade = document.getElementById("grade").value;
+
+    if (grade < 0 || grade > 100) {
+      alert("Please input 0-100 only.");
+    } else {
+      switch (true) {
+        case grade >= 90:
+          alert(`Student grade of ${grade} is equivalent to A`);
+          break;
+
+        case grade >= 80:
+          alert(`Student grade of ${grade} is equivalent to B`);
+          break;
+
+        case grade >= 70:
+          alert(`Student grade of ${grade} is equivalent to C`);
+          break;
+
+        case grade >= 60:
+          alert(`Student grade of ${grade} is equivalent to D`);
+          break;
+
+        default:
+          alert(`Student grade of ${grade} is equivalent to F`);
+      }
+    }
+  };
+}
+
+checkGrade();
