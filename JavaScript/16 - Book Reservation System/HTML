@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Book Reservation System</title>
+</head>
+	<body>
+		<h1>BOOK RESERVATION SYSTEM</h1>
+
+		<div id="form-control" disabled>
+			<label>Student Name:</label>
+			<input type="text" id="txtStudent">
+			<br><br>
+
+			<label>Book Categories:</label>
+			<select id="selCategory" onchange="showCategory()">
+				<option value="">---- Select ----</option>
+				<option value="Fiction">Fiction</option>
+				<option value="Science">Science</option>
+				<option value="Technology">Technology</option>
+			</select>
+			<br><br>
+
+			<div id="fictionDiv" style="display: none">
+				<label>Fiction Books:</label>
+				<input type="checkbox" id="chkFiction1" value="The Great Gatsby">
+				<label>The Great Gatsby</label>
+				<input type="checkbox" id="chkFiction2" value="To Kill a Mockingbird">
+				<label>To Kill a Mockingbird</label>
+				<input type="checkbox" id="chkFiction3" value="1984">
+				<label>1984</label>
+				<br><br>
+			</div>
+
+			<div id="scienceDiv" style="display: none">
+				<label>Science Books:</label>
+				<input type="checkbox" id="chkScience1" value="A Brief History of Time">
+				<label>A Brief History of Time</label>
+				<input type="checkbox" id="chkScience2" value="Cosmos">
+				<label>Cosmos</label>
+				<input type="checkbox" id="chkScience3" value="The Selfish Gene">
+				<label>The Selfish Gene</label>
+				<br><br>
+			</div>
+
+			<div id="technologyDiv" style="display: none">
+				<label>Technology Books:</label>
+				<input type="checkbox" id="chkTech1" value="Clean Code">
+				<label>Clean Code</label>
+				<input type="checkbox" id="chkTech2" value="Introduction to Algorithms">
+				<label>Introduction to Algorithms</label>
+				<input type="checkbox" id="chkTech3" value="JavaScript: The Good Parts">
+				<label>JavaScript: The Good Parts</label>
+				<br><br>
+			</div>
+
+			<input type="checkbox" id="chkPriority">
+			<label>Priority Reservation</label>
+			<br><br>
+		</div>
+
+		<button id="reserveBtn">Reserve Book</button>
+		<br><hr>
+
+		<h3>RESULT:</h3>
+		<p id="pResult"></p>
+		
+		<script src="script.js"></script>
+	</body>
+</html>
