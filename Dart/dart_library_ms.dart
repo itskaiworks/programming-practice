@@ -1,0 +1,290 @@
+import 'dart:io';
+
+void main() {
+  List<LibraryItem> library = [];
+
+  int choice, itemId, pageQtty, fileSize;
+  String title, author;
+
+  while (true) {
+    print(
+      '\n ==================================='
+      '\n      LIBRARY MANAGEMENT SYSTEM     '
+      '\n ==================================='
+      '\n [1] Add Printed Book               '
+      '\n [2] Add Ebook                      '
+      '\n [3] Display All Library Items      '
+      '\n [4] Borrow an Item                 '
+      '\n [5] Return an Item                 '
+      '\n [0] Exit System                    '
+      '\n ===================================',
+    );
+
+    stdout.write('\n Enter Choice: ');
+    choice = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+    switch (choice) {
+      case 1:
+        stdout.write(
+          '\n -----------------------------------'
+          '\n FILL OUT PRINTED BOOK INFORMATION  '
+          '\n -----------------------------------'
+          '\n Item ID: ',
+        );
+        itemId = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+        stdout.write(' Title: ');
+        title = stdin.readLineSync() ?? '';
+
+        stdout.write(' Author: ');
+        author = stdin.readLineSync() ?? '';
+
+        stdout.write(' Pages: ');
+        pageQtty = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+        library.add(PrintedBook(itemId, title, author, pageQtty));
+
+        print('\n [SUCCESS]: Printed Book added successfully!\n');
+        break;
+
+      case 2:
+        stdout.write(
+          '\n -----------------------------------'
+          '\n FILL OUT EBOOK INFORMATION         '
+          '\n -----------------------------------'
+          '\n Item ID: ',
+        );
+        itemId = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+        stdout.write(' Title: ');
+        title = stdin.readLineSync() ?? '';
+
+        stdout.write(' Author: ');
+        author = stdin.readLineSync() ?? '';
+
+        stdout.write(' File Size: ');
+        fileSize = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+        library.add(EBook(itemId, title, author, fileSize));
+
+        print('\n [SUCCESS]: EBook added successfully!\n');
+        break;
+
+      case 3:
+        if (library.isEmpty) {
+          print('\n [INFO]: No items in the library yet.\n');
+          break;
+        }
+
+        print(
+          '\n -----------------------------------'
+          '\n ALL LIBRARY ITEMS                  '
+          '\n -----------------------------------',
+        );
+        for (LibraryItem item in library) {
+          print(item.displayInfo());
+        }
+        break;
+
+      case 4:
+        stdout.write('\n Enter Item ID to borrow: ');
+        itemId = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+        LibraryItem? borrowTarget = findItemById(library, itemId);
+
+        if (borrowTarget == null) {
+          print('\n [ERROR]: Item ID not found.\n');
+        } else {
+          print('\n ${borrowTarget.borrowItem()}\n');
+        }
+        break;
+
+      case 5:
+        stdout.write('\n Enter Item ID to return: ');
+        itemId = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+        LibraryItem? returnTarget = findItemById(library, itemId);
+
+        if (returnTarget == null) {
+          print('\n [ERROR]: Item ID not found.\n');
+        } else {
+          print('\n ${returnTarget.returnItem()}\n');
+        }
+        break;
+
+      case 0:
+        print('\n Exiting Library Management System... Goodbye!\n');
+        exit(0);
+
+      default:
+        print('\n [ERROR]: Invalid choice, please try again.\n');
+        break;
+    }
+  }
+}
+
+LibraryItem? findItemById(List<LibraryItem> library, int itemId) {
+  for (LibraryItem item in library) {
+    if (item.getItemId() == itemId) {
+      return item;
+    }
+  }
+  return null;
+}
+
+// ABSTRACT CLASS --------------------------------------------------------------
+
+abstract class LibraryItem {
+  int? _itemId;
+  String? _title;
+  String? _author;
+  bool? _isAvalable = false;
+
+  LibraryItem(int itemId, String title, String author) {
+    this._itemId = itemId;
+    this._title = title;
+    this._author = author;
+    _isAvalable = true;
+  }
+
+  //Getter
+  int getItemId() {
+    return _itemId!;
+  }
+
+  String getTitle() {
+    return _title!;
+  }
+
+  String getAuthor() {
+    return _author!;
+  }
+
+  bool getIsAvailable() {
+    return _isAvalable!;
+  }
+
+  //Setter
+  void setItemId(int itemId) {
+    if (itemId > 0) {
+      this._itemId = itemId;
+    }
+  }
+
+  void setTitle(String title) {
+    if (title.isNotEmpty) {
+      this._title = title;
+    }
+  }
+
+  void setAuthor(String author) {
+    if (author.isNotEmpty) {
+      this._author = author;
+    }
+  }
+
+  void setIsAvailable(bool isAvailable) {
+    this._isAvalable = isAvailable;
+  }
+
+  //Abstract methods
+  String displayInfo();
+  String borrowItem();
+  String returnItem();
+}
+
+//INHERITANCE CLASS - Printed Book ---------------------------------------------
+
+class PrintedBook extends LibraryItem {
+
+  int? _pageQtty;
+
+  PrintedBook(int itemId, String title, String author, this._pageQtty)
+    : super(itemId, title, author);
+
+  //Getter & Setter
+  int getPageQtty() {
+    return _pageQtty!;
+  }
+
+  void setPageQtty(int pageQtty) {
+    if (pageQtty > 0) {
+      this._pageQtty = pageQtty;
+    }
+  }
+
+  @override
+  String displayInfo() {
+    return '\n Item ID: ${getItemId()}'
+        '\n Title: ${getTitle()}'
+        '\n Author: ${getAuthor()}'
+        '\n Pages: $_pageQtty'
+        '\n Status: ${getIsAvailable() ? "Available" : "Borrowed"}';
+  }
+
+  @override
+  String borrowItem() {
+    if (!getIsAvailable()) {
+      return '[FAILED]: "${getTitle()}" is already borrowed.';
+    }
+    setIsAvailable(false);
+    return '[SUCCESS]: You have borrowed "${getTitle()}".';
+  }
+
+  @override
+  String returnItem() {
+    if (getIsAvailable()) {
+      return '[FAILED]: "${getTitle()}" was not borrowed.';
+    }
+    setIsAvailable(true);
+    return '[SUCCESS]: You have returned "${getTitle()}".';
+  }
+}
+
+//INHERITANCE CLASS - EBook ----------------------------------------------------
+
+class EBook extends LibraryItem {
+
+  int? _fileSize;
+
+  EBook(int itemId, String title, String author, this._fileSize)
+    : super(itemId, title, author);
+
+  //Getter & Setter
+  int getFileSize() {
+    return _fileSize!;
+  }
+
+  void setFileSize(int fileSize) {
+    if (fileSize > 0) {
+      this._fileSize = fileSize;
+    }
+  }
+
+  @override
+  String displayInfo() {
+    return '\n Item ID: ${getItemId()}'
+        '\n Title: ${getTitle()}'
+        '\n Author: ${getAuthor()}'
+        '\n File Size: ${_fileSize}KB'
+        '\n Status: ${getIsAvailable() ? "Available" : "Borrowed"}';
+  }
+
+  @override
+  String borrowItem() {
+    if (!getIsAvailable()) {
+      return '[FAILED]: "${getTitle()}" is already borrowed.';
+    }
+    setIsAvailable(false);
+    return '[SUCCESS]: You have borrowed "${getTitle()}".';
+  }
+
+  @override
+  String returnItem() {
+    if (getIsAvailable()) {
+      return '[FAILED]: "${getTitle()}" was not borrowed.';
+    }
+    setIsAvailable(true);
+    return '[SUCCESS]: You have returned "${getTitle()}".';
+  }
+}
