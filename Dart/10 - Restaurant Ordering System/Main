@@ -1,0 +1,72 @@
+import 'dart:io';
+import 'order.dart';
+
+void main(List<String> arguments) {
+  List<Order> orders = [];
+
+  int choice, qtty;
+  String foodName;
+  double price;
+
+  while (true) {
+    stdout.write(
+      '\n ======================================'
+      '\n       RESTAURANT ORDERING SYSTEM      '
+      '\n ======================================'
+      '\n [1] Add Order                         '
+      '\n [2] Display All Order                 '
+      '\n [0] Exit System                       '
+      '\n ======================================'
+      '\n\n Enter Choice: ',
+    );
+    choice = int.tryParse(stdin.readLineSync()!) ?? -1;
+
+    switch (choice) {
+      case 1:
+        stdout.write(
+          '\n --------------------------------------'
+          '\n ENTER REQUIRED DETAILS                '
+          '\n --------------------------------------'
+          '\n Food Name: ',
+        );
+        foodName = stdin.readLineSync() ?? "";
+
+        stdout.write(' Price: ');
+        price = double.tryParse(stdin.readLineSync()!) ?? 0;
+
+        stdout.write(' Quantity: ');
+        qtty = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+        Order order = Order(foodName, price, qtty);
+
+        print(order.displayReciept());
+
+        orders.add(order);
+
+        print(
+          '\n Order being process..'
+          '\n Order preparing...'
+          '\n Order waiting to receive...'
+          '\n\n [SUCCESS]: Order receive successfully!',
+        );
+        break;
+
+      case 2:
+        print(
+          '\n ======================================'
+          '\n          LIST OF ALL ORDERS           ',
+        );
+        for (Order order in orders) {
+          print(order.displayAllOrders());
+        }
+        print(' ======================================');
+        break;
+      case 0:
+        print('\n [EXITING..]: Thank you for using the system! \n\n');
+        return;
+      default:
+        print('\n [OOPS..]: Wrong input. Please enter number 0 - 2 only.');
+        break;
+    }
+  }
+}
