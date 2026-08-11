@@ -1,0 +1,59 @@
+import 'food.dart';
+
+class Order extends Food {
+  static int _idCounter = 101;
+
+  Order(String foodName, double price, int qtty)
+    : super(foodName, price, qtty) {
+      setOrderID(_idCounter++);
+    }
+
+  double calcSubTotal() {
+    return getPrice() * getQtty();
+  }
+
+  double calcDiscount() {
+    double discount = 0.0;
+    double subTotal = calcSubTotal();
+
+    if (subTotal >= 500 && subTotal < 999) {
+      discount = subTotal * 0.05;
+    } else if (subTotal >= 1000 && subTotal < 2999) {
+      discount = subTotal * 0.10;
+    } else if (subTotal > 3000) {
+      discount = subTotal * 0.15;
+    } else {
+      discount = 0;
+    }
+
+    return discount;
+  }
+
+  double calcFinalTotal() {
+    return calcSubTotal() - calcDiscount();
+  }
+
+  String displayReciept() {
+    return '\n ======================================'
+        '\n             ORDER RECIEPT             '
+        '\n --------------------------------------'
+        '\n Order Number    : ${getOrderID()}     '
+        '\n Food Name       : ${getFoodName()}    '
+        '\n Price           : P${getPrice()}      '
+        '\n Quantity        : ${getQtty()}        '
+        '\n --------------------------------------'
+        '\n Sub Total       : P${calcSubTotal()}  '
+        '\n Discount        : P${calcDiscount()}  '
+        '\n --------------------------------------'
+        '\n Amount to Pay   : P${calcFinalTotal()}'
+        '\n ======================================';
+  }
+
+  String displayAllOrders() {
+    return ' --------------------------------------'
+        '\n Order Number    : ${getOrderID()}   '
+        '\n Food Name       : ${getFoodName()}  '
+        '\n Price           : ${getPrice()}     '
+        '\n Quantity        : ${getQtty()}      ';
+  }
+}
