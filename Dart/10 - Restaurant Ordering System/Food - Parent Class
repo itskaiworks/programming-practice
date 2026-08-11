@@ -1,0 +1,47 @@
+class Food {
+  int? _orderID;
+  String? _foodName;
+  double? _price;
+  int? _qtty;
+
+  // Constructor
+  Food(String foodName, double price, int qtty) {
+    this._foodName = foodName;
+    this._price = price;
+    this._qtty = qtty;
+  }
+
+  // Getters
+  int getOrderID() {
+    return _orderID!;
+  }
+
+  String getFoodName() {
+    return _foodName!;
+  }
+
+  double getPrice() {
+    return _price!;
+  }
+
+  int getQtty() {
+    return _qtty!;
+  }
+
+  // Setters
+  void setOrderID(int orderID) {
+    this._orderID = orderID;
+  }
+
+  void setFoodName(String foodName) {
+    this._foodName = foodName;
+  }
+
+  void setPrice(double price) {
+    this._price = price;
+  }
+
+  void setQtty(int qtty) {
+    this._qtty = qtty;
+  }
+}
