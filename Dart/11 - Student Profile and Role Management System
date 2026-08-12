@@ -1,0 +1,142 @@
+import 'dart:io';
+
+void main(List<String> arguments) {
+  String role, fullName, nickname, address, hobby, motto, position;
+  int age, phoneNumber;
+
+  stdout.write(
+    '\n ========================================'
+    '\n      STUDENT PROFILE & ROLE SYSTEM      '
+    '\n ========================================'
+    '\n > Please fill out required information <'
+    '\n\n Full Name: ',
+  );
+  fullName = stdin.readLineSync() ?? '';
+
+  stdout.write(' Nickname: ');
+  nickname = stdin.readLineSync() ?? '';
+
+  stdout.write(' Age: ');
+  age = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+  stdout.write(' Address: ');
+  address = stdin.readLineSync() ?? '';
+
+  stdout.write(' Phone Number: ');
+  phoneNumber = int.tryParse(stdin.readLineSync()!) ?? 0;
+
+  stdout.write(' Hobby: ');
+  hobby = stdin.readLineSync() ?? '';
+
+  stdout.write(' Motto: ');
+  motto = stdin.readLineSync() ?? '';
+
+  stdout.write('\n Are you a student leader? (Yes/No): ');
+  role = stdin.readLineSync() ?? '';
+
+  if (role.toLowerCase() == 'yes') {
+
+    stdout.write('\n Enter Position: ');
+    position = stdin.readLineSync() ?? '';
+
+    Student studentLeader = new StudentLeader(
+      fullName, nickname, age, address, phoneNumber, hobby, motto, position
+    );
+    print('\n ========================================'
+          '\n             STUDENT PROFILE             '
+          '\n ----------------------------------------'
+          '${studentLeader.displayStudentProfile()}   '
+          '\n ========================================\n\n');
+
+  } else if (role.toLowerCase() == 'no') {
+
+    Student student = new Student(
+      fullName, nickname, age, address, phoneNumber, hobby, motto
+    );
+    print('\n ========================================'
+          '\n             STUDENT PROFILE             '
+          '\n ----------------------------------------'
+          '${student.displayStudentProfile()}         '
+          '\n ========================================\n\n');
+    
+  }
+}
+
+//Abstract Class ---------------------------------------------------------------
+abstract class StudentProfile {
+  String displayStudentProfile();
+}
+
+//Student Parent Class ---------------------------------------------------------
+class Student extends StudentProfile {
+  String? _fullName, _nickname, _address, _hobby, _motto;
+  int? _age, _phoneNumber;
+
+  //Parent Class Constructor
+  Student(
+    String fullName, String nickname, int age, String address,
+    int phoneNumber, String hobby, String motto,
+  ) {
+    this._fullName = fullName;
+    this._nickname = nickname;
+    this._age = age;
+    this._address = address;
+    this._phoneNumber = phoneNumber;
+    this._hobby = hobby;
+    this._motto = motto;
+  }
+
+  //Getters
+  String getFullName() => _fullName!;
+  String getNickname() => _nickname!;
+  int getAge() => _age!;
+  String getAddress() => _address!;
+  int getPhoneNumber() => _phoneNumber!;
+  String getHobby() => _hobby!;
+  String getMotto() => _motto!;
+
+  //Setters
+  void setFullName(String fullName) => this._fullName = fullName;
+  void setNickname(String nickname) => this._nickname = nickname;
+  void setAge(int age) => this._age = age;
+  void setAddress(String address) => this._address = address;
+  void setPhoneNumber(int phoneNumber) => this._phoneNumber = phoneNumber;
+  void setHobby(String hobby) => this._hobby = hobby;
+  void setMotto(String motto) => this._motto = motto;
+
+  //Method
+  @override 
+  String displayStudentProfile() {
+    return  '\n Full Name    : ${getFullName()}         '
+            '\n Nickname     : ${getNickname()}         '
+            '\n Age          : ${getAge()}              '
+            '\n Address      : ${getAddress()}          '
+            '\n Phone Number : ${getPhoneNumber()}      '
+            '\n ----------------------------------------'
+            '\n Hobby        : ${getHobby()}            '
+            '\n Motto        : ${getMotto()}            ';
+  }
+}
+
+//Student Leader Child Class ---------------------------------------------------
+
+class StudentLeader extends Student {
+  String? _position;
+
+  //Child Class Constructor
+  StudentLeader(
+    String fullName, String nickname, int age, String address,
+    int phoneNumber, String hobby, String motto, String position,
+  ) 
+  : super(fullName, nickname, age, address, phoneNumber, hobby, motto) 
+{
+      this._position = position;
+}
+
+  @override //Parent Class Method
+  String displayStudentProfile() {
+    return  '\n Student Role : $_position               '
+            '\n                                         '
+            '${super.displayStudentProfile()}           ';
+  }
+}
