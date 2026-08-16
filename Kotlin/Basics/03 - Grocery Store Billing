@@ -1,0 +1,78 @@
+fun main () {
+   print("\n ===== GROCERY STORE BILLING SYSTEM ===== \n")
+   print(" Enter Customer Name: ")
+   var customer = readln()!!
+   print(" Enter Qtty to Purchase: ")
+   var qtty = readln().toInt()!!
+
+
+   var subTotal = 0.0;
+
+
+   for (products in 1..qtty) {
+       print("\n PRODUCT [$products]: ")
+       print("\n Enter Product Name: ")
+       var product = readln()!!
+       print(" Enter Quantity: ")
+       var quantity = readln().toInt()!!
+       print(" Enter Price per Unit: ")
+       var unitPrice = readln().toDouble()!!
+
+
+       var price = unitPrice * quantity
+
+
+       subTotal += price
+   }
+
+
+   print("\n Choose Category: " +
+         "\n - Regular        " +
+         "\n - Member         " +
+         "\n - Senior Citizen \n")
+   print("\n Enter Choice: ")
+   var category = readln()!!
+
+
+   print(displayReceipt(customer, qtty, category, subTotal))
+}
+
+
+fun getCategoryDiscount (category : String, subTotal : Double) : Double {
+   var categoryDiscount = 0.0
+
+
+   when (category) {
+       in "Member" -> categoryDiscount =  subTotal * 0.5
+       in "Senior Citizen" -> categoryDiscount =  subTotal * 0.20
+       else -> categoryDiscount =  subTotal
+   }
+   return categoryDiscount
+}
+
+
+fun getSubtotalDiscount (category : String, subTotal : Double) : Double {
+   if (subTotal >= 5000) {
+       return getCategoryDiscount(category, subTotal) * 0.5
+   } else {
+       return getCategoryDiscount(category, subTotal)
+   }
+}
+
+
+fun getFinalTotal (category : String, subTotal : Double) : Double{
+   return subTotal - getSubtotalDiscount(category, subTotal)
+}
+
+
+fun displayReceipt (customer : String, qtty : Int, category : String, subTotal : Double) : String {
+   return  "\n --------------- RECEIPT ---------------- " +
+           "\n Customer Name   : $customer              " +
+           "\n Category        : $category              " +
+           "\n Purchase Qtty   : $qtty                  " +
+           "\n Items Sub Total : $subTotal              " +
+           "\n -----------------------------------------" +
+           "\n TOTAL AMOUNT    : " + getFinalTotal(category, subTotal) +
+           "\n -----------------------------------------\n"
+}
+
