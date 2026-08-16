@@ -1,0 +1,93 @@
+fun main () {
+   print("\n ===== ENROLLMENT MANAGEMENT SYSTEM ===== \n")
+   print(" Enter Number of Students: ")
+   var studentsQtty = readln().toInt()!!
+
+
+   var courses = mutableListOf<String>()
+   var units = mutableListOf<Int>()
+   var tuitionFee = mutableListOf<Double>()
+
+
+   var studentName = ""
+   var courseQtty = 0
+
+
+   var overallFee = 0.0
+
+
+   for (outerLoop in 1..studentsQtty) {
+       print("\n ----- STUDENT NO. $outerLoop -----")
+       print("\n Enter Your Name: ")
+       studentName = readln()!!
+       print(" Enter Number of Course to Enroll: ")
+       courseQtty = readln().toInt()!!
+
+
+       for (innerLoop in 1..courseQtty) {
+           print("\n COURSE NO. $innerLoop ")
+           print("\n Enter Course Name: ")
+           var courseName = readln()!!
+           courses.add(courseName)
+
+
+           print(" Enter Number of Units: ")
+           var unit = readln().toInt()!!
+           units.add(unit)
+
+
+           print(" Enter Course Tuition Fee: ")
+           var tuition = readln().toDouble()
+           var totalFee = tuition * unit
+           tuitionFee.add(totalFee)
+           overallFee += totalFee
+       }
+   }
+
+
+   print("\n Enter if Scholar / Dean's Lister / Regular: ")
+   var standing = readln()!!
+
+
+   print("\n -------------------------- " +
+         "\n      STUDENT SUMMARY       " +
+         "\n -------------------------- " )
+   for (students in 1..studentsQtty) {
+       print( "\n STUDENT [$students]            " +
+               "\n Name            : $studentName " +
+               "\n Course Quantity : $courseQtty  " +
+               "\n Courses         : ")
+
+
+       for (course in courses.indices) {
+           print("\n                - ${courses[course]}")
+           print("\n                -  Unit: ${units[course]}")
+           print("\n                -  Fee : ${tuitionFee[course]}\n")
+       }
+
+
+       print(  "\n Discount        : " + calculateDiscount(standing, overallFee) +
+               "\n Final Fee       : " + calculateFinalFee(standing, overallFee) +
+               "\n --------------------------\n" )
+   }
+}
+
+
+fun calculateDiscount (standing : String, overallFee : Double) : Double {
+   var discount = 0.0
+
+
+   when(standing) {
+       in "Scholar" -> discount = overallFee * 0.50
+       in "Dean's Lister" -> discount = overallFee * 0.25
+       else -> discount = 0.0
+   }
+
+
+   return discount
+}
+
+
+fun calculateFinalFee (standing : String, overallFee : Double) : Double {
+   return overallFee - calculateDiscount(standing, overallFee)
+}
