@@ -1,0 +1,81 @@
+fun main () {
+   val items = arrayOf<String>("Laptop", "Mouse", "Keyboard", "Monitor");
+   val prices = arrayOf<Double>(300.00, 105.00, 190.00, 220.00); //PRICE IN DOLLAR
+   var stocks = arrayOf<Int>(10, 24, 12 ,4);
+
+
+   while (true) {
+       print("\n ===== INVENTORY & DISCOUNT MANAGER =====" +
+               "\n\n LIST OF ITEMS: ");
+
+
+       for (item in items.indices) {
+           print("\n [${item + 1 }] ${items[item]} | $${prices[item]} | Stock: ${stocks[item]}" +
+                   "\n ----------------------------------------");
+       }
+
+
+       print("\n\n PROCEED TO PURCHASE PRODUCT? 1-Yes | 2-No |: ");
+       var choice = readln().toInt();
+       if (choice == 2) {
+           print("\n Thank you for coming!\n\n");
+           return
+       };
+
+
+       print("\n Enter customer: ");
+       var customer = readln();
+       print(" Enter item name to purchase: ");
+       var itemPurchasing = readln();
+
+
+       var itemFound = false;
+
+
+       for (item in items.indices) {
+           if (items[item] == itemPurchasing) {
+               itemFound = true;
+
+
+               if (stocks[item] == 0) {
+                   print("\n NOTIF: Item is out of stock.\n");
+               } else {
+                   var bulkDiscount = 0.00;
+
+
+                   if (prices[item] > 200) {
+                       bulkDiscount = 0.10;
+                   }
+
+
+                   stocks[item]--;
+
+
+                   print("\n ======================================== " +
+                           "\n             PURCHASE RECEIPT            " +
+                           "\n ----------------------------------------" +
+                           "\n Customer   : $customer                  " +
+                           "\n Item       : ${items[item]}             " +
+                           "\n Base Price : $${prices[item]}           " +
+                           "\n Discount   : ${bulkDiscount * 100}%     " +
+                           "\n ----------------------------------------" +
+                           "\n AMOUNT TO PAY : ${applyDiscount(prices[item], bulkDiscount)}" +
+                           "\n ----------------------------------------\n");
+               }
+
+
+               break;
+           }
+       }
+
+
+       if (!itemFound) {
+           print("\n NOTIF: Item not found.\n");
+       }
+   }
+}
+
+
+fun applyDiscount (price : Double, discountPercentage : Double) : Double {
+   return price - (price * discountPercentage);
+}
