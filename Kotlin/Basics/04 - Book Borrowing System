@@ -1,0 +1,77 @@
+fun main () {
+   val books = arrayOf<String>("Kotlin Basics", "Data Structure", "Flutter", "Networking");
+   val authors = arrayOf<String>("Jane Doe", "Robert Martin", "David Brown", "John Smith");
+   var copies = arrayOf<Int>(21, 34, 12, 9);
+
+
+   while (true) {
+       print("\n ===== LIBRARY BOOK BORROWING SYSTEM ===== " +
+             "\n\n LIST OF BOOKS: ");
+
+
+       for (book in books.indices) {
+           print("\n [${book + 1}] ${books[book]} | Auth: ${authors[book]} | Copies: ${copies[book]}" +
+                 "\n ----------------------------------------- ");
+       }
+
+
+       print("\n\n PROCEED TO BORROW BOOK? Yes / No: ");
+       var choice = readln();
+       if (choice == "No") {
+           print("\n NOTIF: Thank you for visiting. Come again!\n\n");
+           return;
+       }
+
+
+       print("\n Enter book title: ");
+       var title = readln();
+
+
+       var bookFound = false;
+       for (book in books.indices) {
+           if (books[book] == title) {
+
+
+               bookFound = true;
+
+
+               if (copies[book] == 0) {
+                   print("\n NOTIF: $title already have 0 copies. \n")
+               } else {
+
+
+                   print("\n How many days do you plan to keep the book? ");
+                   var borrowDays = readln().toInt();
+
+
+                   var lateDays = when (borrowDays) {
+                       in 1..14 -> 0;
+                       else -> borrowDays - 14;
+                   }
+
+
+                   copies[book]--;
+
+
+                   print( "\n ========================================= " +
+                          "\n           BORROWED BOOK DETAILS           " +
+                          "\n ----------------------------------------- " +
+                          "\n TITLE  : $title                           " +
+                          "\n AUTHOR : ${authors[book]}                 " +
+                          "\n ----------------------------------------- " +
+                          "\n Estimated Late Fee : P" + calculateLateFee(lateDays) +
+                          "\n ----------------------------------------- \n");
+               }
+               break;
+           }
+       }
+       if (!bookFound) {
+           print("\n NOTIF: $title not found. \n")
+       }
+   }
+}
+
+
+fun calculateLateFee (lateDays : Int) : Int {
+   return lateDays * 15;
+}
