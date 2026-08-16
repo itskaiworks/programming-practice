@@ -1,0 +1,115 @@
+fun main() {
+
+
+   print("\n ===== MOBILE PHONE LOAD AND DATA SYSTEM ===== \n")
+   print(" Enter Customer Name: ")
+   var customer = readln()!!
+
+
+   print(" Enter Number of Transaction: ")
+   var transactions = readln().toInt()!!
+
+
+   var subTotal = 0
+
+
+   for (transaction in 1..transactions) {
+       print(
+           "\n --- TRANSACTION #$transaction --- " +
+           "\n [1] Mobile Load                   " +
+           "\n [2] Data Package                  "
+       )
+
+
+       do {
+           print("\n\n Enter Choice: ")
+           var choice = readln().toInt()!!
+
+
+           if (choice == 1) {
+
+
+               print("\n Enter Amount of Load: ")
+               var load = readln().toInt()!!
+               subTotal += load
+
+
+           } else if (choice == 2) {
+
+
+               print(
+                   "\n ---- DATA PACKAGE ----" +
+                   "\n [1] 1GB  - P20        " +
+                   "\n [2] 5GB  - P50        " +
+                   "\n [3] 10GB - P100       "
+               )
+
+
+               print("\n\n Enter Data Choice: ")
+               var data = readln().toInt()
+               subTotal += getDataAmount(data)
+
+
+           } else {
+
+
+               print("\n [WARNING]: Wrong choice. Try again.")
+
+
+           }
+
+
+       } while (choice != 1 && choice != 2)
+   }
+
+
+   print("\n Did you purchase loyalty member? (Yes / No): ")
+   var membership = readln()!!
+
+
+   print(displayReceipt(customer, transactions, subTotal, membership))
+}
+
+
+fun getDataAmount(data: Int): Int {
+   var dataAmount = 0
+
+
+   when (data) {
+       1 -> dataAmount = 20
+       2 -> dataAmount = 50
+       3 -> dataAmount = 100
+   }
+   return dataAmount
+}
+
+
+fun calculateDiscount(subTotal: Int, membership: String): Double {
+   var discount = 0.0
+
+
+   when (membership) {
+       in "Yes" -> discount = subTotal * 0.10
+       else -> subTotal
+   }
+   return discount
+}
+
+
+fun calculateFinalAmount(subTotal: Int, membership: String): Double {
+   return subTotal - calculateDiscount(subTotal, membership)
+}
+
+
+fun displayReceipt(customer: String, transactions: Int, subTotal: Int, membership: String ): String {
+   return "\n ----------------------         " +
+           "\n         RECEIPT               " +
+           "\n ----------------------        " +
+           "\n Customer      : $customer     " +
+           "\n Transaction # : $transactions " +
+           "\n Sub Total     : $subTotal     " +
+           "\n Discount      : " + calculateDiscount(subTotal, membership)    +
+           "\n ----------------------        " +
+           "\n TOTAL AMOUNT  : " + calculateFinalAmount(subTotal, membership) +
+           "\n ----------------------       \n"
+}
