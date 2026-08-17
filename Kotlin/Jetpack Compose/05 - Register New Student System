@@ -1,0 +1,211 @@
+package com.example.studentmanagementsystem
+
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.studentmanagementsystem.ui.theme.StudentManagementSystemTheme
+
+
+class MainActivity : ComponentActivity() {
+
+
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       enableEdgeToEdge()
+
+
+       setContent {
+           StudentManagementSystemTheme {
+               RegisterNewStudent()
+           }
+       }
+   }
+}
+
+
+@Composable
+fun RegisterNewStudent() {
+
+
+   val yearLevels = remember {
+       mutableStateListOf(
+           "1st Year",
+           "2nd Year",
+           "3rd Year",
+           "4th Year"
+       )
+   }
+
+
+   var studentName by remember { mutableStateOf("") }
+   var studentId by remember { mutableStateOf("") }
+   var selectedYearLevel by remember { mutableStateOf("") }
+
+
+   val sectionModifier = Modifier
+       .fillMaxWidth()
+       .padding(horizontal = 20.dp)
+
+
+   Column(
+       modifier = Modifier
+           .fillMaxSize()
+           .padding(top = 80.dp),
+       horizontalAlignment = Alignment.CenterHorizontally
+   ) {
+
+
+       // Header
+       Box(
+           modifier = Modifier
+               .fillMaxWidth()
+               .background(Color.DarkGray)
+               .padding(16.dp),
+           contentAlignment = Alignment.Center
+       ) {
+           Column(
+               horizontalAlignment = Alignment.CenterHorizontally
+           ) {
+               Text(
+                   text = "STUDENT MANAGEMENT SYSTEM",
+                   fontSize = 30.sp,
+                   color = Color.White
+               )
+
+
+               Spacer(modifier = Modifier.height(10.dp))
+
+
+               Text(
+                   text = "Manage Registered Students",
+                   color = Color.White
+               )
+           }
+       }
+
+
+       // Registration Title
+       Text(
+           text = "REGISTER NEW STUDENT:",
+           fontSize = 20.sp,
+           modifier = sectionModifier.padding(top = 20.dp)
+       )
+
+
+       // Student Name
+       OutlinedTextField(
+           value = studentName,
+           onValueChange = {
+               studentName = it
+           },
+           label = {
+               Text("Student Name")
+           },
+           modifier = Modifier
+               .width(350.dp)
+               .padding(top = 10.dp)
+       )
+
+
+       // Student ID
+       OutlinedTextField(
+           value = studentId,
+           onValueChange = {
+               studentId = it
+           },
+           label = {
+               Text("Student ID")
+           },
+           modifier = Modifier
+               .width(350.dp)
+               .padding(top = 10.dp)
+       )
+
+
+       // Year Level
+       Text(
+           text = "YEAR LEVEL:",
+           modifier = sectionModifier.padding(top = 30.dp)
+       )
+
+
+       LazyRow(
+           modifier = sectionModifier
+       ) {
+           items(yearLevels) { year ->
+               Button(
+                   onClick = {
+                       selectedYearLevel = year
+                   },
+                   colors = ButtonDefaults.buttonColors(
+                       containerColor = Color.DarkGray
+                   ),
+                   modifier = Modifier.padding(end = 8.dp)
+               ) {
+                   Text(year)
+               }
+           }
+       }
+
+
+       Spacer(modifier = Modifier.height(20.dp))
+
+
+       // Student Information
+       Box(
+           modifier = sectionModifier
+               .border(2.dp, Color.DarkGray)
+               .padding(10.dp)
+       ) {
+           Column(
+               modifier = Modifier.fillMaxWidth()
+           ) {
+               Text(
+                   text = "STUDENT INFORMATION:",
+                   modifier = Modifier.padding(10.dp)
+               )
+
+
+               Box(
+                   modifier = Modifier
+                       .fillMaxWidth()
+                       .border(2.dp, Color.DarkGray)
+                       .padding(10.dp)
+               ) {
+                   Column {
+                       Text(
+                           text = "Name: $studentName",
+                           modifier = Modifier.padding(4.dp)
+                       )
+
+
+                       Text(
+                           text = "ID: $studentId",
+                           modifier = Modifier.padding(4.dp)
+                       )
+
+
+                       Text(
+                           text = "Year Level: $selectedYearLevel",
+                           modifier = Modifier.padding(4.dp)
+                       )
+                   }
+               }
+           }
+       }
+   }
+}
