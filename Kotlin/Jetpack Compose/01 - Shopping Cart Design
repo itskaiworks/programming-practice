@@ -1,0 +1,287 @@
+package com.example.labexam
+
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.labexam.ui.theme.LabexamTheme
+
+
+data class Product(val name: String, val price: Double) // Requirement #1
+
+
+class MainActivity : ComponentActivity() {
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       enableEdgeToEdge()
+       setContent {
+           LabexamTheme {
+               MiniMartScreen()
+           }
+       }
+   }
+
+
+}
+
+
+@Composable
+fun MiniMartScreen() {
+
+
+   val products = listOf(
+       Product("Rice (1kg)", 50.0),
+       Product("Canned Tuna", 35.0),
+       Product("Instant Noodles", 15.0),
+       Product("Loaf Bread", 60.0),
+       Product("Bottled Water", 20.0)
+   )
+
+
+   // Requirement #3 & #9 (remember + rememberSaveable so search text survives rotation)
+   var searchProduct by rememberSaveable {
+       mutableStateOf("")
+   }
+
+
+   // Requirement #9 & #10 (State Hoisting - all cart quantities live here, not in ProductRow)
+   val quantities = rememberSaveable {
+       mutableStateListOf(0, 0, 0, 0, 0)
+   }
+
+
+   // Requirement #8
+   val filteredProducts = products.filter {
+       it.name.contains(searchProduct, true)
+   }
+
+
+   Column(modifier = Modifier.fillMaxSize().padding(top = 80.dp),
+          horizontalAlignment = Alignment.CenterHorizontally
+   ) {
+
+
+       // Requirement #1, #2, #5, #6 (header: Row + Image + Text, padding/fillMaxWidth, CenterVertically)
+       Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp),
+           horizontalArrangement = Arrangement.Center,
+           verticalAlignment = Alignment.CenterVertically
+       ) {
+
+
+           Image(imageVector = Icons.Filled.ShoppingCart,
+                 contentDescription = "Store Logo",
+                 modifier = Modifier.size(48.dp))
+
+
+           Spacer(modifier = Modifier.width(10.dp))
+
+
+           Text("NIXTERA SARI-SARI STORE")
+
+
+       }
+
+
+       Spacer(modifier = Modifier.height(10.dp))
+
+
+       // Requirement #1 & #3 (TextField + Icon, live search state)
+       OutlinedTextField(
+           value = searchProduct,
+           onValueChange = {
+               searchProduct = it
+           },
+           label = {
+               Text("Search Product")
+           },
+           leadingIcon = {
+               Icon(imageVector = Icons.Default.Search,
+                   contentDescription = "Search"
+               )
+           }
+       )
+
+
+       Spacer(modifier = Modifier.height(10.dp))
+
+
+       // Requirement #8 (LazyColumn with items(), filtered list)
+       LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f).padding(horizontal = 20.dp)
+       ) {
+           items(filteredProducts) { product -> val index = products.indexOf(product)
+
+
+               // Requirement #4 (hoisted lambdas: onAdd / onRemove passed down)
+               ProductRow(
+                   product = product,
+                   quantity = quantities[index],
+
+
+                   onAdd = { //on-add
+                       quantities[index]++
+                   },
+
+
+                   onRemove = { //on-remove
+
+
+                       if (quantities[index] > 0) {
+                           quantities[index]--
+                       }
+
+
+                   }
+
+
+               )
+
+
+               Spacer(modifier = Modifier.height(8.dp))
+
+
+           }
+
+
+       }
+
+
+       var totalPrice = 0.0
+
+
+       for (index in products.indices) {
+
+
+           totalPrice += quantities[index] * products[index].price
+
+
+       }
+
+
+       val totalItems = quantities.sum()
+
+
+       // Requirement #2 & #7 - ConstraintLayout summary bar with padding/fillMaxWidth/background/clip
+       ConstraintLayout(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
+                                           .background(Color(0xFFEFEFEF)).padding(16.dp).padding(bottom = 40.dp)
+       ) {
+
+
+           val (itemsLabel, total, orderButton) = createRefs()
+
+
+           Text(text = "Items: $totalItems",
+                modifier = Modifier.constrainAs(itemsLabel)
+                {
+                   top.linkTo(parent.top)
+                   start.linkTo(parent.start)
+                }
+           )
+
+
+           Text(text = "Total: P${"%.2f".format(totalPrice)}",
+                modifier = Modifier.constrainAs(total)
+                {
+                   top.linkTo(itemsLabel.bottom)
+                   start.linkTo(parent.start)
+                }
+           )
+
+
+           Button(
+               onClick = {
+
+
+                   // Place Order
+
+
+               },
+               modifier = Modifier.constrainAs(orderButton) {
+                          end.linkTo(parent.end)
+                          top.linkTo(parent.top)
+                          bottom.linkTo(parent.bottom)
+               }
+           ) {
+
+
+               Text("Place Order")
+
+
+           }
+
+
+       }
+
+
+   }
+
+
+}
+
+
+// Requirement #10 - Stateless Composable - only reads the quantity it was given, never declares its own state
+@Composable
+fun ProductRow(product: Product, quantity: Int, onAdd: () -> Unit, onRemove: () -> Unit
+) {
+
+
+   // Requirement #2 & #6 (padding, fillMaxWidth, clip, background, clickable + SpaceBetween/CenterVertically)
+   Row(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).background(Color(0xFFF5F5F5))
+                          .clickable { onAdd() }.padding(10.dp),
+       horizontalArrangement = Arrangement.SpaceBetween,
+       verticalAlignment = Alignment.CenterVertically
+   ) {
+
+
+       Column {
+           Text(text = product.name)
+
+
+           Text(text = "P${product.price}")
+       }
+
+
+       Row(verticalAlignment = Alignment.CenterVertically) {
+
+
+           Button(onClick = onRemove) {
+               Text("-")
+           }
+
+
+           Text(text = "$quantity",
+                modifier = Modifier.padding(horizontal = 10.dp))
+
+
+           Button(onClick = onAdd) {
+               Text("+")
+           }
+
+
+       }
+
+
+   }
+
+
+}
